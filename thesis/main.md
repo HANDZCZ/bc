@@ -162,6 +162,12 @@ chapters/abstract.md
 \setcounter{page}{1}
 
 ``` {.include}
+chapters/uvod.md
+chapters/teoreticka_cast.md
+chapters/analyza_pozadavku.md
+chapters/navrh_backendu.md
+chapters/implementace.md
+chapters/zaver.md
 ```
 
 # Seznam použité literatury
