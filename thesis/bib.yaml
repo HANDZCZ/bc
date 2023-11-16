@@ -1,5 +1,152 @@
 ---
 references:
+    - type: article-journal
+      id: migration_of_monolithic_systems_to_microservice_architecture
+      url: "https://dx.doi.org/10.1088/1742-6596/2091/1/012036"
+      issued:
+          year: 2021
+          month: 11
+      publisher: "IOP Publishing"
+      number: "1"
+      page: "012036"
+      author:
+          - family: "Balzamov"
+            given: "A V"
+          - family: "Fomin"
+            given: "D S"
+          - family: "Savkina"
+            given: "A V"
+          - family: "Nikulin"
+            given: "V V"
+          - family: "Fedosin"
+            given: "S A"
+      title: "Development of a methodology for migration of monolithic systems to microservice architecture using cloud technologies"
+      container-title: "Journal of Physics: Conference Series"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article-journal
+      id: monolithic_vs_microservice_architecture_ieee
+      author:
+          - family: "Blinowski"
+            given: "Grzegorz"
+          - family: "Ojdowska"
+            given: "Anna"
+          - family: "Przybyłek"
+            given: "Adam"
+      title: "Monolithic vs. Microservice Architecture: A Performance and Scalability Evaluation"
+      container-title: "IEEE Access"
+      issued:
+          year: 2022
+      pages: "20357-20374"
+      url: "https://ieeexplore.ieee.org/document/9717259"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article
+      id: review_of_microservices_and_monolithic_architecture
+      title: "A Comparative Review of Microservices and Monolithic Architectures"
+      author:
+          - family: "Al-Debagy"
+            given: "Omar"
+          - family: "Martinek"
+            given: "Peter"
+      issued:
+          year: 2019
+      eprint: "1905.07997"
+      archivePrefix: "arXiv"
+      primaryClass: "cs.SE"
+      url: "https://arxiv.org/abs/1905.07997"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article
+      id: microservice_premium_fowler
+      title: "MicroservicePremium"
+      issued:
+          year: 2015
+          month: 6
+          day: 1
+      url: "https://martinfowler.com/bliki/MicroservicePremium.html"
+      author:
+          - family: "Fowler"
+            given: "Martin"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article
+      id: microservices_trade_offs_fowler
+      title: "Microservices Trade-Offs"
+      issued:
+          year: 2015
+          month: 6
+          day: 1
+      url: "https://martinfowler.com/articles/microservice-trade-offs.html"
+      author:
+          - family: "Fowler"
+            given: "Martin"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article
+      id: microservices_fowler
+      title: "Microservices"
+      issued:
+          year: 2014
+          month: 3
+          day: 25
+      url: "https://martinfowler.com/articles/microservices.html"
+      author:
+          - family: "Fowler"
+            given: "Martin"
+          - family: "Fowler"
+            given: "James"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
+    - type: article
+      id: microservice_based_projects_in_agile_world
+      title: "Microservice-based projects in agile world: A structured interview"
+      container-title: "Information and Software Technology"
+      volume: "165"
+      page: "107334"
+      issued:
+          year: 2024
+      ISSN: "0950-5849"
+      url: "https://www.sciencedirect.com/science/article/pii/S0950584923001891"
+      author:
+          - family: "Ünlü"
+            given: "Hüseyin"
+          - family: "Kennouche"
+            given: "Dhia Eddine"
+          - family: "Soylu"
+            given: "Görkem Kılınç"
+          - family: "Demirörs"
+            given: "Onur"
+      accessed:
+          year: 2023
+          month: 11
+          day: 14
+      lang: "en"
+
     - type: article
       id: nonfunctional_requirements_medium
       title: "Understanding Non-Functional Requirements for Load/Performance Testing of a Backend Application on Kubernetes"
