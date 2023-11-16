@@ -1,0 +1,105 @@
+---
+references:
+    - type: article
+      id: information_system_britannica
+      title: "Information System"
+      issued:
+          year: 2023
+          month: 10
+          day: 10
+      url: "https://www.britannica.com/topic/information-system"
+      author:
+          - family: "Zwass"
+            given: "Vladimir"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: incollection
+      id: basic_concepts_of_information_systems
+      author:
+          - family: "Zemmouchi-Ghomari"
+            given: "Leila"
+      title: "Basic Concepts of Information Systems"
+      booktitle: "Contemporary Issues in Information Systems"
+      publisher: "IntechOpen"
+      address: "Rijeka"
+      year: 2021
+      editor:
+          - family: "Reilly"
+            given: "Denis"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      chapter: 2
+      url: "https://doi.org/10.5772/intechopen.97644"
+      lang: "en"
+
+    - type: article
+      id: definition_of_information_systems
+      title: "Information Systems"
+      issued:
+          year: 2022
+      url: "https://www.sciencedirect.com/journal/information-systems"
+      author:
+          - family: "Shasha"
+            given: "Dennis"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
+      id: information_systems_dynamics
+      title: "Foundations and Applications of Information Systems Dynamics"
+      container-title: "Engineering"
+      issued:
+          year: 2022
+      ISSN: "2095-8099"
+      url: "https://www.sciencedirect.com/science/article/pii/S2095809922004817"
+      author:
+          - family: "Xu"
+            given: "Jianfeng"
+          - family: "Liu"
+            given: "Zhenyu"
+          - family: "Wang"
+            given: "Shuliang"
+          - family: "Zheng"
+            given: "Tao"
+          - family: "Wang"
+            given: "Yashi"
+          - family: "Wang"
+            given: "Yingfei"
+          - family: "Dang"
+            given: "Yingxu"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
+      id: exploration_of_esports_fan_identity
+      title: "An exploration of esports fan identity, engagement practices, and motives"
+      container-title: "Telematics and Informatics Reports"
+      volume: "11"
+      page: "100081"
+      issued:
+          year: 2023
+      ISSN: "2772-5030"
+      url: "https://www.sciencedirect.com/science/article/pii/S2772503023000415"
+      author:
+          - family: "Barney"
+            given: "Joshua"
+          - family: "Pennington"
+            given: "Natalie"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: en
+
