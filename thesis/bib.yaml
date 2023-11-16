@@ -1,6 +1,86 @@
 ---
 references:
     - type: article
+      id: nonfunctional_requirements_medium
+      title: "Understanding Non-Functional Requirements for Load/Performance Testing of a Backend Application on Kubernetes"
+      issued:
+          year: 2023
+          month: 5
+          day: 31
+      url: "https://medium.com/@prateekbansalind/understanding-non-functional-requirements-for-load-performance-testing-of-a-backend-application-on-7602cf1e8805"
+      author:
+          - family: "Bansal"
+            given: "Prateek"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article-journal
+      id: esport_business_and_information_systems_engineering
+      author:
+          - family: "Werder"
+            given: "Karl"
+      title: "Esport"
+      container-title: "Business & Information Systems Engineering"
+      page: "393-399"
+      issued:
+          year: 2022
+          month: 6
+          day: 1
+      ISSN: "1867-0202"
+      url: "https://doi.org/10.1007/s12599-022-00748-w"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
+      id: how_to_design_an_esports_tournament_website_perfectionheeks
+      title: "How to Design an Esports Tournament Website?"
+      issued:
+          year: 2023
+      url: "https://www.perfectiongeeks.com/esports-tournament-website-design-company"
+      author:
+          - family: "PerfectionGeeks"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
+      id: how_to_make_an_esports_tournament_website_devteam
+      title: "How to Make an Esports Tournament Website?"
+      issued:
+          year: 2023
+      url: "https://www.devteam.space/blog/how-to-develop-an-esports-tournament-website/"
+      author:
+          - family: "Davies"
+            given: "Aran"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
+      id: how_to_make_an_esports_tournament_website_mobilecoderz
+      title: "How to Make an Esports Tournament Website?"
+      issued:
+          year: 2023
+      url: "https://mobilecoderz.com/blog/esports-tournament-website-development-guide"
+      author:
+          - family: "Mobilecoderz"
+      accessed:
+          year: 2023
+          month: 11
+          day: 13
+      lang: "en"
+
+    - type: article
       id: information_system_britannica
       title: "Information System"
       issued:
