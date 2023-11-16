@@ -1,6 +1,7 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode$for(hyperrefoptions)$,$hyperrefoptions$$endfor$}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{table}{xcolor}
 $if(colorlinks)$
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
 $endif$
@@ -408,7 +409,20 @@ $endif$
 $if(csquotes)$
 \usepackage{csquotes}
 $endif$
-\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+% document outline default config
+\IfFileExists{bookmark.sty}{
+    \usepackage[
+        $if(bookmarkopenlevel)$
+            openlevel={$bookmarkopenlevel$}
+        $endif$
+    ]{bookmark}
+}{
+    \usepackage[
+        $if(bookmarkopenlevel)$
+            bookmarkopenlevel={$bookmarkopenlevel$}
+        $endif$
+    ]{hyperref}
+}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{$if(urlstyle)$$urlstyle$$else$same$endif$}
 $if(links-as-notes)$
@@ -419,6 +433,10 @@ $if(verbatim-in-note)$
 \VerbatimFootnotes % allow verbatim text in footnotes
 $endif$
 \hypersetup{
+% document outline default config
+$if(bookmarksopen)$
+  bookmarksopen={$bookmarksopen$},
+$endif$
 $if(title-meta)$
   pdftitle={$title-meta$},
 $endif$
@@ -446,7 +464,9 @@ $else$
   hidelinks,
 $endif$
 $endif$
-  pdfcreator={LaTeX via pandoc}}
+% add customization to pdfcreator
+pdfcreator={$if(pdfcreator)$$pdfcreator$$else$LaTeX via pandoc$endif$}
+}
 
 $if(title)$
 \title{$title$$if(thanks)$\thanks{$thanks$}$endif$}
@@ -477,6 +497,62 @@ $if(logo)$
 $endif$
 $endif$
 
+
+% use list of listing created by minted
+\makeatletter
+\let\listoflistings\@undefined
+\makeatother
+
+% include the minted package
+\usepackage[outputdir=temp]{minted}
+% customize minted
+\setminted{
+    breaklines,
+    frame=lines,
+    breakanywhere,
+    tabsize=4,
+    baselinestretch=1,
+    fontsize=\small,
+}
+
+% set names for Tables, Figures, Listings and their lists
+$if(listingTitle)$
+\renewcommand{\listingscaption}{$listingTitle$}
+$endif$
+$if(lolTitle)$
+\renewcommand{\listoflistingscaption}{$lolTitle$}
+$endif$
+$if(tableTitle)$
+\captionsetup[table]{name=$tableTitle$}
+$endif$
+$if(figureTitle)$
+\captionsetup[figure]{name=$figureTitle$}
+$endif$
+$if(listings)$
+% fix listings caption formating
+\captionsetup[listing]{
+    belowskip=15pt,
+    skip=0pt,
+    position=top
+}
+$else$
+% change codelisting to not use float
+\renewenvironment{codelisting}{
+    % set codelisting type and fix listings caption formating
+    \captionsetup{
+        type=listing,
+        belowskip=15pt,
+        skip=5pt,
+        position=top
+    }
+}{}
+$endif$
+
+% add option to add/edit anything just before start of document
+$for(includes-before-document)$
+$includes-before-document$
+$endfor$
+
 \begin{document}
 $if(has-frontmatter)$
 \frontmatter
@@ -496,41 +572,91 @@ $endif$
 
 $for(include-before)$
 $include-before$
-
 $endfor$
-$if(toc)$
-$if(toc-title)$
-\renewcommand*\contentsname{$toc-title$}
-$endif$
-$if(beamer)$
-\begin{frame}[allowframebreaks]
-$if(toc-title)$
-  \frametitle{$toc-title$}
-$endif$
-  \tableofcontents[hideallsubsections]
-\end{frame}
-$else$
-{
-$if(colorlinks)$
-\hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
-$endif$
-\setcounter{tocdepth}{$toc-depth$}
-\tableofcontents
+
+% add command and customization to generating table of contents
+\newcommand{\toc}{
+    $if(toc-title)$
+        \renewcommand*\contentsname{$toc-title$}
+    $endif$
+    $if(beamer)$
+        \begin{frame}[allowframebreaks]
+        $if(toc-title)$
+            \frametitle{$toc-title$}
+        $endif$
+        \tableofcontents[hideallsubsections]
+        \end{frame}
+    $else$
+    {
+        $if(colorlinks)$
+            \hypersetup{linkcolor=$if(toccolor)$$toccolor$$else$$endif$}
+        $endif$
+        \setcounter{tocdepth}{$toc-depth$}
+        \tableofcontents
+    }
+    $endif$
 }
+$if(toc)$
+    \toc
 $endif$
-$endif$
-$if(lof)$
-\listoffigures
-$endif$
+
+% add command and customization to generating list of tables
+\newcommand{\lot}{
+    {
+        $if(colorlinks)$
+            \hypersetup{linkcolor=$if(lotcolor)$$toccolor$$else$$endif$}
+        $endif$
+        $if(lotTitle)$
+            \renewcommand{\listtablename}{$lotTitle$}
+        $endif$
+        \listoftables
+    }
+}
 $if(lot)$
-\listoftables
+    \lot
 $endif$
+
+% add command and customization to generating list of figures
+\newcommand{\lof}{
+    {
+        $if(colorlinks)$
+            \hypersetup{linkcolor=$if(lofcolor)$$toccolor$$else$$endif$}
+        $endif$
+        $if(lofTitle)$
+            \renewcommand{\listfigurename}{$lofTitle$}
+        $endif$
+        \listoffigures
+    }
+}
+$if(lof)$
+    \lof
+$endif$
+
+% add command and customization to generating list of listings
+\newcommand{\lol}{
+    {
+        $if(colorlinks)$
+            \hypersetup{linkcolor=$if(lofcolor)$$toccolor$$else$$endif$}
+        $endif$
+        \listoflistings
+    }
+}
+$if(lol)$
+    \lol
+$endif$
+
+
 $if(linestretch)$
 \setstretch{$linestretch$}
 $endif$
 $if(has-frontmatter)$
 \mainmatter
 $endif$
+
+% full size horizontal rule
+\let\OldRule\rule
+\renewcommand{\rule}[2]{\OldRule{\linewidth}{#2}}
+
 $body$
 
 $if(has-frontmatter)$
