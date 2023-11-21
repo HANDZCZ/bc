@@ -153,7 +153,7 @@ rychlého výkonu a škálovatelnosti, protože komponenty, které lze spravovat
 aktualizovat a znovu používat, neovlivňují systém jako celek [@what_is_rest_codecademy].
 
 ```{.d2 #fig:rest_comunication_diagram caption="REST komunikační diagram"}
-direction: right
+direction: down
 
 classes: {
   imgonly: {
@@ -162,6 +162,11 @@ classes: {
   }
   container: {
     style.border-radius: 8
+  }
+  conn: {
+    style: {
+      font-size: 28
+    }
   }
 }
 
@@ -202,16 +207,20 @@ database: Database {
 
 database -> server: response {
   source-arrowhead: table data
+  class: conn
 }
 server -> database: sql request {
   source-arrowhead: SQL statement
+  class: conn
 }
 
 client -> server: rest request {
-  source-arrowhead: GET, POST, PUT, DELETE method
+  source-arrowhead: "GET, POST,\nPUT, DELETE\n method"
+  class: conn
 }
 server -> client: rest response {
   source-arrowhead: JSON format
+  class: conn
 }
 ```
 
