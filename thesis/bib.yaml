@@ -1,5 +1,36 @@
 ---
 references:
+    - type: article
+      id: what_is_rest_codecademy
+      title: "What is REST?"
+      issued:
+          year: 2023
+      url: "https://www.codecademy.com/article/what-is-rest"
+      author:
+          - family: "Codecademy Team"
+      accessed:
+          year: 2023
+          month: 11
+          day: 20
+      lang: "en"
+
+    - type: article
+      id: designing_apis_that_enable_scalable_frontends
+      title: "Designing APIs that Enable Scalable Frontends"
+      issued:
+          year: 2017
+          month: 12
+          day: 21
+      url: "https://rangle.io/blog/designing-apis-that-enable-scalable-frontends"
+      author:
+          - family: "Hofferber"
+            given: "Ben"
+      accessed:
+          year: 2023
+          month: 11
+          day: 20
+      lang: "en"
+
     - type: article-journal
       id: migration_of_monolithic_systems_to_microservice_architecture
       url: "https://dx.doi.org/10.1088/1742-6596/2091/1/012036"
