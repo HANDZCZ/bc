@@ -147,6 +147,8 @@ lofcolor: Black
 linestretch: 1.5
 ---
 \hyphenpenalty=10000
+\widowpenalties 1 10000
+\raggedbottom
 
 ``` {.include}
 chapters/abstract.md
