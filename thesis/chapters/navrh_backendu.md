@@ -224,6 +224,135 @@ server -> client: rest response {
 }
 ```
 
+### GraphQL
+
+GraphQL je open-source dotazovací a manipulační jazyk pro API
+a runtime pro realizaci dotazů s existujícími daty [@what_is_graphql_hygraph].
+Jazyk GraphQL byl vyvinut interně společností Facebook v roce 2012
+a v roce 2015 byl zveřejněn [@what_is_graphql_hygraph].
+
+Původ jazyka GraphQL pramení ze snahy společnosti Facebook škálovat svou mobilní aplikaci [@what_is_graphql_hygraph].
+V té době byla jejich aplikace adaptací jejich webových stránek,
+kdy jejich strategie pro mobilní zařízení spočívala v jednoduché "adopci" HTML5 na mobilní zařízení [@what_is_graphql_hygraph].
+Kvůli problémům spojeným s velkým vytížením sítě
+a neideálním UX se však tým rozhodl vytvořit aplikaci pro iOS od základu pomocí nativních technologií [@what_is_graphql_hygraph].
+
+> *"Hlavní problém implementace kanálu novinek v mobilních zařízeních byl to,
+že nebylo jednoduché získat zprávu, kdo ji napsal, co v ní stojí, seznam komentářů a kdo příspěvku dal lajk.
+Stávající rozhraní API nebyla navržena tak, aby umožnila vývojářům poskytnout přístup k informacím potřebných
+k vývoji kanálu novinek na mobilních zařízeních.
+Neměly hierarchickou strukturu, neumožňovaly vývojářům vybrat si jaká data potřebují,
+ani možnost zobrazit seznam různorodých příběhů v kanálu."*
+\- Brenda Clark [@what_is_graphql_history_components_ecosystem]
+
+GraphQL je dotazovací jazyk pro rozhraní API
+a runtime pro realizaci dotazů pomocí existujících dat [@what_is_graphql_hygraph; @what_is_graphql_history_components_ecosystem].
+Největší výhoda jazyka GraphQL spočívá především v tom,
+že GraphQL poskytuje kompletní a srozumitelný popis dat v rozhraní API,
+klientům dává možnost žádat přesně to, co potřebují, a nic navíc [@what_is_graphql_hygraph; @what_is_graphql_history_components_ecosystem].
+Při zasílání dotazů na rozhraní API vrací jazyk GraphQL zcela předvídatelné výsledky,
+aniž by docházelo k získávání více dat, nebo méně dat než je potřeba,
+což zajišťuje, že aplikace využívající jazyk GraphQL jsou rychlé,
+stabilní a škálovatelné [@what_is_graphql_hygraph].
+
+```{.d2 #fig:graphql_comunication_diagram caption="GraphQL komunikační diagram"}
+direction: up
+
+classes: {
+  imgonly: {
+    label: ""
+    shape: image
+  }
+  container: {
+    style: {
+      border-radius: 8
+    }
+  }
+  conn: {
+    style: {
+      font-size: 28
+    }
+  }
+}
+
+client: Clients {
+  class: container
+
+  pc: {
+    class: imgonly
+    icon: https://simpleicon.com/wp-content/uploads/pc.png
+  }
+  phone: {
+    class: imgonly
+    icon: https://cdn-icons-png.flaticon.com/512/0/191.png
+  }
+}
+
+graphql: GraphQL API {
+  class: container
+
+  graphql: {
+    class: imgonly
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/GraphQL_Logo.svg/800px-GraphQL_Logo.svg.png
+  }
+}
+
+client -> graphql: querry / mutation {
+  class: conn
+}
+graphql -> client: response {
+  class: conn
+}
+client <-> graphql: subscrition / events {
+  class: conn
+}
+
+database: Database {
+  class: container
+
+  postgres: {
+    class: imgonly
+    icon: https://cdn-icons-png.flaticon.com/512/5968/5968342.png
+  }
+}
+
+database -> graphql: response {
+  class: conn
+}
+graphql -> database: request {
+  class: conn
+}
+
+server: Legacy REST server {
+  class: container
+
+  img: {
+    class: imgonly
+    icon: https://static.thenounproject.com/png/17840-200.png
+  }
+  json: {
+    class: imgonly
+    icon: https://cdn-icons-png.flaticon.com/512/136/136443.png
+  }
+}
+
+graphql -> server: request {
+  class: conn
+}
+server -> graphql: response {
+  class: conn
+}
+
+database -> server: response {
+  source-arrowhead: table data
+  class: conn
+}
+server -> database: sql request {
+  source-arrowhead: SQL statement
+  class: conn
+}
+```
+
 ## Zabezpečení a autentizace
 
 \newpage

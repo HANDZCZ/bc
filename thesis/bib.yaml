@@ -1,6 +1,37 @@
 ---
 references:
     - type: article
+      id: what_is_graphql_history_components_ecosystem
+      title: "What is GraphQL: History, Components, and Ecosystem"
+      issued:
+          year: 2019
+          month: 8
+          day: 13
+      url: "https://levelup.gitconnected.com/what-is-graphql-87fc7687b042"
+      author:
+          - family: "Clark"
+            given: "Brenda"
+      accessed:
+          year: 2023
+          month: 11
+          day: 21
+      lang: "en"
+
+    - type: article
+      id: what_is_graphql_hygraph
+      title: "What is GraphQL?"
+      issued:
+          year: 2023
+      url: "https://hygraph.com/learn/graphql"
+      author:
+          - family: "hygraph"
+      accessed:
+          year: 2023
+          month: 11
+          day: 21
+      lang: "en"
+
+    - type: article
       id: what_is_rest_codecademy
       title: "What is REST?"
       issued:
