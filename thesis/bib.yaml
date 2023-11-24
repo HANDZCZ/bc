@@ -1,5 +1,49 @@
 ---
 references:
+    - type: article-journal
+      author:
+          - family: "Crespo-Martínez"
+            given: "Ignacio Samuel"
+          - family: "Campazas-Vega"
+            given: "Adrián"
+          - family: "Guerrero-Higueras"
+            given: "Ángel Manuel"
+          - family: "Riego-DelCastillo"
+            given: "Virginia"
+          - family: "Álvarez-Aparicio"
+            given: "Claudia"
+          - family: "Fernández-Llamas"
+            given: "Camino"
+      container-title: "Computers & Security"
+      id: sql_injection_attack_detection
+      issn: "0167-4048"
+      issued:
+          year: 2023
+      page: 103093
+      title: "SQL injection attack detection in network flow data"
+      url: "https://www.sciencedirect.com/science/article/pii/S0167404823000032"
+      accessed:
+          year: 2023
+          month: 11
+          day: 24
+      lang: "en"
+
+    - type: article
+      id: web_backend_security_risks
+      title: "Web Backend Security Risks"
+      issued:
+          year: 2023
+          month: 11
+          day: 12
+      url: "https://geekflare.com/web-backend-security-risk/"
+      author:
+          - family: "Editorial Staff"
+      accessed:
+          year: 2023
+          month: 11
+          day: 24
+      lang: "en"
+
     - type: article
       id: what_is_graphql_history_components_ecosystem
       title: "What is GraphQL: History, Components, and Ecosystem"
