@@ -1,5 +1,34 @@
 ---
 references:
+    - type: article
+      id: insecure_deserialization_portswigger
+      title: "Insecure deserialization"
+      issued:
+          year: 2023
+      url: "https://portswigger.net/web-security/deserialization"
+      author:
+          - family: "PortSwigger"
+      accessed:
+          year: 2023
+          month: 11
+          day: 24
+      lang: "en"
+
+    - type: article
+      id: what_is_insecure_deserialization
+      title: "What is insecure deserialization?"
+      issued:
+          year: 2023
+      url: "https://www.techtarget.com/searchsecurity/definition/insecure-deserialization"
+      author:
+          - family: "Gillis"
+            given: "Alexander"
+      accessed:
+          year: 2023
+          month: 11
+          day: 24
+      lang: "en"
+
     - type: article-journal
       author:
           - family: "Crespo-Martínez"

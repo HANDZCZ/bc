@@ -10,7 +10,7 @@ a krást informace nebo dokonce měnit či mazat legitimní data uložená v apl
 Open Web Application Security Project (OWASP) je celosvětový neziskový projekt usilující
 o zlepšení bezpečnosti softwaru [@sql_injection_attack_detection].
 Tato komunita vydává "OWASP Top 10", dokument pro zvýšení povědomí vývojářů a zabezpečení webových aplikací [@sql_injection_attack_detection].
-Tento dokument vyjadřuje širokou shodu ohledně nejkritičtějších bezpečnostních rizik webových aplikací [@sql_injection_attack_detection].
+Tento dokument obsahuje žebříček nejkritičtějších bezpečnostních rizik webových aplikací [@sql_injection_attack_detection].
 OWASP Top 10 řadí injekce jako třetí nejzávažnější bezpečnostní riziko webových aplikací v roce 2021 [@sql_injection_attack_detection].
 Podobně i společnost MITRE zveřejňuje žebříček CWE Top 25 Most Dangerous Software Weaknesses [@sql_injection_attack_detection].
 V tomto žebříčku zaujímají SQL injekce rovněž třetí místo [@sql_injection_attack_detection].
@@ -23,5 +23,46 @@ V mnoha případech může útočník tato data také upravovat nebo mazat,
 čímž způsobí trvalé změny obsahu nebo i změny v chování aplikace [@sql_injection_attack_detection].
 V některých situacích je také možné, že útočník může eskalovat svá práva pomocí SQL injection
 a napadnout server, na kterém tento útok byl proveden,
-nebo jinou back-endovou infrastrukturu či provést útoky typu "denial of service." [@sql_injection_attack_detection]
+nebo jinou back-endovou infrastrukturu či provést útoky typu "denial of service" [@sql_injection_attack_detection].
 
+### Nezabezpečená deserializace
+
+Nezabezpečená deserializace je bezpečnostní riziko,
+při kterém jsou nedůvěryhodná nebo neznámá data použita ke spuštění útoku typu "denial of service,"
+spuštění libovolného kódu, obejití autentizace nebo jinému zneužití logiky aplikace [@what_is_insecure_deserialization; @web_backend_security_risks].
+
+Serializace je proces převodu složitých datových struktur, jako jsou objekty a jejich pole, do formátu,
+který lze odeslat a přijmout jako sekvenční proud bajtů [@what_is_insecure_deserialization; @insecure_deserialization_portswigger; @web_backend_security_risks].
+Deserializace je proces obnovení tohoto proudu bajtů do plně funkční repliky původního objektu,
+přesně ve stavu, v jakém byl při serializaci [@what_is_insecure_deserialization; @insecure_deserialization_portswigger; @web_backend_security_risks].
+Logika webové stránky pak může s tímto deserializovaným objektem pracovat stejně jako s jakýmkoli jiným objektem [@what_is_insecure_deserialization; @insecure_deserialization_portswigger].
+
+V některých případě je možné nahradit serializovaný objekt objektem zcela jiné třídy [@insecure_deserialization_portswigger].
+Alarmující je, že objekty libovolné třídy, které jsou na webové stránce k dispozici,
+budou deserializovány a instancovány bez ohledu na to, která třída byla očekávána [@insecure_deserialization_portswigger].
+Z tohoto důvodu se nezabezpečená deserializace někdy označuje jako "object injection" [@insecure_deserialization_portswigger].
+
+Při přijetí objektu neočekávané třídy může dojít k výjimce,
+ale v této době však již mohlo dojít ke škodám [@insecure_deserialization_portswigger].
+Mnoho útoků založených na deserializaci je dokonáno ještě před dokončením deserializace [@insecure_deserialization_portswigger].
+To znamená, že samotný proces deserializace může zahájit útok,
+i když funkce webové stránky přímo nepracují se škodlivým objektem [@insecure_deserialization_portswigger].
+Z tohoto důvodu mohou být vůči těmto technikám zranitelné i webové stránky,
+jejichž logika je založena na silně typovaných jazycích [@insecure_deserialization_portswigger].
+
+Nezabezpečená deserializace obvykle vzniká z důvodu obecného nepochopení toho,
+jak nebezpečná může být deserializace dat ovládaných uživatelem [@insecure_deserialization_portswigger].
+V ideálním případě by uživatelský vstup neměl být deserializován vůbec [@insecure_deserialization_portswigger].
+
+Dokonce ani v případě, že je na deserializovaná data implementována nějaká forma dodatečné kontroly [@insecure_deserialization_portswigger].
+Tento přístup je často neúčinný, protože je prakticky nemožné implementovat validaci nebo sanitizaci,
+která by zohlednila všechny eventuality [@insecure_deserialization_portswigger].
+Uvedené kontroly jsou také zásadně chybné, protože se spoléhají na kontrolu dat po jejich deserializaci,
+což v mnoha případech bude příliš pozdě na to, aby se zabránilo útoku [@insecure_deserialization_portswigger].
+
+Další z důvodů proč tento útok může být úspěšný je,
+že deserializované objekty jsou často považovány za důvěryhodné [@insecure_deserialization_portswigger].
+Zejména při použití jazyků s binárním serializačním formátem se vývojáři mohou domnívat,
+že uživatelé nemohou data efektivně číst nebo s nimi manipulovat [@insecure_deserialization_portswigger].
+Nicméně, i přestože tento serializační formát může vyžadovat více úsilí,
+útočník je schopen zneužít binární serializované objekty stejně tak jako řetězcové formáty (JSON, XML, atd.) [@insecure_deserialization_portswigger].
