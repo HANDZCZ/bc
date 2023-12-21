@@ -12,6 +12,8 @@ Tato metoda nevyžaduje soubory cookie, identifikaci relace,
 přihlašovací stránky a další podobné možnosti identifikace uživatele,
 protože využívá samotnou hlavičku HTTP [@authentication_ultimate_guide; @authentication_methods_hubspot; @authentication_methods_restcase; @authentication_methods_techtarget].
 
+![HTTP autentizace [@authentication_ultimate_guide]](../../pictures/http_auth.png){#fig:basic_http_auth}
+
 Tato metoda autentizace se doporučuje jen zřídka kvůli tomu, že se dá snadno napadnout [@authentication_ultimate_guide; @authentication_methods_hubspot; @authentication_methods_restcase; @authentication_methods_techtarget].
 I přesto, že se používá kódování Base64, lze toto kódování snadno dekódovat [@authentication_ultimate_guide; @authentication_methods_restcase; @authentication_methods_techtarget].
 Dokonce i když obsah autentizace nelze dekódovat do původního uživatelského jména a hesla,
