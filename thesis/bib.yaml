@@ -1,6 +1,74 @@
 ---
 references:
     - type: article
+      id: authentication_ultimate_guide
+      title: "Everything You Need To Know About Frontend And Backend Authentication: Ultimate Guide"
+      issued:
+          year: 2023
+          month: 7
+          day: 7
+      url: "https://zivukushingai.medium.com/everything-you-need-to-know-about-frontend-and-backend-authentication-ultimate-guide-7142a752249c"
+      author:
+          - family: "Zivuku"
+            given: "Shingai"
+      accessed:
+          year: 2023
+          month: 12
+          day: 1
+      lang: "en"
+
+    - type: article
+      id: authentication_methods_techtarget
+      title: "5 fundamental strategies for REST API authentication"
+      issued:
+          year: 2022
+          month: 5
+          day: 23
+      url: "https://www.techtarget.com/searchapparchitecture/tip/5-fundamental-strategies-for-REST-API-authentication"
+      author:
+          - family: "Gupta"
+            given: "Priyank"
+      accessed:
+          year: 2023
+          month: 12
+          day: 1
+      lang: "en"
+
+    - type: article
+      id: authentication_methods_restcase
+      title: "4 Most Used REST API Authentication Methods"
+      issued:
+          year: 2019
+          month: 7
+          day: 26
+      url: "https://blog.restcase.com/4-most-used-rest-api-authentication-methods/"
+      author:
+          - family: "Levin"
+            given: "Guy"
+      accessed:
+          year: 2023
+          month: 12
+          day: 1
+      lang: "en"
+
+    - type: article
+      id: authentication_methods_hubspot
+      title: "4 API Authentication Methods for a Secure REST API"
+      issued:
+          year: 2023
+          month: 2
+          day: 1
+      url: "https://blog.hubspot.com/website/api-authentication"
+      author:
+          - family: "Ellis"
+            given: "Danielle"
+      accessed:
+          year: 2023
+          month: 12
+          day: 1
+      lang: "en"
+
+    - type: article
       id: insecure_deserialization_portswigger
       title: "Insecure deserialization"
       issued:
