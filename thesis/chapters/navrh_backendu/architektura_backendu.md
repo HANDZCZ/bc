@@ -10,48 +10,48 @@ Hlavně se zaměří na dvě architektury monolit a mikroslužby,
 ### Mikroslužby
 
 Softwarová architektura založená na mikroslužbách (MSSA),
-je preferovaným návrhovým modelem pro rostoucí počet společností v softwarovém odvětví [@microservice_based_projects_in_agile_world].
+je preferovaným návrhovým modelem pro rostoucí počet společností v softwarovém odvětví.
 Tento návrhový model byl poprvé představen v roce 2011 jako výsledek neustálých změn,
-které mají vyhovět současným požadavkům na vývoj softwaru [@microservice_based_projects_in_agile_world].
-Popularita MSSA rychle roste [@microservice_based_projects_in_agile_world].
+které mají vyhovět současným požadavkům na vývoj softwaru.
+Popularita MSSA rychle roste.
 Dnešní poskytovatelé služeb, jako jsou Amazon, LinkedIn, Netflix, SoundCloud,
-Uber a Verizon, si již osvojili tuto architekturu [@microservice_based_projects_in_agile_world].
+Uber a Verizon, si již osvojili tuto architekturu. [@microservice_based_projects_in_agile_world]
 
-Mikroslužby jsou distribuované aplikace s volnými vazbami, které pracují v jednotě [@microservice_based_projects_in_agile_world].
+Mikroslužby jsou distribuované aplikace s volnými vazbami, které pracují v jednotě.
 Mohou být vyvíjeny, zaváděny, testovány a škálovány nezávisle,
-komunikují pomocí zpráv přes nenáročné komunikační mechanismy [@microservice_based_projects_in_agile_world].
+komunikují pomocí zpráv přes nenáročné komunikační mechanismy. [@microservice_based_projects_in_agile_world]
 
-Mikroslužby využívají distribuovaný systém ke zlepšení modularity [@microservices_fowler].
-Distribuovaný software má však jednu zásadní nevýhodu, a to, že je distribuovaný [@microservices_fowler].
-Jakmile začnete používat distribuci, vzniká celá řada problémů [@microservices_fowler].
+Mikroslužby využívají distribuovaný systém ke zlepšení modularity.
+Distribuovaný software má však jednu zásadní nevýhodu, a to, že je distribuovaný.
+Jakmile začnete používat distribuci, vzniká celá řada problémů. [@microservices_fowler]
 
-Jedním z nich je i výkonnost [@microservices_trade_offs_fowler].
+Jedním z nich je i výkonnost.
 Pokud služba volá několik dalších vzdálených služeb,
 z nichž každá volá dalších vzdálené služby,
-tak délky těchto volání se sčítají a narostou do děsivých latenčních charakteristik  [@microservices_trade_offs_fowler].
-Tento problém lze ale jednoduše vyřešit použitím asynchronního režimu  [@microservices_trade_offs_fowler].
+tak délky těchto volání se sčítají a narostou do děsivých latenčních charakteristik.
+Tento problém lze ale jednoduše vyřešit použitím asynchronního režimu.
 Pokud služba provede několik asynchronních volání paralelně,
 místo součtu jejich latencí bude nyní pomalá jen tak,
-jak je pomalé její nejpomalejší volání  [@microservices_trade_offs_fowler].
-Toto řešení může značně zvýšit výkon, ale přináší sebou další problémy  [@microservices_trade_offs_fowler].
+jak je pomalé její nejpomalejší volání.
+Toto řešení může značně zvýšit výkon, ale přináší sebou další problémy.
 Jeden z těchto problémů je, že asynchronní programování je obtížné,
-je těžké ho správně naprogramovat a ještě těžší ho ladit  [@microservices_trade_offs_fowler].
+je těžké ho správně naprogramovat a ještě těžší ho ladit.
 Avšak většina společností, které používají mikroslužby,
-používá asynchronní programování, aby dosáhly přijatelného výkonu  [@microservices_trade_offs_fowler].
+používá asynchronní programování, aby dosáhly přijatelného výkonu. [@microservices_trade_offs_fowler]
 
-Dalším z problémů je spolehlivost  [@microservices_trade_offs_fowler].
-Očekáváte, že volání služeb bude fungovat, ale vzdálené volání může kdykoli selhat  [@microservices_trade_offs_fowler].
+Dalším z problémů je spolehlivost.
+Očekáváte, že volání služeb bude fungovat, ale vzdálené volání může kdykoli selhat.
 Při velkém množství mikroslužeb existuje čím dál více potenciálních míst,
-kde služba může selhat  [@microservices_trade_offs_fowler].
+kde služba může selhat. [@microservices_trade_offs_fowler]
 
 Mikroslužby jsou samostatně nasaditelnou částí,
-takže pro každou z nich je velká volnost při výběru technologie pro její vývoj  [@microservices_trade_offs_fowler].
+takže pro každou z nich je velká volnost při výběru technologie pro její vývoj.
 Mikroslužby mohou být napsány v různých programovacích jazycích,
-používat různé knihovny a různá datová úložiště  [@microservices_trade_offs_fowler].
+používat různé knihovny a různá datová úložiště.
 Díky tomuto principu si mohou týmy vybrat vhodný nástroj pro danou činnost,
-některé jazyky a knihovny se lépe hodí pro určité typy problémů  [@microservices_trade_offs_fowler].
+některé jazyky a knihovny se lépe hodí pro určité typy problémů.
 Často se diskutuje o nejlepším nástroji pro danou činnost,
-ale mnohdy největší přínos mikroslužeb spočívá v jednodušší správě verzí při vývoji  [@microservices_trade_offs_fowler].
+ale mnohdy největší přínos mikroslužeb spočívá v jednodušší správě verzí při vývoji. [@microservices_trade_offs_fowler]
 
 ### Monolit
 
