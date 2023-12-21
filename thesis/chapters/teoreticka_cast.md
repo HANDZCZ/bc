@@ -3,9 +3,9 @@
 
 ## E-sportové turnaje a jejich správa
 
-E-sport v nedávné době nabývá velkého růstu a stává se tak fenoménem s obrovským ekonomickým obratem v řádech miliard dolarů [@exploration_of_esports_fan_identity].
-S přibývajícím počtem diváků, přesáhla popularita e-sportů očekávání, a podle odhadů by v roce 2023 mohlo být přibližně 650 milionů diváků [@exploration_of_esports_fan_identity].
-Tento vzrůstající zájem o e-sport ukazuje, že sledování těchto turnajů se stává běžným jevem, přičemž více než polovina dospělých ve Spojených státech někdy nějaký e-sport turnaj viděla [@exploration_of_esports_fan_identity].
+E-sport v nedávné době nabývá velkého růstu a stává se tak fenoménem s obrovským ekonomickým obratem v řádech miliard dolarů.
+S přibývajícím počtem diváků, přesáhla popularita e-sportů očekávání, a podle odhadů by v roce 2023 mohlo být přibližně 650 milionů diváků.
+Tento vzrůstající zájem o e-sport ukazuje, že sledování těchto turnajů se stává běžným jevem, přičemž více než polovina dospělých ve Spojených státech někdy nějaký e-sport turnaj viděla. [@exploration_of_esports_fan_identity]
 
 Vzhledem k rostoucímu počtu hráčů, týmů a fanoušků, kteří se zapojují do této formy soutěže,
 se stala správa e-sportových turnajů náročným úkolem.
@@ -19,12 +19,12 @@ od registrace týmů a hráčů po sledování průběhu zápasů a poskytován�
 
 ## Informační systémy a jejich role ve správě turnajů
 
-Informační systémy jsou softwarové a hardwarové systémy, které podporují datově náročné aplikace [@definition_of_information_systems].
-Obsahují komplexní a integrované sady prvků, procesů a technologií, která slouží k sběru, ukládání, zpracování, analýze a distribuci informací v organizaci nebo jiném kontextu [@basic_concepts_of_information_systems; @information_system_britannica].
+Informační systémy jsou softwarové a hardwarové systémy, které podporují datově náročné aplikace.
+Obsahují komplexní a integrované sady prvků, procesů a technologií, která slouží k sběru, ukládání, zpracování, analýze a distribuci informací v organizaci nebo jiném kontextu. [@basic_concepts_of_information_systems; @information_system_britannica; @definition_of_information_systems]
 
-V éře informačního věku se neustále objevují různé informační systémy [@information_systems_dynamics].
+V éře informačního věku se neustále objevují různé informační systémy.
 Informace v reálném světě se prostřednictvím digitalizace mění v informace obsažené v informačních systémech,
-které následně skutečný svět zachycují [@information_systems_dynamics].
+které následně skutečný svět zachycují. [@information_systems_dynamics]
 
 Základním cílem správy e-sportových turnajů je nejen usnadnit průběh událostí,
 ale také vytvořit atraktivní prostředí pro všechny zúčastněné strany.
