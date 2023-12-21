@@ -3,9 +3,9 @@
 
 ## Identifikace potřeb uživatelů
 
-Současný výzkum e-sportu je velice rozmanitý a týká se celého ekosystému e-sportu, [@fig:overview_of_the_esport_ecosystem_and_stakeholders] shrnuje ekosystém [@esport_business_and_information_systems_engineering].
+Současný výzkum e-sportu je velice rozmanitý a týká se celého ekosystému e-sportu, [@fig:overview_of_the_esport_ecosystem_and_stakeholders] shrnuje ekosystém.
 Následující text se bude zabývat potřeb jednotlivých aktéru v tomto ekosystému,
-bude zaměřen na tři hlavní subjekty, které provozují a využívají platformu e-sportových turnajů: organizátory turnajů, diváky a profesionální týmy a hráče [@esport_business_and_information_systems_engineering].
+bude zaměřen na tři hlavní subjekty, které provozují a využívají platformu e-sportových turnajů: organizátory turnajů, diváky a profesionální týmy a hráče. [@esport_business_and_information_systems_engineering]
 
 ![Přehled ekosystému esportu a zúčastněných stran [@esport_business_and_information_systems_engineering]](../pictures/Overview of the esport ecosystem and stakeholders.png){#fig:overview_of_the_esport_ecosystem_and_stakeholders}
 
@@ -38,46 +38,46 @@ Implementace systému zabezpečení a autentizace je nezbytná pro ochranu citli
 
 ### Registrace turnaje
 
-Uživatelé by měli mít snadný přístup k registraci do turnajů [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks; @how_to_make_an_esports_tournament_website_devteam].
+Uživatelé by měli mít snadný přístup k registraci do turnajů. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks; @how_to_make_an_esports_tournament_website_devteam]
 Proces registrace by měl obsahovat relevantní informace,
-jako jsou jména týmů, údaje o hráčích a kontaktní informace [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+jako jsou jména týmů, údaje o hráčích a kontaktní informace. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Zároveň by měla být k dispozici intuitivní navigace a uživatelsky přívětivé rozhraní,
 aby se minimalizovala obtížnost při přihlašování.
 
 ### Správa týmů
 
 Pro kapitány týmů je klíčové poskytnout nástroje,
-které usnadní správu jejich týmu [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+které usnadní správu jejich týmu. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 To zahrnuje přidávání a odebírání hráčů,
-aktualizaci profilů hráčů a sledování statistik týmu [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+aktualizaci profilů hráčů a sledování statistik týmu. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Rozhraní pro správu týmů by mělo být intuitivní,
 aby vyhovovalo potřebám každého týmu.
 
 ### Rozpis zápasů
 
 Uživatelé by měli mít k dispozici přehledný rozpis zápasů,
-který zahrnuje data, časy a informace o soupeřích [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks; @how_to_make_an_esports_tournament_website_devteam].
+který zahrnuje data, časy a informace o soupeřích. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks; @how_to_make_an_esports_tournament_website_devteam]
 Strukturované a snadno čitelné informace o plánovaných zápasech jsou klíčové pro to,
 aby si uživatelé mohli jednoduše naplánovat sledování turnajů a aktivně se zapojit.
 
 ### Přímé přenosy a VOD
 
 Mělo by být zajištěny možnosti živých přenosů,
-umožňující divákům sledovat dění v reálném čase [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+umožňující divákům sledovat dění v reálném čase. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Pro ty, kteří nestihli živé přenosy,
-by jistě ocenili funkci pro přístup k nahraným videím/turnajům (Video on Demand) [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+by jistě ocenili funkci pro přístup k nahraným videím/turnajům (Video on Demand). [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Tímto se zajistí maximální flexibilita pro fanoušky a účastníky turnaje.
 
 ### Hráčské profily
 
 Vytvoření individuálních hráčských profilů, prezentující herní historii, úspěchy a statistiky,
-je klíčové pro poskytnutí informací o hráčích [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks; @how_to_make_an_esports_tournament_website_devteam].
+je klíčové pro poskytnutí informací o hráčích. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks; @how_to_make_an_esports_tournament_website_devteam]
 Hráčské profily umožní lepší sledování oblíbených hráčů.
 
 ### Závěrečné tabulky a pořadí
 
 Pro uživatele je důležité mít přístup k aktuálním turnajovým žebříčkům,
-které ukazují postup týmů skrze různé fáze soutěže [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks; @how_to_make_an_esports_tournament_website_devteam].
+které ukazují postup týmů skrze různé fáze soutěže. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks; @how_to_make_an_esports_tournament_website_devteam]
 Pravidelně aktualizované tabulky a pořadí poskytují jasný přehled o výkonech týmů
 a vytvářejí napětí a rivalitu v průběhu turnaje.
 
@@ -85,16 +85,16 @@ a vytvářejí napětí a rivalitu v průběhu turnaje.
 
 ### Dostupnost a spolehlivost
 
-Aplikace by měla být dostupná, když ji uživatelé potřebují [@nonfunctional_requirements_medium].
+Aplikace by měla být dostupná, když ji uživatelé potřebují.
 Udává očekávanou doba provozuschopnosti v procentech
-(např. "99,9% dostupnost" znamená, že systém může mít až 8,76 hodin výpadku za rok) [@nonfunctional_requirements_medium].
+(např. "99,9% dostupnost" znamená, že systém může mít až 8,76 hodin výpadku za rok). [@nonfunctional_requirements_medium]
 
-Systém by měl fungovat za stanovených podmínek po určitou dobu [@nonfunctional_requirements_medium].
+Systém by měl fungovat za stanovených podmínek po určitou dobu. [@nonfunctional_requirements_medium]
 Za těchto podmínek by systém měl běžet bez jakéhokoli problému teoreticky do nekonečna.
 
 ### Výkon a škálovatelnost
 
-Škálovatelnost je schopnost systému zvládnout zvýšenou zátěž, aniž by to mělo vliv na uživatelský komfort [@nonfunctional_requirements_medium].
+Škálovatelnost je schopnost systému zvládnout zvýšenou zátěž, aniž by to mělo vliv na uživatelský komfort. [@nonfunctional_requirements_medium]
 Systém by tedy měl efektivně reagovat na náhlou zátěž a nezkolabovat během průběhu turnajů.
 Zajištěna by také měla být stabilita a rychlost komunikace mezi frontendem a backendem pro plynulý průběh turnajů.
 
@@ -104,7 +104,7 @@ aby bylo možné bezproblémově přizpůsobit systém růstu uživatelské zák
 ### Zabezpečení a ochrana osobních údajů
 
 Bezpečné přihlašovací systémy, šifrování dat a opatření na ochranu soukromí,
-je nezbytné, aby byla zajištěna bezpečnost osobních údajů uživatelů [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectionheeks].
+je nezbytné, aby byla zajištěna bezpečnost osobních údajů uživatelů. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Důkladné zabezpečení informací včetně osobních údajů hráčů
 a týmů je prioritou pro vytvoření důvěryhodné
 a bezpečné platformy pro správu e-sportových turnajů.
