@@ -1,6 +1,23 @@
 ---
 references:
     - type: article
+      id: cookie_based_auth_dev
+      title: "Cookies-Based Authentication Vs Session-Based Authentication"
+      issued:
+          year: 2023
+          month: 3
+          day: 17
+      url: "https://dev.to/emmykolic/cookies-based-authentication-vs-session-based-authentication-1f6"
+      author:
+          - family: "Okolie"
+            given: "Emmanuel"
+      accessed:
+          year: 2023
+          month: 12
+          day: 21
+      lang: "en"
+
+    - type: article
       id: authentication_ultimate_guide
       title: "Everything You Need To Know About Frontend And Backend Authentication: Ultimate Guide"
       issued:

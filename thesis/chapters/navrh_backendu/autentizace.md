@@ -20,3 +20,26 @@ Dokonce i když obsah autentizace nelze dekódovat do původního uživatelskéh
 je tento typ autentizace stále nedostatečně zabezpečený [@authentication_ultimate_guide].
 Útočníci mohou získat autentizační obsah a opakovaně odesílat požadavky na server.
 Tento typ útoku se označuje jako replay útok [@authentication_ultimate_guide].
+
+
+
+### Autentizace pomocí souborů cookies
+
+Autentizace pomocí souborů cookies je model ověřování komunikace mezi relací na straně serveru a souborem cookie prohlížeče (na straně klienta). [@authentication_ultimate_guide]
+
+Webové stránky a webové aplikace používající soubory cookies k ověřování uživatelů,
+nejprve požádají uživatele, aby se přihlásil na webové stránky.
+Po přihlášení je vytvořen unikátní malý textový soubor.
+Tento soubor je zvláštním identifikátorem spojeným s účtem uživatele.
+Zařízení uživatele pak tento soubor cookie obdrží a uloží do svého prohlížeče. [@cookie_based_auth_dev]
+
+Webové stránky mohou uživatele ověřit, aniž by se musel znovu přihlašovat,
+díky tomu, že při dalších návštěvách odešle tento soubor cookie. [@cookie_based_auth_dev]
+
+![Autentizace pomocí souborů cookies [@authentication_ultimate_guide]](../../pictures/cookie_based_auth.png){#fig:cookie_based_auth}
+
+Hlavní výhoda této metody je, že se uživatelé nemusí opakovaně přihlašovat,
+aby získali přístup ke svým účtům.
+U této metody je, ale nezbytné zajistit,
+že soubory cookies používané k ověřování identity uživatele byly zabezpečené a těžko manipulovatelné,
+aby nedošlo k ohrožení bezpečnosti uživatelského účtu. [@cookie_based_auth_dev]
