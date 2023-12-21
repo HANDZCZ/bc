@@ -62,3 +62,79 @@ Tokeny jsou malé části dat, které generuje server a posílá je klientovi.
 Klient pak token uloží a použije jej k ověření na serveru při vytváření dotazů. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
 
 ![Ověření pomocí tokenu [@authentication_ultimate_guide]](../../pictures/token_auth.png){#fig:token_auth}
+
+
+
+### OAuth 2.0
+
+OAuth je otevřený standard,
+který umožňuje uživatelům udělovat ostatním stránkám oprávnění pro přístup k jejich uloženým informacím,
+uložených u jiných poskytovatelů různých služeb.
+Uživatelé tak nemusí poskytovat své uživatelské jméno a heslo přímo těmto stránkám. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
+
+OAuth slouží jako autorizační mechanismus,
+který umožňuje vlastníkovi dat udělovat aplikacím třetích stran oprávnění k přístupu do systému a získávání dat.
+Systém pro tento účel vygeneruje dočasný přístupový token, který při použití v aplikacích třetích stran nahradí nutnost zadávání hesla. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
+
+```{.d2 #fig:oauth_diagram caption="Ověření pomocí OAuth 2.0" height=50%}
+shape: sequence_diagram
+
+# direction: down
+
+classes: {
+  container: {
+    style.border-radius: 8
+  }
+  conn: {
+    style: {
+      # font-size: 28
+    }
+  }
+}
+
+client: Client {
+  class: container
+}
+oauth: OAuth server {
+  class: container
+}
+res-server: Resource server {
+  class: container
+}
+
+Aquire access token: {
+  client.t1 -> oauth.t1: Request access token {
+    class: conn
+  }
+
+  oauth.t1 -> oauth.t1: Verify client {
+    class: conn
+  }
+  oauth.t1 -> oauth.t1: User consent {
+    class: conn
+  }
+
+  oauth.t1 -> client.t1: Return access token {
+    class: conn
+  }
+}
+
+Fetch resource: {
+  client.t1 -> res-server.t1: Request resource {
+    class: conn
+  }
+
+  Validate access token: {
+    res-server.t1 -> oauth.t2: Validate token {
+      class: conn
+    }
+    oauth.t2 -> res-server.t1: Valid token {
+      class: conn
+    }
+  }
+
+  res-server.t1 -> client.t1: Return resource {
+    class: conn
+  }
+}
+```
