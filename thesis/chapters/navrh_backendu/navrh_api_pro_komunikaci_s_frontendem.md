@@ -115,15 +115,15 @@ server -> client: rest response {
 ### GraphQL
 
 GraphQL je open-source dotazovací a manipulační jazyk pro API
-a runtime pro realizaci dotazů s existujícími daty [@what_is_graphql_hygraph].
+a runtime pro realizaci dotazů s existujícími daty.
 Jazyk GraphQL byl vyvinut interně společností Facebook v roce 2012
-a v roce 2015 byl zveřejněn [@what_is_graphql_hygraph].
+a v roce 2015 byl zveřejněn. [@what_is_graphql_hygraph]
 
-Původ jazyka GraphQL pramení ze snahy společnosti Facebook škálovat svou mobilní aplikaci [@what_is_graphql_hygraph].
+Původ jazyka GraphQL pramení ze snahy společnosti Facebook škálovat svou mobilní aplikaci.
 V té době byla jejich aplikace adaptací jejich webových stránek,
-kdy jejich strategie pro mobilní zařízení spočívala v jednoduché "adopci" HTML5 na mobilní zařízení [@what_is_graphql_hygraph].
+kdy jejich strategie pro mobilní zařízení spočívala v jednoduché "adopci" HTML5 na mobilní zařízení.
 Kvůli problémům spojeným s velkým vytížením sítě
-a neideálním UX se však tým rozhodl vytvořit aplikaci pro iOS od základu pomocí nativních technologií [@what_is_graphql_hygraph].
+a neideálním UX se však tým rozhodl vytvořit aplikaci pro iOS od základu pomocí nativních technologií. [@what_is_graphql_hygraph]
 
 > *"Hlavní problém implementace kanálu novinek v mobilních zařízeních byl to,
 že nebylo jednoduché získat zprávu, kdo ji napsal, co v ní stojí, seznam komentářů a kdo příspěvku dal lajk.
@@ -134,14 +134,14 @@ ani možnost zobrazit seznam různorodých příběhů v kanálu."*
 \- Brenda Clark [@what_is_graphql_history_components_ecosystem]
 
 GraphQL je dotazovací jazyk pro rozhraní API
-a runtime pro realizaci dotazů pomocí existujících dat [@what_is_graphql_hygraph; @what_is_graphql_history_components_ecosystem].
+a runtime pro realizaci dotazů pomocí existujících dat.
 Největší výhoda jazyka GraphQL spočívá především v tom,
 že GraphQL poskytuje kompletní a srozumitelný popis dat v rozhraní API,
-klientům dává možnost žádat přesně to, co potřebují, a nic navíc [@what_is_graphql_hygraph; @what_is_graphql_history_components_ecosystem].
+klientům dává možnost žádat přesně to, co potřebují, a nic navíc.
 Při zasílání dotazů na rozhraní API vrací jazyk GraphQL zcela předvídatelné výsledky,
 aniž by docházelo k získávání více dat, nebo méně dat než je potřeba,
 což zajišťuje, že aplikace využívající jazyk GraphQL jsou rychlé,
-stabilní a škálovatelné [@what_is_graphql_hygraph].
+stabilní a škálovatelné. [@what_is_graphql_hygraph; @what_is_graphql_history_components_ecosystem]
 
 ```{.d2 #fig:graphql_comunication_diagram caption="GraphQL komunikační diagram"}
 direction: up
