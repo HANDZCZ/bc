@@ -58,7 +58,7 @@ ale mnohdy největší přínos mikroslužeb spočívá v jednodušší správě
 Monolitická architektura je aplikace s jedinou kódovou základnou, která zahrnuje více služeb.
 Tyto služby komunikují s externími systémy nebo uživateli prostřednictvím různých rozhraní,
 jako jsou stránky HTML nebo rozhraní REST API.
-Monolitická aplikace se obvykle skládá z databáze, klientského uživatelského rozhraní a serverové aplikace. [@migration_of_monolithic_systems_to_microservice_architecture]
+Monolitická aplikace se obvykle skládá z databáze, klientského uživatelského rozhraní a serverové aplikace. [@review_of_microservices_and_monolithic_architecture; @migration_of_monolithic_systems_to_microservice_architecture]
 
 Největší výhodou monolitické architektury je její jednoduchost oproti distribuovaným aplikacím. [@monolithic_vs_microservice_architecture_ieee]
 Monolitické aplikace mnohem snadněji testují, nasazují, ladí a monitorují. [@monolithic_vs_microservice_architecture_ieee; @migration_of_monolithic_systems_to_microservice_architecture]
