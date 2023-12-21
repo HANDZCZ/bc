@@ -43,3 +43,22 @@ aby získali přístup ke svým účtům.
 U této metody je, ale nezbytné zajistit,
 že soubory cookies používané k ověřování identity uživatele byly zabezpečené a těžko manipulovatelné,
 aby nedošlo k ohrožení bezpečnosti uživatelského účtu. [@cookie_based_auth_dev]
+
+
+
+### Ověření pomocí tokenu
+
+Ověření pomocí souborů cookie má několik nevýhod,
+včetně obtížné údržby na straně serveru,
+zejména v distribuovaných systémech.
+To vedlo k hledání efektivnější alternativy,
+která by tyto problémy vyřešila. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
+
+Jako odpověď na tento problém se našla autentizace pomocí tokenu. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
+
+Ověření pomocí tokenu je typ ověřování,
+který k ověření identity uživatele používá tokeny.
+Tokeny jsou malé části dat, které generuje server a posílá je klientovi.
+Klient pak token uloží a použije jej k ověření na serveru při vytváření dotazů. [@authentication_ultimate_guide; @authentication_methods_techtarget; @authentication_methods_restcase; @authentication_methods_hubspot]
+
+![Ověření pomocí tokenu [@authentication_ultimate_guide]](../../pictures/token_auth.png){#fig:token_auth}
