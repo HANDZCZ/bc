@@ -29,40 +29,40 @@ nebo jinou back-endovou infrastrukturu či provést útoky typu "denial of servi
 
 Nezabezpečená deserializace je bezpečnostní riziko,
 při kterém jsou nedůvěryhodná nebo neznámá data použita ke spuštění útoku typu "denial of service,"
-spuštění libovolného kódu, obejití autentizace nebo jinému zneužití logiky aplikace [@what_is_insecure_deserialization; @web_backend_security_risks].
+spuštění libovolného kódu, obejití autentizace nebo jinému zneužití logiky aplikace. [@what_is_insecure_deserialization; @web_backend_security_risks]
 
 Serializace je proces převodu složitých datových struktur, jako jsou objekty a jejich pole, do formátu,
-který lze odeslat a přijmout jako sekvenční proud bajtů [@what_is_insecure_deserialization; @insecure_deserialization_portswigger; @web_backend_security_risks].
+který lze odeslat a přijmout jako sekvenční proud bajtů.
 Deserializace je proces obnovení tohoto proudu bajtů do plně funkční repliky původního objektu,
-přesně ve stavu, v jakém byl při serializaci [@what_is_insecure_deserialization; @insecure_deserialization_portswigger; @web_backend_security_risks].
-Logika webové stránky pak může s tímto deserializovaným objektem pracovat stejně jako s jakýmkoli jiným objektem [@what_is_insecure_deserialization; @insecure_deserialization_portswigger].
+přesně ve stavu, v jakém byl při serializaci.
+Logika webové stránky pak může s tímto deserializovaným objektem pracovat stejně jako s jakýmkoli jiným objektem. [@what_is_insecure_deserialization; @insecure_deserialization_portswigger; @web_backend_security_risks]
 
-V některých případě je možné nahradit serializovaný objekt objektem zcela jiné třídy [@insecure_deserialization_portswigger].
+V některých případě je možné nahradit serializovaný objekt objektem zcela jiné třídy.
 Alarmující je, že objekty libovolné třídy, které jsou na webové stránce k dispozici,
-budou deserializovány a instancovány bez ohledu na to, která třída byla očekávána [@insecure_deserialization_portswigger].
-Z tohoto důvodu se nezabezpečená deserializace někdy označuje jako "object injection" [@insecure_deserialization_portswigger].
+budou deserializovány a instancovány bez ohledu na to, která třída byla očekávána.
+Z tohoto důvodu se nezabezpečená deserializace někdy označuje jako "object injection." [@insecure_deserialization_portswigger]
 
 Při přijetí objektu neočekávané třídy může dojít k výjimce,
-ale v této době však již mohlo dojít ke škodám [@insecure_deserialization_portswigger].
-Mnoho útoků založených na deserializaci je dokonáno ještě před dokončením deserializace [@insecure_deserialization_portswigger].
+ale v této době však již mohlo dojít ke škodám.
+Mnoho útoků založených na deserializaci je dokonáno ještě před dokončením deserializace.
 To znamená, že samotný proces deserializace může zahájit útok,
-i když funkce webové stránky přímo nepracují se škodlivým objektem [@insecure_deserialization_portswigger].
+i když funkce webové stránky přímo nepracují se škodlivým objektem.
 Z tohoto důvodu mohou být vůči těmto technikám zranitelné i webové stránky,
-jejichž logika je založena na silně typovaných jazycích [@insecure_deserialization_portswigger].
+jejichž logika je založena na silně typovaných jazycích. [@insecure_deserialization_portswigger]
 
 Nezabezpečená deserializace obvykle vzniká z důvodu obecného nepochopení toho,
-jak nebezpečná může být deserializace dat ovládaných uživatelem [@insecure_deserialization_portswigger].
-V ideálním případě by uživatelský vstup neměl být deserializován vůbec [@insecure_deserialization_portswigger].
+jak nebezpečná může být deserializace dat ovládaných uživatelem.
+V ideálním případě by uživatelský vstup neměl být deserializován vůbec. [@insecure_deserialization_portswigger]
 
-Dokonce ani v případě, že je na deserializovaná data implementována nějaká forma dodatečné kontroly [@insecure_deserialization_portswigger].
+Dokonce ani v případě, že je na deserializovaná data implementována nějaká forma dodatečné kontroly.
 Tento přístup je často neúčinný, protože je prakticky nemožné implementovat validaci nebo sanitizaci,
-která by zohlednila všechny eventuality [@insecure_deserialization_portswigger].
+která by zohlednila všechny eventuality.
 Uvedené kontroly jsou také zásadně chybné, protože se spoléhají na kontrolu dat po jejich deserializaci,
-což v mnoha případech bude příliš pozdě na to, aby se zabránilo útoku [@insecure_deserialization_portswigger].
+což v mnoha případech bude příliš pozdě na to, aby se zabránilo útoku. [@insecure_deserialization_portswigger]
 
 Další z důvodů proč tento útok může být úspěšný je,
-že deserializované objekty jsou často považovány za důvěryhodné [@insecure_deserialization_portswigger].
+že deserializované objekty jsou často považovány za důvěryhodné.
 Zejména při použití jazyků s binárním serializačním formátem se vývojáři mohou domnívat,
-že uživatelé nemohou data efektivně číst nebo s nimi manipulovat [@insecure_deserialization_portswigger].
+že uživatelé nemohou data efektivně číst nebo s nimi manipulovat.
 Nicméně, i přestože tento serializační formát může vyžadovat více úsilí,
-útočník je schopen zneužít binární serializované objekty stejně tak jako řetězcové formáty (JSON, XML, atd.) [@insecure_deserialization_portswigger].
+útočník je schopen zneužít binární serializované objekty stejně tak jako řetězcové formáty (JSON, XML, atd.). [@insecure_deserialization_portswigger]
