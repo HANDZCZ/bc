@@ -413,7 +413,8 @@
   <macro name="note">
     <text variable="note"/>
   </macro>
-  <citation collapse="citation-number" after-collapse-delimiter="; ">
+  <!--<citation collapse="citation-number" after-collapse-delimiter="; ">-->
+  <citation>
     <sort>
       <key variable="citation-number"/>
     </sort>
