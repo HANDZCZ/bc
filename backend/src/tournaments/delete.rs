@@ -8,7 +8,7 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_500_IntSerErr_json};
+use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
@@ -21,7 +21,9 @@ struct RowsAffected {
 }
 
 #[post("/delete")]
-pub async fn delete(pool: Data<PgPool>, data: Json<Tournament>) -> impl Responder {
+pub async fn delete(pool: Data<PgPool>, data: Json<Tournament>, user: LoggedInUserWithAuthorities) -> impl Responder {
+    check_user_authority!(user, "role::Tournament Manager");
+
     match query!("delete from tournaments where id = $1", data.id)
         .execute(pool.get_ref())
         .await

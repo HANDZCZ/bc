@@ -22,6 +22,7 @@ struct RowsAffected {
 
 #[post("/delete")]
 pub async fn delete(pool: Data<PgPool>, data: Json<Team>) -> impl Responder {
+    // TODO: redo in db + check perms
     match query!("delete from teams where id = $1", data.id)
         .execute(pool.get_ref())
         .await

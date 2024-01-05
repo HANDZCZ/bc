@@ -8,7 +8,7 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json};
+use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
@@ -24,7 +24,9 @@ struct RowsAffected {
 }
 
 #[post("/edit")]
-pub async fn edit(pool: Data<PgPool>, data: Json<Tournament>) -> impl Responder {
+pub async fn edit(pool: Data<PgPool>, data: Json<Tournament>, user: LoggedInUserWithAuthorities) -> impl Responder {
+    check_user_authority!(user, "role::Tournament Manager");
+
     match query!(
         "update tournaments set name = coalesce($1, name), description = coalesce($2, description), game_id = coalesce($3, game_id) where id = $4",
         data.name,
@@ -43,19 +45,13 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Tournament>) -> impl Responder 
         }
         Err(sqlx::Error::Database(error)) => {
             if error.is_unique_violation() {
-                let err = crate::common::Error {
-                    error: "request for tournament edit violates unique constraints".to_owned(),
-                };
+                let err = crate::common::Error::new("request for tournament edit violates unique constraints");
                 resp_400_BadReq_json!(err)
             } else if error.is_foreign_key_violation() {
-                let err = crate::common::Error {
-                    error: "request for tournament edit violates foreign key constraints (game id doesn't exists)".to_owned(),
-                };
+                let err = crate::common::Error::new("request for tournament edit violates foreign key constraints (game id doesn't exists)");
                 resp_400_BadReq_json!(err)
             } else {
-                let err = crate::common::Error {
-                    error: format!("unhandled error - {}", error)
-                };
+                let err = crate::common::Error::new(format!("unhandled error - {}", error));
                 resp_400_BadReq_json!(err)
             }
         }

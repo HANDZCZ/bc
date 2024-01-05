@@ -36,9 +36,7 @@ from tournaments_and_game_info where id = $1
             resp_200_Ok_json!(tournament)
         }
         Err(sqlx::Error::RowNotFound) => {
-            let err = crate::common::Error {
-                error: "tournament not found".to_owned(),
-            };
+            let err = crate::common::Error::new("tournament not found");
             resp_400_BadReq_json!(err)
         }
         Err(_) => {

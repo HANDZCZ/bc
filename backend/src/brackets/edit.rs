@@ -1,3 +1,5 @@
+use std::usize;
+
 use actix_web::{
     post,
     web::{Data, Json},
@@ -8,7 +10,7 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json};
+use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
 
 #[derive(Serialize, Deserialize)]
 struct Bracket {
@@ -32,7 +34,9 @@ struct RowsAffected {
 }
 
 #[post("/edit")]
-pub async fn edit(pool: Data<PgPool>, data: Json<Bracket>) -> impl Responder {
+pub async fn edit(pool: Data<PgPool>, data: Json<Bracket>, user: LoggedInUserWithAuthorities) -> impl Responder {
+    check_user_authority!(user, "role::Tournament Manager");
+
     match query!(
         "update brackets set team1 = $1, team2 = $2, winner = $3 where bracket_tree_id = $4 and layer = $5 and position = $6",
         data.team1,
@@ -53,19 +57,13 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Bracket>) -> impl Responder {
         }
         Err(sqlx::Error::Database(error)) => {
             if error.is_unique_violation() {
-                let err = crate::common::Error {
-                    error: "request for bracket edit violates unique constraints".to_owned(),
-                };
+                let err = crate::common::Error::new("request for bracket edit violates unique constraints");
                 resp_400_BadReq_json!(err)
             } else if error.is_foreign_key_violation() {
-                let err = crate::common::Error {
-                    error: "request for bracket edit violates foreign key constraints (bracket_tree_id, team1, team2)".to_owned(),
-                };
+                let err = crate::common::Error::new("request for bracket edit violates foreign key constraints (bracket_tree_id, team1, team2)");
                 resp_400_BadReq_json!(err)
             } else {
-                let err = crate::common::Error {
-                    error: format!("unhandled error - {}", error)
-                };
+                let err = crate::common::Error::new(format!("unhandled error - {}", error));
                 resp_400_BadReq_json!(err)
             }
         }

@@ -3,12 +3,12 @@ use actix_web::{
     web::{Data, Json},
     Responder,
 };
-use sqlx::{PgPool, query};
+use sqlx::{query, PgPool};
 
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json};
+use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json}, jwt_stuff::LoggedInUser};
 
 #[derive(Serialize, Deserialize)]
 struct ManagerToTeam {
@@ -17,49 +17,30 @@ struct ManagerToTeam {
 }
 
 #[post("/invite")]
-pub async fn invite(pool: Data<PgPool>, data: Json<ManagerToTeam>) -> impl Responder {
-    let Ok(mut tx) = pool.get_ref().begin().await else {
-        return resp_500_IntSerErr_json!();
-    };
-
-    macro_rules! rollback {
-        () => {
-            if tx.rollback().await.is_err() {
-                return resp_500_IntSerErr_json!();
-            }
-        };
-    }
-
-    for manager in &data.manager_ids {
-        match query!(
-            "insert into managers_to_teams_invites (manager_id, team_id) values ($1, $2)",
-            manager,
-            data.team_id,
-        )
-        .execute(&mut *tx)
-        .await
-        {
-            Ok(_) => {}
-            Err(sqlx::Error::Database(error)) => {
-                if error.is_unique_violation() {
-                    continue;
-                } else if error.is_foreign_key_violation() {
-                    let err = crate::common::Error {
-                        error: "inviting users to team failed - foreign key constraints violation (team_id, player_id)".to_owned(),
-                    };
-                    rollback!();
-                    return resp_400_BadReq_json!(err);
-                }
-            }
-            Err(_) => {
-                rollback!();
-                return resp_500_IntSerErr_json!()
+pub async fn invite(pool: Data<PgPool>, data: Json<ManagerToTeam>, user: LoggedInUser) -> impl Responder {
+    match query!(
+        "call invite_managers_to_team($1, $2, $3)",
+        user.id,
+        data.team_id,
+        &data.manager_ids
+    )
+    .execute(pool.get_ref())
+    .await
+    {
+        Ok(_) => {
+            resp_200_Ok_json!()
+        }
+        Err(sqlx::Error::Database(error)) => {
+            if error.is_foreign_key_violation() {
+                let err = crate::common::Error::new("inviting users to team failed - foreign key constraints violation (team_id, manager_id)");
+                resp_400_BadReq_json!(err)
+            } else {
+                let err = crate::common::Error::new(error.message().to_owned());
+                resp_400_BadReq_json!(err)
             }
         }
+        Err(_) => {
+            resp_500_IntSerErr_json!()
+        }
     }
-
-    if tx.commit().await.is_err() {
-        return resp_500_IntSerErr_json!();
-    };
-    resp_200_Ok_json!()
 }

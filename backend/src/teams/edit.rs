@@ -24,6 +24,7 @@ struct RowsAffected {
 
 #[post("/edit")]
 pub async fn edit(pool: Data<PgPool>, data: Json<Team>) -> impl Responder {
+    // TODO: redo in db + check perms
     match query!(
         "update teams set name = coalesce($1, name), description = coalesce($2, description) where id = $3",
         data.name,
@@ -41,14 +42,10 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Team>) -> impl Responder {
         }
         Err(sqlx::Error::Database(error)) => {
             if error.is_unique_violation() {
-                let err = crate::common::Error {
-                    error: "request for team edit violates unique constraints".to_owned(),
-                };
+                let err = crate::common::Error::new("request for team edit violates unique constraints");
                 resp_400_BadReq_json!(err)
             } else {
-                let err = crate::common::Error {
-                    error: format!("unhandled error - {}", error)
-                };
+                let err = crate::common::Error::new(format!("unhandled error - {}", error));
                 resp_400_BadReq_json!(err)
             }
         }

@@ -22,9 +22,7 @@ impl<Err: actix_web::ResponseError> ResponseError for JsonConfigErrorHandler<Err
     }
 
     fn error_response(&self) -> HttpResponse<BoxBody> {
-        HttpResponseBuilder::new(self.status_code()).json(Error {
-            error: format!("{}", self.error),
-        })
+        HttpResponseBuilder::new(self.status_code()).json(Error::new(format!("{}", self.error)))
     }
 }
 

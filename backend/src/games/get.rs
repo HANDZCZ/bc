@@ -27,9 +27,7 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
             resp_200_Ok_json!(game)
         }
         Err(sqlx::Error::RowNotFound) => {
-            let err = crate::common::Error {
-                error: "game not found".to_owned(),
-            };
+            let err = crate::common::Error::new("game not found");
             resp_400_BadReq_json!(err)
         }
         Err(_) => {

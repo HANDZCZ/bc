@@ -8,58 +8,34 @@ use sqlx::{PgPool, query};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json};
+use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json}, jwt_stuff::LoggedInUser};
 
 #[derive(Serialize, Deserialize)]
 struct ManagersToTeam {
-    managers_ids: Vec<Uuid>,
+    manager_ids: Vec<Uuid>,
     team_id: Uuid,
 }
 
 #[post("/remove")]
-pub async fn remove(pool: Data<PgPool>, data: Json<ManagersToTeam>) -> impl Responder {
-    let Ok(mut tx) = pool.get_ref().begin().await else {
-        return resp_500_IntSerErr_json!();
-    };
-
-    macro_rules! rollback {
-        () => {
-            if tx.rollback().await.is_err() {
-                return resp_500_IntSerErr_json!();
-            }
-        };
-    }
-
-    for manager in &data.managers_ids {
-        match query!(
-            "delete from managers_to_teams where manager_id = $1 and team_id = $2",
-            manager,
-            data.team_id,
-        )
-        .execute(&mut *tx)
-        .await
-        {
-            Ok(_) => {}
-            Err(sqlx::Error::Database(error)) => {
-                if error.is_unique_violation() {
-                    continue;
-                } else if error.is_foreign_key_violation() {
-                    let err = crate::common::Error {
-                        error: "removing managers from team failed - foreign key constraints violation (team_id, manager_id)".to_owned(),
-                    };
-                    rollback!();
-                    return resp_400_BadReq_json!(err);
-                }
-            }
-            Err(_) => {
-                rollback!();
-                return resp_500_IntSerErr_json!()
-            }
+pub async fn remove(pool: Data<PgPool>, data: Json<ManagersToTeam>, user: LoggedInUser) -> impl Responder {
+    match query!(
+        "call remove_managers_from_team($1, $2, $3)",
+        user.id,
+        data.team_id,
+        &data.manager_ids
+    )
+    .execute(pool.get_ref())
+    .await
+    {
+        Ok(_) => {
+            resp_200_Ok_json!()
+        }
+        Err(sqlx::Error::Database(error)) => {
+            let err = crate::common::Error::new(error.message().to_owned());
+            resp_400_BadReq_json!(err)
+        }
+        Err(_) => {
+            resp_500_IntSerErr_json!()
         }
     }
-
-    if tx.commit().await.is_err() {
-        return resp_500_IntSerErr_json!();
-    };
-    resp_200_Ok_json!()
 }

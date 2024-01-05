@@ -41,9 +41,7 @@ pub async fn get(pool: Data<PgPool>, path: web::Path<Bracket>) -> impl Responder
             resp_200_Ok_json!(data)
         }
         Err(sqlx::Error::RowNotFound) => {
-            let err = crate::common::Error {
-                error: "bracket not found".to_owned(),
-            };
+            let err = crate::common::Error::new("bracket not found");
             resp_400_BadReq_json!(err)
         }
         Err(_) => {
