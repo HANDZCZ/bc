@@ -67,6 +67,7 @@ macro_rules! begin_transaction_macro {
         }
     };
 }
+#[allow(unused_imports)]
 pub use begin_transaction_macro as begin_transaction;
 
 #[macro_export]
@@ -75,9 +76,10 @@ macro_rules! check_user_authority_macro {
         use actix_web_grants::authorities::AuthoritiesCheck;
         if !$user.authorities.has_authority($a) {
             let err = crate::common::Error::new(format!("user is missing \"{}\" authority", $a));
-            return crate::macros::resp_401_Unauth_json!(err);
+            return crate::macros::resp_403_Forbidden_json!(err);
         }
     };
 }
 
+#[allow(unused_imports)]
 pub use check_user_authority_macro as check_user_authority;

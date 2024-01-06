@@ -8,7 +8,10 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_500_IntSerErr_json};
+use crate::{
+    jwt_stuff::LoggedInUser,
+    macros::{resp_200_Ok_json, resp_403_Forbidden_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Team {
@@ -21,17 +24,25 @@ struct RowsAffected {
 }
 
 #[post("/delete")]
-pub async fn delete(pool: Data<PgPool>, data: Json<Team>) -> impl Responder {
-    // TODO: redo in db + check perms
-    match query!("delete from teams where id = $1", data.id)
+pub async fn delete(pool: Data<PgPool>, data: Json<Team>, user: LoggedInUser) -> impl Responder {
+    match query!("call delete_team($1, $2)", user.id, data.id)
         .execute(pool.get_ref())
         .await
     {
-        Ok(query_result) => {
-            let rows_affected = RowsAffected {
-                rows_affected: query_result.rows_affected(),
-            };
-            resp_200_Ok_json!(rows_affected)
+        Ok(_) => {
+            resp_200_Ok_json!()
+        }
+        Err(sqlx::Error::Database(error)) => {
+            if let Some(true) = error.code().map(|c| c == "66666") {
+                let err = crate::common::Error::new(error.message());
+                resp_403_Forbidden_json!(err)
+            } else if let Some(true) = error.code().map(|c| c == "44444") {
+                let err = crate::common::Error::new(error.message());
+                resp_400_BadReq_json!(err)
+            } else {
+                let err = crate::common::Error::new(format!("unhandled error - {}", error));
+                resp_400_BadReq_json!(err)
+            }
         }
         Err(_) => {
             resp_500_IntSerErr_json!()

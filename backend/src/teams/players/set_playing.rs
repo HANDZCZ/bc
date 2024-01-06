@@ -1,5 +1,3 @@
-use std::usize;
-
 use actix_web::{
     post,
     web::{Data, Json},
@@ -12,26 +10,47 @@ use uuid::Uuid;
 
 use crate::{
     jwt_stuff::LoggedInUser,
-    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, resp_403_Forbidden_json},
+    macros::{
+        resp_200_Ok_json, resp_400_BadReq_json, resp_403_Forbidden_json, resp_500_IntSerErr_json,
+    },
 };
 
 #[derive(Serialize, Deserialize)]
-struct PlayersToTeam {
-    player_ids: Vec<Uuid>,
+struct ToSet {
+    players: Vec<Player>,
     team_id: Uuid,
 }
 
-#[post("/remove")]
-pub async fn remove(
+#[derive(Serialize, Deserialize)]
+struct Player {
+    id: Uuid,
+    playing: bool,
+}
+
+#[post("/set_playing")]
+pub async fn set_playing(
     pool: Data<PgPool>,
-    data: Json<PlayersToTeam>,
+    data: Json<ToSet>,
     user: LoggedInUser,
 ) -> impl Responder {
+    let (playing, not_playing) = data.players.iter().fold(
+        (Vec::new(), Vec::new()),
+        |(mut playing, mut not_playing), player| {
+            if player.playing {
+                playing.push(player.id);
+            } else {
+                not_playing.push(player.id);
+            }
+            (playing, not_playing)
+        },
+    );
+
     match query!(
-        "call remove_players_from_team($1, $2, $3)",
+        "call set_playing($1, $2, $3, $4)",
         user.id,
         data.team_id,
-        &data.player_ids
+        &playing,
+        &not_playing
     )
     .execute(pool.get_ref())
     .await

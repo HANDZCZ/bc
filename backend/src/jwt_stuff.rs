@@ -13,7 +13,10 @@ use uuid::Uuid;
 
 use actix_web::{
     dev::{forward_ready, Payload, Service, ServiceRequest, ServiceResponse, Transform},
-    http::{header::{self, HeaderValue}, StatusCode},
+    http::{
+        header::{self, HeaderValue},
+        StatusCode,
+    },
     web::Data,
     Error, FromRequest, HttpMessage, HttpRequest,
 };
@@ -95,11 +98,11 @@ pub struct JwtMiddlewareInner<S> {
 }
 
 fn decode_jwt(
-    req: &ServiceRequest,
+    header_value: Option<&HeaderValue>,
     decoding_key: &DecodingKey,
     validation: &Validation,
 ) -> Option<Claims> {
-    let Some(val) = req.headers().get(header::AUTHORIZATION) else {
+    let Some(val) = header_value else {
         return None;
     };
     let Ok(val) = val.to_str() else {
@@ -140,7 +143,12 @@ where
     fn call(&self, req: ServiceRequest) -> Self::Future {
         let svc = self.service.clone();
 
-        let mut claims = decode_jwt(&req, &self.decoding_key, &self.validation);
+        let auth_header_value = req.headers().get(header::AUTHORIZATION).map(|v| v.clone());
+        let mut claims = decode_jwt(
+            auth_header_value.as_ref(),
+            &self.decoding_key,
+            &self.validation,
+        );
 
         let encoding_key = self.encoding_key.clone();
         let token_ttl = self.token_ttl;
@@ -173,18 +181,17 @@ where
 
             let inner_data = ext.borrow();
             if inner_data.changed {
-                match inner_data.data.as_ref() {
-                    Some(user_data) => {
-                        let token = encode_jwt(user_data.to_owned(), &encoding_key, token_ttl);
-                        res.headers_mut().insert(
-                            header::AUTHORIZATION,
-                            HeaderValue::from_str(&format!("Bearer {token}")).unwrap(),
-                        );
-                    }
-                    None => {
-                        res.headers_mut().remove(header::AUTHORIZATION);
-                    }
+                if let Some(user_data) = inner_data.data.as_ref() {
+                    let token = encode_jwt(user_data.to_owned(), &encoding_key, token_ttl);
+                    res.headers_mut().insert(
+                        header::AUTHORIZATION,
+                        HeaderValue::from_str(&format!("Bearer {token}")).unwrap(),
+                    );
+                } else {
+                    res.headers_mut().remove(header::AUTHORIZATION);
                 }
+            } else if let Some(val) = auth_header_value {
+                res.headers_mut().insert(header::AUTHORIZATION, val);
             }
 
             Ok(res)
@@ -286,10 +293,9 @@ impl FromRequest for LoggedInUser {
     }
 }
 
-
 pub struct LoggedInUserWithAuthorities {
     pub id: Uuid,
-    pub authorities: AuthDetails
+    pub authorities: AuthDetails,
 }
 
 impl FromRequest for LoggedInUserWithAuthorities {
@@ -307,7 +313,10 @@ impl FromRequest for LoggedInUserWithAuthorities {
 
         let res = if let Some(user_data) = data {
             let authorities = extensions.get::<AuthDetails>().unwrap().clone();
-            Ok(LoggedInUserWithAuthorities { id: user_data.id, authorities })
+            Ok(LoggedInUserWithAuthorities {
+                id: user_data.id,
+                authorities,
+            })
         } else {
             let err = common::Error::new("not logged in");
             Err(JsonError::new(err, StatusCode::UNAUTHORIZED))

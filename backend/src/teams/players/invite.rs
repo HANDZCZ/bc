@@ -8,7 +8,7 @@ use sqlx::{PgPool, query};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json}, jwt_stuff::LoggedInUser};
+use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, resp_403_Forbidden_json}, jwt_stuff::LoggedInUser};
 
 #[derive(Serialize, Deserialize)]
 struct PlayersToTeam {
@@ -34,8 +34,14 @@ pub async fn invite(pool: Data<PgPool>, data: Json<PlayersToTeam>, user: LoggedI
             if error.is_foreign_key_violation() {
                 let err = crate::common::Error::new("inviting users to team failed - foreign key constraints violation (team_id, player_id)");
                 resp_400_BadReq_json!(err)
+            } else if let Some(true) = error.code().map(|c| c == "66666") {
+                let err = crate::common::Error::new(error.message());
+                resp_403_Forbidden_json!(err)
+            } else if let Some(true) = error.code().map(|c| c == "44444") {
+                let err = crate::common::Error::new(error.message());
+                resp_400_BadReq_json!(err)
             } else {
-                let err = crate::common::Error::new(error.message().to_owned());
+                let err = crate::common::Error::new(format!("unhandled error - {}", error));
                 resp_400_BadReq_json!(err)
             }
         }
