@@ -57,3 +57,11 @@ impl From<String> for JsonString {
         JsonString(RawValue::from_string(value).unwrap())
     }
 }
+
+#[derive(Clone, Debug, PartialEq, PartialOrd, sqlx::Type, Deserialize, Serialize)]
+#[sqlx(type_name = "tournament_type")]
+pub enum TournamentType {
+    FFA,
+    OneBracketTwoFinalPositions,
+    OneBracketOneFinalPositions,
+}

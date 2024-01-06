@@ -16,6 +16,9 @@ struct Tournament {
     name: Option<String>,
     description: Option<String>,
     game_id: Option<Uuid>,
+    max_team_size: Option<i32>,
+    requires_application: Option<bool>,
+    applications_closed: Option<bool>
 }
 
 #[derive(Serialize, Deserialize)]
@@ -28,10 +31,20 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Tournament>, user: LoggedInUser
     check_user_authority!(user, "role::Tournament Manager");
 
     match query!(
-        "update tournaments set name = coalesce($1, name), description = coalesce($2, description), game_id = coalesce($3, game_id) where id = $4",
+        r#"update tournaments set
+        name = coalesce($1, name),
+        description = coalesce($2, description),
+        game_id = coalesce($3, game_id),
+        max_team_size = coalesce($4, max_team_size),
+        requires_application = coalesce($5, requires_application),
+        applications_closed = coalesce($6, applications_closed)
+        where id = $7"#,
         data.name,
         data.description,
         data.game_id,
+        data.max_team_size,
+        data.requires_application,
+        data.applications_closed,
         data.id
     )
     .execute(pool.get_ref())
