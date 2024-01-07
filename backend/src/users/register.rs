@@ -16,6 +16,7 @@ use crate::{
 #[derive(Deserialize, Serialize)]
 pub struct RegisterData {
     nick: String,
+    email: String,
     password: String,
 }
 
@@ -39,10 +40,11 @@ pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: A
 
     match query_as!(
         ReturningRow,
-        "insert into users (nick, hash, salt) values ($1, $2, $3) returning users.id",
+        "insert into users (nick, hash, salt, email) values ($1, $2, $3, $4) returning users.id",
         data.nick,
         hash.to_vec(),
         salt,
+        data.email.to_lowercase()
     )
     .fetch_one(pool.get_ref())
     .await
@@ -66,3 +68,4 @@ pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: A
         }
     }
 }
+

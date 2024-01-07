@@ -16,7 +16,7 @@ use crate::{
 
 #[derive(Deserialize, Serialize)]
 pub struct LoginData {
-    nick: String,
+    email: String,
     password: String,
 }
 
@@ -43,8 +43,8 @@ pub async fn login(
 
     match query_as!(
         User,
-        "select salt, hash, id from users where nick = $1",
-        data.nick
+        "select salt, hash, id from users where email = $1",
+        data.email.to_lowercase()
     )
     .fetch_one(pool.get_ref())
     .await

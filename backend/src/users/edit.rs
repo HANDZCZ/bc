@@ -16,6 +16,7 @@ use crate::{
 #[derive(Serialize, Deserialize)]
 struct User {
     nick: Option<String>,
+    email: Option<String>,
     password: Option<String>,
 }
 
@@ -35,7 +36,8 @@ pub async fn edit(pool: Data<PgPool>, data: Json<User>, user: LoggedInUser) -> i
     };
 
     match query!(
-        "update users set nick = coalesce($1, nick), hash = coalesce($2, hash), salt = coalesce($3, salt) where id = $4",
+        "update users set email = coalesce($1, email), nick = coalesce($2, nick), hash = coalesce($3, hash), salt = coalesce($4, salt) where id = $5",
+        data.email,
         data.nick,
         hash,
         salt,
