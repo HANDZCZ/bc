@@ -34,3 +34,28 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use actix_web::test;
+
+    use crate::tests::*;
+    const URI: &str = "/teams";
+
+    #[actix_web::test]
+    async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+        let (_, user_id) = new_user_insert_testing(&app).await;
+
+        let team_id = new_team_insert_testing(user_id, &pool).await;
+        ok_or_rollback_team!(team_id, rollbacker);
+
+        let req = test::TestRequest::get()
+            .uri(&format!("{}/{}", URI, team_id))
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
+    }
+}

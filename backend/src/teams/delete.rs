@@ -49,3 +49,63 @@ pub async fn delete(pool: Data<PgPool>, data: Json<Team>, user: LoggedInUser) ->
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use actix_web::test;
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/teams/delete";
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+        let (auth_header, user_id) = new_user_insert_testing(&app).await;
+        let team_id = new_team_insert_testing(user_id, &pool).await;
+        ok_or_rollback_team!(team_id, rollbacker);
+
+        let data = Team {
+            id: team_id,
+        };
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        let code = resp.status().as_u16();
+        let body = test::read_body(resp).await;
+        assert_eq!(code, 200, "{}", String::from_utf8(body.to_vec()).unwrap());
+    }
+
+    #[actix_web::test]
+    pub async fn test_forbidden() {
+        let (app, rollbacker, pool) = get_test_app().await;
+        let (_auth_header, user_id) = new_user_insert_testing(&app).await;
+        let (other_auth_header, _other_user_id) = new_user_insert(
+            &app,
+            "testing-user2".into(),
+            "test2@test2.test".into(),
+            "pass".into(),
+        )
+        .await;
+        let team_id = new_team_insert_testing(user_id, &pool).await;
+        ok_or_rollback_team!(team_id, rollbacker);
+
+        let data = Team {
+            id: team_id,
+        };
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(other_auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 403);
+    }
+}

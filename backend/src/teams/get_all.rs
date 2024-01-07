@@ -27,3 +27,38 @@ pub async fn get_all(pool: Data<PgPool>) -> impl Responder {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use actix_web::test::{self, read_body_json};
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/teams";
+
+    #[actix_web::test]
+    async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+
+        let req = test::TestRequest::get()
+            .uri(URI)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
+        let res: Vec<Team> = read_body_json(resp).await;
+        let res_num = res.len();
+
+        let (_auth_header, user_id) = new_user_insert_testing(&app).await;
+        let _team_id = new_team_insert_testing(user_id, &pool).await;
+
+        let req = test::TestRequest::get()
+            .uri(URI)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+        assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
+        let res: Vec<Team> = read_body_json(resp).await;
+        rollbacker.rollback().await;
+        assert_ne!(res.len(), res_num);
+    }
+}

@@ -48,3 +48,33 @@ pub async fn new(pool: Data<PgPool>, data: Json<Team>, user: LoggedInUser) -> im
         Err(_) => resp_500_IntSerErr_json!()
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use actix_web::test;
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/teams/new";
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let auth_header = get_regular_users_auth_header(&app).await;
+
+        let data = Team {
+            name: "test-team".into(),
+            description: "test-team".into()
+        };
+
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
+    }
+}

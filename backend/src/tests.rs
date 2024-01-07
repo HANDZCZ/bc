@@ -254,6 +254,85 @@ pub async fn new_bracket_insert(
     Ok(())
 }
 
+pub async fn new_team_insert(
+    user_id: Uuid,
+    name: String,
+    pool: &PgPool,
+) -> Result<Uuid, sqlx::Error> {
+    Ok(sqlx::query!(
+        r#"select new_team($1, $2, $3) as "id!""#,
+        user_id,
+        name,
+        "test-team"
+    )
+    .fetch_one(pool)
+    .await?
+    .id)
+}
+pub async fn new_team_insert_testing(user_id: Uuid, pool: &PgPool) -> Result<Uuid, sqlx::Error> {
+    new_team_insert(user_id, "test-team".into(), pool).await
+}
+
+pub async fn new_player_to_team_insert(
+    user_id: Uuid,
+    team_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into players_to_teams (player_id, team_id) values ($1, $2)",
+        user_id,
+        team_id,
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
+pub async fn new_player_to_team_invite_insert(
+    user_id: Uuid,
+    team_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into players_to_teams_invites (player_id, team_id) values ($1, $2)",
+        user_id,
+        team_id,
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
+pub async fn new_manager_to_team_insert(
+    user_id: Uuid,
+    team_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into managers_to_teams (manager_id, team_id) values ($1, $2)",
+        user_id,
+        team_id,
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
+pub async fn new_manager_to_team_invite_insert(
+    user_id: Uuid,
+    team_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into managers_to_teams_invites (manager_id, team_id) values ($1, $2)",
+        user_id,
+        team_id,
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
 #[macro_export]
 macro_rules! ok_or_rollback_macro {
     ($field:ident, $new_field:ident, $rollbacker:ident, $error:expr) => {
@@ -292,6 +371,11 @@ build_ok_or_rollback!(game, "game insert failed");
 build_ok_or_rollback!(tournament, "tournament insert failed");
 build_ok_or_rollback!(bracket_tree, "bracket_tree insert failed");
 build_ok_or_rollback!(bracket, "bracket insert failed");
+build_ok_or_rollback!(team, "team insert failed");
+build_ok_or_rollback!(player_to_team, "player to team insert failed");
+build_ok_or_rollback!(player_to_team_invite, "player to team invite insert failed");
+build_ok_or_rollback!(manager_to_team, "manager to team insert failed");
+build_ok_or_rollback!(manager_to_team_invite, "manager to team invite insert failed");
 
 #[macro_export]
 macro_rules! assert_resp_status_eq_or_rollback_macro {
