@@ -58,7 +58,7 @@ impl From<String> for JsonString {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, PartialOrd, sqlx::Type, Deserialize, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, PartialOrd, sqlx::Type, Deserialize, Serialize)]
 #[sqlx(type_name = "tournament_type")]
 pub enum TournamentType {
     FFA,

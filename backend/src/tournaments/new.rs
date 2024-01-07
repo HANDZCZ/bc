@@ -8,13 +8,16 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities, common::TournamentType};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
     name: String,
     description: String,
     game_id: Uuid,
+    max_team_size: i32,
+    requires_application: bool,
+    tournament_type: TournamentType,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -28,10 +31,13 @@ pub async fn new(pool: Data<PgPool>, data: Json<Tournament>, user: LoggedInUserW
 
     match query_as!(
         ReturningRow,
-        "insert into tournaments (name, description, game_id) values ($1, $2, $3) returning tournaments.id",
+        "insert into tournaments (name, description, game_id, max_team_size, requires_application, tournament_type) values ($1, $2, $3, $4, $5, $6) returning tournaments.id",
         data.name,
         data.description,
-        data.game_id
+        data.game_id,
+        data.max_team_size,
+        data.requires_application,
+        data.tournament_type as TournamentType
     )
     .fetch_one(pool.get_ref())
     .await

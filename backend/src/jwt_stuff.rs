@@ -159,7 +159,7 @@ where
                     .app_data::<Data<PgPool>>()
                     .expect("Failed to find database pool");
                 if let Ok(row) = sqlx::query!(
-                    r#"select roles "roles!" from users_and_roles where id = $1"#,
+                    r#"select roles as "roles!" from users_and_roles where id = $1"#,
                     claims.as_ref().unwrap().data.id
                 )
                 .fetch_one(pool.get_ref())
