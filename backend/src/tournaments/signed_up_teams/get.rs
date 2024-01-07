@@ -20,7 +20,7 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
     match query_as!(
         Tournament,
         r#"select teams as "teams!: String"
-        from tournaments_with_signed_up_teams
+        from tournaments_signed_up_teams
         where id = $1"#,
         id.into_inner()
     )

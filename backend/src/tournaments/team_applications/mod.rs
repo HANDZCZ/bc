@@ -5,7 +5,7 @@ mod get;
 
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(
-        web::scope("/with_signed_up_teams")
+        web::scope("/team_applications")
             .service(get_all::get_all)
             .service(get::get)
     );

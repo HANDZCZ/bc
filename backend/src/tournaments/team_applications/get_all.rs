@@ -21,7 +21,7 @@ pub async fn get_all(pool: Data<PgPool>) -> impl Responder {
         RowData,
         r#"select id as "id!",
         teams as "teams!: String"
-        from tournaments_with_team_applications"#
+        from tournaments_team_applications"#
     )
     .fetch_all(pool.get_ref())
     .await
