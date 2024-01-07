@@ -8,7 +8,12 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{
+    jwt_stuff::LoggedInUserWithAuthorities,
+    macros::{
+        check_user_authority, resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json,
+    },
+};
 
 #[derive(Serialize, Deserialize)]
 struct Game {
@@ -24,7 +29,11 @@ struct RowsAffected {
 }
 
 #[post("/edit")]
-pub async fn edit(pool: Data<PgPool>, data: Json<Game>, user: LoggedInUserWithAuthorities) -> impl Responder {
+pub async fn edit(
+    pool: Data<PgPool>,
+    data: Json<Game>,
+    user: LoggedInUserWithAuthorities,
+) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
 
     match query!(
@@ -55,5 +64,65 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Game>, user: LoggedInUserWithAu
         Err(_) => {
             resp_500_IntSerErr_json!()
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use actix_web::test::{self, read_body_json};
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/games/delete";
+
+    #[actix_web::test]
+    async fn test_forbidden() {
+        let data = Game {
+            id: Uuid::new_v4(),
+            description: None,
+            name: None,
+            version: None,
+        };
+
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let reg_user_header = get_regular_users_auth_header(&app).await;
+
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(reg_user_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 403);
+    }
+
+    #[actix_web::test]
+    async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+        let auth_header = get_tournament_managers_auth_header(&app).await;
+
+        let id = new_game_insert(&pool).await;
+
+        ok_or_rollback_game!(id, rollbacker);
+        let data = Game {
+            id,
+            description: None,
+            name: Some("test-game-edited".to_owned()),
+            version: None,
+        };
+
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
+        let res: RowsAffected = read_body_json(resp).await;
+        assert_eq!(res.rows_affected, 1);
     }
 }
