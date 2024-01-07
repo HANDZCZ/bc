@@ -49,3 +49,33 @@ pub async fn get(pool: Data<PgPool>, path: web::Path<Bracket>) -> impl Responder
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use actix_web::test;
+
+    use crate::{tests::*, common::TournamentType};
+    const URI: &str = "/brackets";
+
+    #[actix_web::test]
+    async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+
+        let game_id = new_game_insert(&pool).await;
+        ok_or_rollback_game!(game_id, rollbacker);
+        let tournament_id = new_tournament_insert(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        ok_or_rollback_tournament!(tournament_id, rollbacker);
+        let bracket_tree_id = new_bracket_tree_insert(tournament_id, 0, &pool).await;
+        ok_or_rollback_bracket_tree!(bracket_tree_id, rollbacker);
+        let _bracket_res = new_bracket_insert(bracket_tree_id, 255, 0, &pool).await;
+        ok_or_rollback_bracket!(_bracket_res, rollbacker);
+
+        let req = test::TestRequest::get()
+            .uri(&format!("{}/{}/{}/{}", URI, bracket_tree_id, 255, 0))
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
+    }
+}

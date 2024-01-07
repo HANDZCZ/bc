@@ -10,7 +10,12 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{
+    jwt_stuff::LoggedInUserWithAuthorities,
+    macros::{
+        check_user_authority, resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json,
+    },
+};
 
 #[derive(Serialize, Deserialize)]
 struct Bracket {
@@ -34,8 +39,13 @@ struct RowsAffected {
 }
 
 #[post("/edit")]
-pub async fn edit(pool: Data<PgPool>, data: Json<Bracket>, user: LoggedInUserWithAuthorities) -> impl Responder {
+pub async fn edit(
+    pool: Data<PgPool>,
+    data: Json<Bracket>,
+    user: LoggedInUserWithAuthorities,
+) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
+    // TODO: recalculate tree (on demand)
 
     match query!(
         "update brackets set team1 = $1, team2 = $2, winner = $3 where bracket_tree_id = $4 and layer = $5 and position = $6",
@@ -70,5 +80,81 @@ pub async fn edit(pool: Data<PgPool>, data: Json<Bracket>, user: LoggedInUserWit
         Err(_) => {
             resp_500_IntSerErr_json!()
         }
+    }
+}
+
+#[cfg(test)]
+pub mod tests {
+    use actix_web::test::{self, read_body_json};
+
+    use super::*;
+    use crate::{common::TournamentType, tests::*};
+    const URI: &str = "/brackets/edit";
+
+    fn get_data() -> Bracket {
+        Bracket {
+            team1: None,
+            team2: None,
+            winner: None,
+            bracket_tree_id: Uuid::new_v4(),
+            layer: 255,
+            position: 0,
+        }
+    }
+
+    #[actix_web::test]
+    pub async fn test_forbidden() {
+        let data = get_data();
+
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let reg_user_header = get_regular_users_auth_header(&app).await;
+
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(reg_user_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 403);
+    }
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let mut data = get_data();
+
+        let (app, rollbacker, pool) = get_test_app().await;
+        let auth_header = get_tournament_managers_auth_header(&app).await;
+
+        let game_id = new_game_insert(&pool).await;
+        ok_or_rollback_game!(game_id, rollbacker);
+        let tournament_id = new_tournament_insert(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
+        ok_or_rollback_tournament!(tournament_id, rollbacker);
+        let bracket_tree_id = new_bracket_tree_insert(tournament_id, 0, &pool).await;
+        ok_or_rollback_bracket_tree!(bracket_tree_id, rollbacker);
+        let _bracket_res = new_bracket_insert(bracket_tree_id, 255, 0, &pool).await;
+        ok_or_rollback_bracket!(_bracket_res, rollbacker);
+
+        data.bracket_tree_id = bracket_tree_id;
+        data.winner = Some(true);
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
+        let res: RowsAffected = read_body_json(resp).await;
+        rollbacker.rollback().await;
+        assert_eq!(res.rows_affected, 1);
     }
 }
