@@ -66,3 +66,54 @@ pub async fn edit(pool: Data<PgPool>, data: Json<User>, user: LoggedInUser) -> i
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use actix_web::test::{self, read_body_json};
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/users/edit";
+
+    #[actix_web::test]
+    pub async fn test_unauthorized() {
+        let (app, rollbacker, _pool) = get_test_app().await;
+
+        let data = User {
+            email: None,
+            nick: None,
+            password: None
+        };
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 401);
+    }
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let auth_header = get_tournament_managers_auth_header(&app).await;
+
+        let data = User {
+            email: None,
+            nick: None,
+            password: None
+        };
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .insert_header(auth_header)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
+        let res: RowsAffected = read_body_json(resp).await;
+        rollbacker.rollback().await;
+        assert_eq!(res.rows_affected, 1);
+    }
+}

@@ -69,3 +69,15 @@ pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: A
     }
 }
 
+#[cfg(test)]
+pub mod tests {
+    use crate::tests::*;
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let _reg_user_header = get_regular_users_auth_header(&app).await;
+
+        rollbacker.rollback().await;
+    }
+}

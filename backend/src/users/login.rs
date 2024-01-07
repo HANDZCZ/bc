@@ -75,3 +75,31 @@ pub async fn login(
         }
     }
 }
+
+#[cfg(test)]
+pub mod tests {
+    use actix_web::test;
+
+    use super::*;
+    use crate::tests::*;
+    const URI: &str = "/users/login";
+
+    #[actix_web::test]
+    pub async fn test_ok() {
+        let (app, rollbacker, _pool) = get_test_app().await;
+        let _reg_user_header = get_regular_users_auth_header(&app).await;
+        let data = LoginData {
+            email: "testing-regular-user@test.test".into(),
+            password: "pass".into(),
+        };
+
+        let req = test::TestRequest::post()
+            .uri(URI)
+            .set_json(data)
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
+    }
+}
