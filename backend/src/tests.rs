@@ -197,6 +197,7 @@ pub async fn new_game_insert(pool: &PgPool) -> Result<Uuid, sqlx::Error> {
 
 pub async fn new_tournament_insert(
     game_id: Uuid,
+    name: String,
     requires_application: bool,
     applications_closed: bool,
     tournament_type: TournamentType,
@@ -205,7 +206,7 @@ pub async fn new_tournament_insert(
     Ok(sqlx::query!(
         r#"insert into tournaments (name, description, game_id, max_team_size, requires_application, applications_closed, tournament_type)
         values ($1, $2, $3, $4, $5, $6, $7) returning tournaments.id"#,
-        "test-tournament",
+        name,
         "test-tournament",
         game_id,
         5,
@@ -216,6 +217,16 @@ pub async fn new_tournament_insert(
     .fetch_one(pool)
     .await?
     .id)
+}
+
+pub async fn new_tournament_insert_testing(
+    game_id: Uuid,
+    requires_application: bool,
+    applications_closed: bool,
+    tournament_type: TournamentType,
+    pool: &PgPool,
+) -> Result<Uuid, sqlx::Error> {
+    new_tournament_insert(game_id, "test-tournament".into(), requires_application, applications_closed, tournament_type, pool).await
 }
 
 pub async fn new_bracket_tree_insert(

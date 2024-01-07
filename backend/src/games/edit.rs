@@ -73,7 +73,7 @@ mod tests {
 
     use super::*;
     use crate::tests::*;
-    const URI: &str = "/games/delete";
+    const URI: &str = "/games/edit";
 
     #[actix_web::test]
     async fn test_forbidden() {
