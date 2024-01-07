@@ -17,6 +17,8 @@ mod macros;
 mod teams;
 mod tournaments;
 mod users;
+#[cfg(test)]
+mod tests;
 
 #[derive(Parser, Debug)]
 struct Opts {
