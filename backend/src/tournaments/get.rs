@@ -14,6 +14,7 @@ use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_
 struct Tournament {
     name: String,
     description: String,
+    min_team_size: i32,
     max_team_size: i32,
     requires_application: bool,
     applications_closed: bool,
@@ -30,6 +31,7 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
         Tournament,
         r#"select name as "name!",
         description as "description!",
+        min_team_size as "min_team_size!",
         max_team_size as "max_team_size!",
         requires_application as "requires_application!",
         applications_closed as "applications_closed!",
@@ -53,5 +55,31 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
         Err(_) => {
             resp_500_IntSerErr_json!()
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use actix_web::test;
+
+    use crate::{tests::*, common::TournamentType};
+    const URI: &str = "/tournaments";
+
+    #[actix_web::test]
+    async fn test_ok() {
+        let (app, rollbacker, pool) = get_test_app().await;
+
+        let game_id = new_game_insert(&pool).await;
+        ok_or_rollback_game!(game_id, rollbacker);
+        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        ok_or_rollback_tournament!(tournament_id, rollbacker);
+
+        let req = test::TestRequest::get()
+            .uri(&format!("{}/{}", URI, tournament_id))
+            .to_request();
+        let resp = test::call_service(&app, req).await;
+
+        rollbacker.rollback().await;
+        assert_eq!(resp.status().as_u16(), 200);
     }
 }

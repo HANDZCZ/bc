@@ -14,6 +14,7 @@ use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_
 struct Tournament {
     name: String,
     description: String,
+    min_team_size: i32,
     max_team_size: i32,
     requires_application: bool,
     applications_closed: bool,
@@ -33,6 +34,7 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
         Tournament,
         r#"select name as "name!",
         description as "description!",
+        min_team_size as "min_team_size!",
         max_team_size as "max_team_size!",
         requires_application as "requires_application!",
         applications_closed as "applications_closed!",
