@@ -47,7 +47,7 @@ mod tests {
     #[actix_web::test]
     async fn test_ok() {
         let (app, rollbacker, _pool) = get_test_app().await;
-        let (_auth_header, id) = new_user_insert_testing(&app).await;
+        let (_auth_header, id) = new_user_insert_random(&app).await;
 
         let req = test::TestRequest::get()
             .uri(&format!("{}/{}", URI, id))

@@ -73,8 +73,8 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_ok() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (auth_header, user_id) = new_user_insert_testing(&app).await;
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let (auth_header, user_id) = new_user_insert_random(&app).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
 
         let data = Team {
@@ -96,15 +96,9 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_forbidden() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (_auth_header, user_id) = new_user_insert_testing(&app).await;
-        let (other_auth_header, _other_user_id) = new_user_insert(
-            &app,
-            "testing-user2".into(),
-            "test2@test2.test".into(),
-            "pass".into(),
-        )
-        .await;
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let (_auth_header, user_id) = new_user_insert_random(&app).await;
+        let (other_auth_header, _other_user_id) = new_user_insert_random(&app).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
 
         let data = Team {

@@ -63,8 +63,8 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_ok_accept() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (auth_header, user_id) = new_user_insert_testing(&app).await;
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let (auth_header, user_id) = new_user_insert_random(&app).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
         let ins_res = new_player_to_team_invite_insert(user_id, team_id, &pool).await;
         ok_or_rollback_player_to_team_invite!(ins_res, _ins_res, rollbacker);
@@ -107,8 +107,8 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_ok_reject() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (auth_header, user_id) = new_user_insert_testing(&app).await;
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let (auth_header, user_id) = new_user_insert_random(&app).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
         let ins_res = new_player_to_team_invite_insert(user_id, team_id, &pool).await;
         ok_or_rollback_player_to_team_invite!(ins_res, _ins_res, rollbacker);
@@ -151,8 +151,8 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_no_invite() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (auth_header, user_id) = new_user_insert_testing(&app).await;
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let (auth_header, user_id) = new_user_insert_random(&app).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
 
         let data = Invite {

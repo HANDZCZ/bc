@@ -91,7 +91,7 @@ mod tests {
     async fn test_ok() {
         let (app, rollbacker, _pool) = get_test_app().await;
         let auth_header = get_tournament_managers_auth_header(&app).await;
-        let (_, id) = new_user_insert_testing(&app).await;
+        let (_, id) = new_user_insert_random(&app).await;
 
         let data = User {
             id

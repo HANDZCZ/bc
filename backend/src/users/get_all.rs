@@ -50,7 +50,7 @@ mod tests {
         let res: Vec<User> = read_body_json(resp).await;
         let res_num = res.len();
 
-        let (_auth_header, _id) = new_user_insert_testing(&app).await;
+        let (_auth_header, _id) = new_user_insert_random(&app).await;
 
         let req = test::TestRequest::get()
             .uri(URI)

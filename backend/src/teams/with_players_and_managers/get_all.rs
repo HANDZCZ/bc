@@ -58,8 +58,8 @@ mod tests {
         let res: Vec<Info> = read_body_json(resp).await;
         let res_num = res.len();
 
-        let (_auth_header, user_id) = new_user_insert_testing(&app).await;
-        let _team_id = new_team_insert_testing(user_id, &pool).await;
+        let (_auth_header, user_id) = new_user_insert_random(&app).await;
+        let _team_id = new_team_insert_random(user_id, &pool).await;
 
         let req = test::TestRequest::get()
             .uri(URI)

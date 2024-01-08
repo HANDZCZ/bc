@@ -50,9 +50,9 @@ mod tests {
     #[actix_web::test]
     async fn test_ok_new_team() {
         let (app, rollbacker, pool) = get_test_app().await;
-        let (_, user_id) = new_user_insert_testing(&app).await;
+        let (_, user_id) = new_user_insert_random(&app).await;
 
-        let team_id = new_team_insert_testing(user_id, &pool).await;
+        let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
 
         let req = test::TestRequest::get()

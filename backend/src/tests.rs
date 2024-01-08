@@ -83,17 +83,18 @@ pub async fn get_test_app() -> (
     )
 }
 
-pub async fn new_user_insert_testing(
+pub async fn new_user_insert_random(
     app: &impl Service<
         Request,
         Response = ServiceResponse<EitherBody<BoxBody>>,
         Error = actix_web::Error,
     >,
-) -> (impl TryIntoHeaderPair, Uuid) {
+) -> (impl TryIntoHeaderPair + Clone, Uuid) {
+    let rand_string = rand_string(15);
     new_user_insert(
         app,
-        "testing-regular-user".into(),
-        "testing-regular-user@test.test".into(),
+        rand_string.clone(),
+        format!("{}@test.test", rand_string),
         "pass".into(),
     )
     .await
@@ -107,7 +108,7 @@ pub async fn new_user_insert(
     nick: String,
     email: String,
     password: String,
-) -> (impl TryIntoHeaderPair, Uuid) {
+) -> (impl TryIntoHeaderPair + Clone, Uuid) {
     #[derive(Deserialize, Serialize)]
     pub struct ReqData {
         nick: String,
@@ -148,8 +149,8 @@ pub async fn get_regular_users_auth_header(
         Response = ServiceResponse<EitherBody<BoxBody>>,
         Error = actix_web::Error,
     >,
-) -> impl TryIntoHeaderPair {
-    new_user_insert_testing(app).await.0
+) -> impl TryIntoHeaderPair + Clone {
+    new_user_insert_random(app).await.0
 }
 
 pub async fn get_tournament_managers_auth_header(
@@ -185,10 +186,11 @@ pub async fn get_tournament_managers_auth_header(
 }
 
 pub async fn new_game_insert(pool: &PgPool) -> Result<Uuid, sqlx::Error> {
+    let rand_string = rand_string(15);
     Ok(sqlx::query!(
         "insert into games (name, description) values ($1, $2) returning games.id",
-        "test-game",
-        "test-game"
+        rand_string,
+        rand_string
     )
     .fetch_one(pool)
     .await?
@@ -204,11 +206,12 @@ pub async fn new_tournament_insert(
     pool: &PgPool,
 ) -> Result<Uuid, sqlx::Error> {
     Ok(sqlx::query!(
-        r#"insert into tournaments (name, description, game_id, max_team_size, requires_application, applications_closed, tournament_type)
-        values ($1, $2, $3, $4, $5, $6, $7) returning tournaments.id"#,
+        r#"insert into tournaments (name, description, game_id, min_team_size, max_team_size, requires_application, applications_closed, tournament_type)
+        values ($1, $2, $3, $4, $5, $6, $7, $8) returning tournaments.id"#,
         name,
         "test-tournament",
         game_id,
+        5,
         5,
         requires_application,
         applications_closed,
@@ -219,14 +222,15 @@ pub async fn new_tournament_insert(
     .id)
 }
 
-pub async fn new_tournament_insert_testing(
+pub async fn new_tournament_insert_random(
     game_id: Uuid,
     requires_application: bool,
     applications_closed: bool,
     tournament_type: TournamentType,
     pool: &PgPool,
 ) -> Result<Uuid, sqlx::Error> {
-    new_tournament_insert(game_id, "test-tournament".into(), requires_application, applications_closed, tournament_type, pool).await
+    let rand_string = rand_string(10);
+    new_tournament_insert(game_id, rand_string, requires_application, applications_closed, tournament_type, pool).await
 }
 
 pub async fn new_bracket_tree_insert(
@@ -280,8 +284,9 @@ pub async fn new_team_insert(
     .await?
     .id)
 }
-pub async fn new_team_insert_testing(user_id: Uuid, pool: &PgPool) -> Result<Uuid, sqlx::Error> {
-    new_team_insert(user_id, "test-team".into(), pool).await
+pub async fn new_team_insert_random(user_id: Uuid, pool: &PgPool) -> Result<Uuid, sqlx::Error> {
+    let rand_string = rand_string(10);
+    new_team_insert(user_id, rand_string, pool).await
 }
 
 pub async fn new_player_to_team_insert(
@@ -344,6 +349,36 @@ pub async fn new_manager_to_team_invite_insert(
     Ok(())
 }
 
+pub async fn new_team_to_tournament_insert(
+    team_id: Uuid,
+    tournament_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into teams_to_tournaments (team_id, tournament_id) values ($1, $2)",
+        team_id,
+        tournament_id
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
+pub async fn new_team_to_tournament_application_insert(
+    team_id: Uuid,
+    tournament_id: Uuid,
+    pool: &PgPool,
+) -> Result<(), sqlx::Error> {
+    let _ = sqlx::query!(
+        "insert into teams_to_tournaments_applications (team_id, tournament_id) values ($1, $2)",
+        team_id,
+        tournament_id
+    )
+    .execute(pool)
+    .await;
+    Ok(())
+}
+
 #[macro_export]
 macro_rules! ok_or_rollback_macro {
     ($field:ident, $new_field:ident, $rollbacker:ident, $error:expr) => {
@@ -387,6 +422,8 @@ build_ok_or_rollback!(player_to_team, "player to team insert failed");
 build_ok_or_rollback!(player_to_team_invite, "player to team invite insert failed");
 build_ok_or_rollback!(manager_to_team, "manager to team insert failed");
 build_ok_or_rollback!(manager_to_team_invite, "manager to team invite insert failed");
+build_ok_or_rollback!(teams_to_tournament, "team to tournament insert failed");
+build_ok_or_rollback!(teams_to_tournament_application, "team to tournament application insert failed");
 
 #[macro_export]
 macro_rules! assert_resp_status_eq_or_rollback_macro {
@@ -400,3 +437,17 @@ macro_rules! assert_resp_status_eq_or_rollback_macro {
 }
 #[allow(unused_imports)]
 pub use assert_resp_status_eq_or_rollback_macro as assert_resp_status_eq_or_rollback;
+
+pub fn rand_string(len: usize) -> String {
+    use rand::Rng;
+    const CHARSET: &[u8] = b"abcdefghijklmnopqrstuvwxyz";
+    let mut rng = rand::thread_rng();
+
+    let rand_string: String = (0..len)
+        .map(|_| {
+            let idx = rng.gen_range(0..CHARSET.len());
+            CHARSET[idx] as char
+        })
+        .collect();
+    rand_string
+}

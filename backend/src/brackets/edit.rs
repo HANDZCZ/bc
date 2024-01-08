@@ -129,7 +129,7 @@ pub mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_testing(
+        let tournament_id = new_tournament_insert_random(
             game_id,
             false,
             false,

@@ -11,7 +11,9 @@ use uuid::Uuid;
 use crate::{
     hash_utils::verify_password,
     jwt_stuff::{AuthData, UserData},
-    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, resp_403_Forbidden_json},
+    macros::{
+        resp_200_Ok_json, resp_400_BadReq_json, resp_403_Forbidden_json, resp_500_IntSerErr_json,
+    },
 };
 
 #[derive(Deserialize, Serialize)]
@@ -87,7 +89,13 @@ pub mod tests {
     #[actix_web::test]
     pub async fn test_ok() {
         let (app, rollbacker, _pool) = get_test_app().await;
-        let _reg_user_header = get_regular_users_auth_header(&app).await;
+        let (_reg_user_header, _user_id) = new_user_insert(
+            &app,
+            "test-user-login".into(),
+            "testing-regular-user@test.test".into(),
+            "pass".into(),
+        )
+        .await;
         let data = LoginData {
             email: "testing-regular-user@test.test".into(),
             password: "pass".into(),
