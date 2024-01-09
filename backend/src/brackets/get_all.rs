@@ -11,7 +11,9 @@ struct Bracket {
     team1: Option<Uuid>,
     team2: Option<Uuid>,
     winner: Option<bool>,
-    layer: i32,
+    team1_score: i64,
+    team2_score: i64,
+    layer: i16,
     // TODO: set min to 0
     position: i32,
 }
@@ -20,7 +22,7 @@ struct Bracket {
 pub async fn get_all(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
     match query_as!(
         Bracket,
-        "select team1, team2, winner, layer, position from brackets where bracket_tree_id = $1",
+        "select team1, team2, winner, layer, position, team1_score, team2_score from brackets where bracket_tree_id = $1",
         id.into_inner()
     )
     .fetch_all(pool.get_ref())

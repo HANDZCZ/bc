@@ -30,7 +30,7 @@ pub async fn delete(pool: Data<PgPool>, data: Json<Bracket>, user: LoggedInUserW
     match query!(
         "delete from brackets where bracket_tree_id = $1 and layer = $2 and position = $3",
         data.bracket_tree_id,
-        data.layer as i32,
+        data.layer as i16,
         data.position
     )
     .execute(pool.get_ref())

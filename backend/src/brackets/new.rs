@@ -46,7 +46,7 @@ pub async fn new(
         data.team2,
         data.winner,
         data.bracket_tree_id,
-        data.layer as i32,
+        data.layer as i16,
         data.position
     )
     .execute(pool.get_ref())

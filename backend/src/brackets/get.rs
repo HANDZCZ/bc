@@ -23,15 +23,17 @@ struct BracketInfo {
     team1: Option<Uuid>,
     team2: Option<Uuid>,
     winner: Option<bool>,
+    team1_score: i64,
+    team2_score: i64,
 }
 
 #[get("/{bracket_tree_id}/{layer}/{position}")]
 pub async fn get(pool: Data<PgPool>, path: web::Path<Bracket>) -> impl Responder {
     match query_as!(
         BracketInfo,
-        "select team1, team2, winner from brackets where bracket_tree_id = $1 and layer = $2 and position = $3",
+        "select team1, team2, winner, team1_score, team2_score from brackets where bracket_tree_id = $1 and layer = $2 and position = $3",
         path.bracket_tree_id,
-        path.layer as i32,
+        path.layer as i16,
         path.position
     )
     .fetch_one(pool.get_ref())

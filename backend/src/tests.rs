@@ -251,7 +251,7 @@ pub async fn new_bracket_tree_insert(
 
 pub async fn new_bracket_insert(
     bracket_tree_id: Uuid,
-    layer: i32,
+    layer: i16,
     position: i32,
     pool: &PgPool,
 ) -> Result<(), sqlx::Error> {

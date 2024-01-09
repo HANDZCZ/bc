@@ -21,6 +21,8 @@ use crate::{
 struct Bracket {
     team1: Option<Uuid>,
     team2: Option<Uuid>,
+    team1_score: Option<i64>,
+    team2_score: Option<i64>,
     winner: Option<bool>,
     bracket_tree_id: Uuid,
     layer: u8,
@@ -48,13 +50,15 @@ pub async fn edit(
     // TODO: recalculate tree (on demand)
 
     match query!(
-        "update brackets set team1 = $1, team2 = $2, winner = $3 where bracket_tree_id = $4 and layer = $5 and position = $6",
+        "update brackets set team1 = $1, team2 = $2, winner = $3, team1_score = coalesce($7, team1_score), team2_score = coalesce($8, team2_score) where bracket_tree_id = $4 and layer = $5 and position = $6",
         data.team1,
         data.team2,
         data.winner,
         data.bracket_tree_id,
-        data.layer as i32,
-        data.position
+        data.layer as i16,
+        data.position,
+        data.team1_score,
+        data.team2_score
     )
     .execute(pool.get_ref())
     .await
@@ -95,6 +99,8 @@ pub mod tests {
         Bracket {
             team1: None,
             team2: None,
+            team1_score: None,
+            team2_score: None,
             winner: None,
             bracket_tree_id: Uuid::new_v4(),
             layer: 255,
