@@ -543,7 +543,8 @@ $else$
         type=listing,
         belowskip=15pt,
         skip=5pt,
-        position=top
+        position=top,
+        justification=raggedright
     }
 }{}
 $endif$
