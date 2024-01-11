@@ -4,7 +4,7 @@
 Tabulka games slouží k reprezentaci hry v systém.
 Jejím hlavním úkolem je umožnit backendu identifikovat hry a zjistit jejich vlastnosti.
 
-![Tabulka games](../../../pictures/databaze/games.png){ height=12.5% }
+![Tabulka games](../../../../pictures/databaze/tables/games.png){ height=12.5% }
 
 Sloupec name slouží k identifikaci hry z pohledu uživatele a vyjadřuje název hry.
 

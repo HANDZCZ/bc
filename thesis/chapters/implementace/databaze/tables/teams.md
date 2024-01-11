@@ -4,7 +4,7 @@
 Tabulka teams slouží k reprezentaci týmu v systému.
 Jejím hlavním úkolem je umožnit backendu identifikovat týmy.
 
-![Tabulka teams](../../../pictures/databaze/teams.png){ height=10% }
+![Tabulka teams](../../../../pictures/databaze/tables/teams.png){ height=10% }
 
 Sloupec name slouží k identifikaci týmu z pohledu uživatele.
 

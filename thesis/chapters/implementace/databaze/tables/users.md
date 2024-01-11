@@ -6,7 +6,7 @@ Termín uživatel v tomto kontextu může označovat organizátora turnaje, mana
 
 Jejím hlavním úkolem je umožnit backendu identifikovat uživatele a uživateli umožnit přihlášení.
 
-![Tabulka users](../../../pictures/databaze/users.png){ height=17% }
+![Tabulka users](../../../../pictures/databaze/tables/users.png){ height=17% }
 
 Nick slouží jako přezdívka pro uživatele, tento termín je hlavně používán v herní komunitě.
 

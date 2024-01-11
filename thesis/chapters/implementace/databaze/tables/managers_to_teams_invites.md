@@ -5,7 +5,7 @@ Tabulka managers_to_teams_invites slouží ke spojení uživatelů a týmů pro 
 Jejím hlavním úkolem je umožnit backendu zjistit jací uživatelé jsou pozvání do týmu jako manažeři.
 Tato tabulka obsahuje jen pozvánky, které ještě nebyly přijaty.
 
-![Tabulka managers_to_teams_invites](../../../pictures/databaze/managers_to_teams_invites.png){ height=8.5% }
+![Tabulka managers_to_teams_invites](../../../../pictures/databaze/tables/managers_to_teams_invites.png){ height=8.5% }
 
 Team_id vyjadřuje id navázaného týmu ([@sec:table_teams]).
 

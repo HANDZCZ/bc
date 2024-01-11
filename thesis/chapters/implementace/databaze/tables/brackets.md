@@ -4,7 +4,7 @@
 Tabulka brackets slouží k reprezentaci části stromové struktury v systému.
 Jejím hlavním úkolem je umožnit backendu získat data o průběhu turnaje nebo zápasu.
 
-![Tabulka brackets](../../../pictures/databaze/brackets.png){ height=23% }
+![Tabulka brackets](../../../../pictures/databaze/tables/brackets.png){ height=23% }
 
 Team1 a team2 vyjadřují id navázaných týmu ([@sec:table_teams]).
 Když je hodnota null tak ještě tým nepostoupil do tohoto bracketu.

@@ -4,7 +4,7 @@
 Tabulka tournaments slouží k reprezentaci turnaje v systém.
 Jejím hlavním úkolem je umožnit backendu identifikovat turnaje a zjistit jejich vlastnosti.
 
-![Tabulka tournaments](../../../pictures/databaze/tournaments.png){ height=25% }
+![Tabulka tournaments](../../../../pictures/databaze/tables/tournaments.png){ height=25% }
 
 Sloupec name slouží k identifikaci turnaje z pohledu uživatele.
 

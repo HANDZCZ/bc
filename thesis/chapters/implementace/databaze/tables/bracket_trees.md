@@ -4,7 +4,7 @@
 Tabulka bracket_trees slouží k reprezentaci části stromové struktury v systému.
 Jejím hlavním úkolem je umožnit backendu identifikovat k jakému stromu patří brackety a o jaký typ stromu se jedná.
 
-![Tabulka bracket_trees](../../../pictures/databaze/bracket_trees.png){ height=10% }
+![Tabulka bracket_trees](../../../../pictures/databaze/tables/bracket_trees.png){ height=10% }
 
 Tournament_id vyjadřuje id navázaného turnaje ([@sec:table_tournaments]).
 

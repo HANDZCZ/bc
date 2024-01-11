@@ -5,7 +5,7 @@ Tabulka players_to_teams slouží ke spojení uživatelů a týmů.
 Jejím hlavním úkolem je umožnit backendu zjistit jací uživatelé jsou patří do daného týmu.
 Tato tabulka obsahuje jen uživatelé, kteří již potvrdily pozvánku do týmu.
 
-![Tabulka players_to_teams](../../../pictures/databaze/players_to_teams.png){ height=8.5% }
+![Tabulka players_to_teams](../../../../pictures/databaze/tables/players_to_teams.png){ height=8.5% }
 
 Team_id vyjadřuje id navázaného týmu ([@sec:table_teams]).
 

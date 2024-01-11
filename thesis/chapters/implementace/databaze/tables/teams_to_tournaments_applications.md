@@ -6,7 +6,7 @@ Jejím hlavním úkolem je umožnit backendu zjistit jaké týmy podaly přihlá
 Tato tabulka obsahuje týmy, které podaly přihlášku na turnaj, jež vyžaduje přihlášky,
 a zároveň tato přihláška nesmí být potvrzena.
 
-![Tabulka teams_to_tournaments_applications](../../../pictures/databaze/teams_to_tournaments_applications.png){ height=8.5% }
+![Tabulka teams_to_tournaments_applications](../../../../pictures/databaze/tables/teams_to_tournaments_applications.png){ height=8.5% }
 
 Team_id vyjadřuje id navázaného týmu ([@sec:table_teams]).
 
