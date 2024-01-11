@@ -27,4 +27,9 @@ views/tournaments_signed_up_teams.md
 views/tournaments_team_applications.md
 views/users_and_roles.md
 views/tournaments_with_bracket_trees_and_game_info.md
+triggers/players_to_teams_insert_trigger.md
+triggers/managers_to_teams_insert_trigger.md
+triggers/tournaments_update_trigger.md
+triggers/teams_to_tournaments_insert_trigger.md
+triggers/brackets_update_trigger.md
 ```
