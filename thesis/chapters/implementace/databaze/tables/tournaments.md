@@ -20,7 +20,7 @@ Requires_application označuje zda turnaj vyžaduje podání přihlášky.
 Pokud ano tak se přihlášky budou nacházet v tabulce teams_to_tournaments_applications ([@sec:table_teams_to_tournaments_applications])
 a pokud ne tak týmy které se hlásí na tento turnaj jsou automaticky přihlášeny
 a přidány do tabulky teams_to_tournaments ([@sec:table_teams_to_tournaments]).
-Tuto funkci obstarává procedura apply_for_tournament, více v sekci TODO.
+Tuto funkci obstarává procedura apply_for_tournament, více v sekci [-@sec:procedure_apply_for_tournament].
 
 Applications_closed vyjadřuje zda jsou žádosti o přihlášení uzavřeny.
 
