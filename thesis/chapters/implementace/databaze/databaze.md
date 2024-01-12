@@ -36,6 +36,7 @@ procedures/handle_invite.md
 procedures/invite_to_team.md
 procedures/remove_from_team.md
 procedures/team_ops.md
+procedures/new_team.md
 procedures/apply_for_tournament.md
 procedures/set_playing.md
 ```
