@@ -1,6 +1,8 @@
 
 # Analýza požadavků
 
+Tato kategorie se zabývá identifikací potřeb uživatelů a specifikací požadavků na implementaci backendu.
+
 ## Identifikace potřeb uživatelů
 
 Současný výzkum e-sportu je velice rozmanitý a týká se celého ekosystému e-sportu, [@fig:overview_of_the_esport_ecosystem_and_stakeholders] shrnuje ekosystém.
@@ -35,6 +37,8 @@ a spolehlivé prostředí pro všechny účastníky.
 Implementace systému zabezpečení a autentizace je nezbytná pro ochranu citlivých informací.
 
 ## Specifikace funkčních požadavků
+
+V následující kategorie se budou zaměřovat na funkcionalitu a operace, které uživatelé mohou očekávat od systému.
 
 ### Registrace turnaje
 
@@ -82,6 +86,9 @@ Pravidelně aktualizované tabulky a pořadí poskytují jasný přehled o výko
 a vytvářejí napětí a rivalitu v průběhu turnaje.
 
 ## Specifikace nefunkčních požadavků
+
+Tato kategorie se zaměřuje na popis vlastností a charakteristiky systému,
+které nejsou přímo spojeny s funkcionalitou, ale ovlivňují jeho celkový výkon, spolehlivost a bezpečnost.
 
 ### Dostupnost a spolehlivost
 

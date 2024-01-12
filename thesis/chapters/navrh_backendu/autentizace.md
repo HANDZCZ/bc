@@ -1,6 +1,8 @@
 
 ## Autentizace
 
+Tato kategorie se zabývá různými typy autentizace a jejich principy, výhodami či nevýhodami.
+
 ### Základní HTTP autentizace
 
 Jedná se o nejjednodušší metodu při,

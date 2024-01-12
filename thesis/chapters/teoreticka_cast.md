@@ -1,6 +1,8 @@
 
 # Teoretická část
 
+Text v této kategorii se bude zabývat tím co to jsou e-sportové turnaje a rolí informačního systému v jejich správě.
+
 ## E-sportové turnaje a jejich správa
 
 E-sport v nedávné době nabývá velkého růstu a stává se tak fenoménem s obrovským ekonomickým obratem v řádech miliard dolarů.

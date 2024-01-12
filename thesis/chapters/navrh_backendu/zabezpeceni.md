@@ -1,6 +1,8 @@
 
 ## Zabezpečení
 
+Následující texty probírají nejčastějšími bezpečnostními problémy a jaký mohou mít vliv na zabezpečení.
+
 ### SQL injection
 
 Velkým bezpečnostním problémem webových infrastruktur jsou útoky typu injection,

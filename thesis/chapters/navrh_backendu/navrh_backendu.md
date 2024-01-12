@@ -1,6 +1,8 @@
 
 # Návrh backendu
 
+V této kategorii se budou probírat různá témata patřící do návrhu backendu.
+
 ``` {.include}
 architektura_backendu.md
 vyber_technologii.md
