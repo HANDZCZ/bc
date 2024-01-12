@@ -32,4 +32,10 @@ triggers/managers_to_teams_insert_trigger.md
 triggers/tournaments_update_trigger.md
 triggers/teams_to_tournaments_insert_trigger.md
 triggers/brackets_update_trigger.md
+procedures/handle_invite.md
+procedures/invite_to_team.md
+procedures/remove_from_team.md
+procedures/team_ops.md
+procedures/apply_for_tournament.md
+procedures/set_playing.md
 ```
