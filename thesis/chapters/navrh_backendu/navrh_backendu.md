@@ -5,8 +5,7 @@ V této kategorii se budou probírat různá témata patřící do návrhu backe
 
 ``` {.include}
 architektura_backendu.md
-vyber_technologii.md
-vyber_programovacich_jazyku.md
+porovnani_technologii.md
 navrh_api_pro_komunikaci_s_frontendem.md
 zabezpeceni.md
 autentizace.md

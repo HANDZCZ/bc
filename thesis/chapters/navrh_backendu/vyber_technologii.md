@@ -1,3 +1,0 @@
-
-## Výběr technologií
-

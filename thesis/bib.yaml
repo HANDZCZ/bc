@@ -220,6 +220,38 @@ references:
           day: 20
       lang: "en"
 
+    - type: article
+      id: web_frameworks_benchmark_graphs
+      title: "Web Frameworks Benchmark - Compare Frameworks"
+      issued:
+          year: 2023
+          month: 11
+          day: 20
+      url: "https://web-frameworks-benchmark.netlify.app/compare?f=express,axum,actix,rocket,fastapi,django,flask,basicphp"
+      author:
+          - family: "SuspiciousLookingOwl"
+      accessed:
+          year: 2023
+          month: 11
+          day: 16
+      lang: "en"
+
+    - type: article
+      id: web_frameworks_benchmark_tables
+      title: "Web Frameworks Benchmark - Benchmark Result"
+      issued:
+          year: 2023
+          month: 11
+          day: 20
+      url: "https://web-frameworks-benchmark.netlify.app/result?f=express,axum,actix,rocket,fastapi,django,flask,basicphp"
+      author:
+          - family: "SuspiciousLookingOwl"
+      accessed:
+          year: 2023
+          month: 11
+          day: 16
+      lang: "en"
+
     - type: article-journal
       id: migration_of_monolithic_systems_to_microservice_architecture
       url: "https://dx.doi.org/10.1088/1742-6596/2091/1/012036"
