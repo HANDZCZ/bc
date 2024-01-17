@@ -192,3 +192,5 @@ chapters/zaver.md
 
 # Přílohy
 
+![Diagram tabulek databáze](pictures/databaze/diagram.png){#fig:database_table_diagram}
+

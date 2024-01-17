@@ -1,7 +1,8 @@
 
-## Implementace databázové části
+## Databázová část
 
 Tato část se bude zabývat tím jak byla implementována databázová část.
+Celý diagram databázových tabulek je uveden v obrázku [-@fig:database_table_diagram].
 
 ``` {.include}
 tables/users.md

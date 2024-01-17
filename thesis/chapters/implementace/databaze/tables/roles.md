@@ -6,6 +6,6 @@ Jejím hlavním úkolem je umožnit backendu identifikovat typ role.
 
 ![Tabulka roles](../../../../pictures/databaze/tables/roles.png){ height=8.5% }
 
-Sloupec name vyjadřuje název role a je dále používán v backendu ke kontrole oprávnění (TODO).
+Sloupec name vyjadřuje název role a je dále používán v backendu ke kontrole oprávnění.
 
 Primární klíč id je primárně použit k identifikaci a vázání role na ostatních tabulky.
