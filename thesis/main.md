@@ -11,13 +11,11 @@ title-meta: Informační systém pro správu e-sportových turnajů - návrh a i
 keywords:
 - Rust
 - API
-- RESTful
+- REST API
 - Actix
 - Actix Web
 - Backend
 - Server
-- Application
-- programming
 - framework
 - esport
 - e-sport
