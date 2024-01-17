@@ -1,4 +1,0 @@
-
-## Vývoj backendové části
-
-
