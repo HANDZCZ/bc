@@ -51,15 +51,6 @@ header-includes: |
     % indent first line of paragraph
     \usepackage{indentfirst}
 
-    % set font
-    \setmainfont[
-        BoldFont={* Bold},
-        ItalicFont={* Italic},
-        BoldItalicFont={* BoldItalic}
-    ]{DejaVu Serif Condensed}
-    % set mono font for minted
-    \setmonofont{JetBrainsMono Nerd Font}
-
     % break long lines that would overflow
     \usepackage{fvextra}
     \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
@@ -104,6 +95,26 @@ pagestyle: empty
 plot-configuration: plot-config.yaml
 
 fontsize: 12pt
+mainfont: DejaVu Serif Condensed
+mainfontoptions:
+- Scale=1.0
+- BoldFont=* Bold
+- ItalicFont=* Italic
+- BoldItalicFont=* BoldItalic
+monofont: JetBrainsMono Nerd Font
+monofontoptions:
+- Scale=1.0
+sansfont: DejaVu Sans Condensed
+sansfontoptions:
+- Scale=1.0
+- BoldFont=* Bold
+- ItalicFont=* Oblique
+- BoldItalicFont=* BoldOblique
+#mathfont: TeXGyreDejaVuMath-Regular
+mathfont: DejaVu Serif Condensed
+mathfontoptions:
+- Scale=1.0
+
 geometry:
 - top=20mm
 - right=20mm
