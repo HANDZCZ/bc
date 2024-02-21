@@ -127,6 +127,10 @@ toc-depth: 6
 link-citations: true
 csquotes: true
 
+figure-source: "[Vlastní tvorba]"
+table-source: "[Vlastní tvorba]"
+listings-source: "[Vlastní tvorba]"
+
 numbersections: true
 autoEqnLabels: true
 codeBlockCaptions: true
