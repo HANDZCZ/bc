@@ -4,9 +4,10 @@ mod delete;
 mod edit;
 mod get;
 mod get_all;
+mod leave_tournament;
+mod managers;
 mod new;
 mod players;
-mod managers;
 mod with_players_and_managers;
 
 pub fn configure(cfg: &mut ServiceConfig) {
@@ -20,5 +21,6 @@ pub fn configure(cfg: &mut ServiceConfig) {
             .service(new::new)
             .service(edit::edit)
             .service(delete::delete)
+            .service(leave_tournament::leave_tournament),
     );
 }
