@@ -75,8 +75,8 @@ macro_rules! check_user_authority_macro {
     ($user:ident, $a:expr) => {
         use actix_web_grants::authorities::AuthoritiesCheck;
         if !$user.authorities.has_authority($a) {
-            let err = crate::common::Error::new(format!("user is missing \"{}\" authority", $a));
-            return crate::macros::resp_403_Forbidden_json!(err);
+            let err = $crate::common::Error::new(format!("user is missing \"{}\" authority", $a));
+            return $crate::macros::resp_403_Forbidden_json!(err);
         }
     };
 }

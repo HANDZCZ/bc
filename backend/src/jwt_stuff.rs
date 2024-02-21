@@ -143,7 +143,7 @@ where
     fn call(&self, req: ServiceRequest) -> Self::Future {
         let svc = self.service.clone();
 
-        let auth_header_value = req.headers().get(header::AUTHORIZATION).map(|v| v.clone());
+        let auth_header_value = req.headers().get(header::AUTHORIZATION).cloned();
         let mut claims = decode_jwt(
             auth_header_value.as_ref(),
             &self.decoding_key,
@@ -218,7 +218,7 @@ pub struct AuthData {
     inner: Rc<RefCell<AuthDataInner>>,
 }
 
-impl<'a> AuthData {
+impl AuthData {
     pub fn into_inner(self) -> Rc<RefCell<AuthDataInner>> {
         self.inner
     }
@@ -247,7 +247,7 @@ pub async fn extract(req: &ServiceRequest) -> Result<HashSet<String>, Error> {
         .expect("You most likely forgot to add JwtMiddleware");
     let borrow = auth_data.borrow();
     let data = borrow.data.as_ref();
-    let mut set = data
+    let mut set: HashSet<String> = data
         .map(|data| {
             data.roles
                 .clone()
@@ -255,8 +255,7 @@ pub async fn extract(req: &ServiceRequest) -> Result<HashSet<String>, Error> {
                 .map(|e| format!("role::{e}"))
                 .collect()
         })
-        .or(Some(HashSet::new()))
-        .unwrap();
+        .unwrap_or_default();
     if data.is_some() {
         set.insert("state::LoggedIn".to_owned());
     } else {
@@ -271,7 +270,7 @@ pub struct LoggedInUser {
 
 impl FromRequest for LoggedInUser {
     type Error = JsonError;
-    type Future = Ready<Result<Self, JsonError>>;
+    type Future = Ready<Result<Self, Self::Error>>;
 
     #[inline]
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
@@ -300,7 +299,7 @@ pub struct LoggedInUserWithAuthorities {
 
 impl FromRequest for LoggedInUserWithAuthorities {
     type Error = JsonError;
-    type Future = Ready<Result<Self, JsonError>>;
+    type Future = Ready<Result<Self, Self::Error>>;
 
     #[inline]
     fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {

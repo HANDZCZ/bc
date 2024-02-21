@@ -60,6 +60,7 @@ impl From<String> for JsonString {
 
 #[derive(Clone, Copy, Debug, PartialEq, PartialOrd, sqlx::Type, Deserialize, Serialize)]
 #[sqlx(type_name = "tournament_type")]
+#[allow(clippy::upper_case_acronyms)]
 pub enum TournamentType {
     FFA,
     OneBracketTwoFinalPositions,

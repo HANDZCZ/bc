@@ -3,8 +3,8 @@ use actix_web::{
     web::{self, Data, JsonConfig, PathConfig},
     App, HttpServer,
 };
-use clap::Parser;
 use actix_web_grants::GrantsMiddleware;
+use clap::Parser;
 use jwt_stuff::JwtMiddleware;
 
 mod brackets;
@@ -15,10 +15,10 @@ mod hash_utils;
 mod jwt_stuff;
 mod macros;
 mod teams;
-mod tournaments;
-mod users;
 #[cfg(test)]
 mod tests;
+mod tournaments;
+mod users;
 
 #[derive(Parser, Debug)]
 struct Opts {

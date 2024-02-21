@@ -20,11 +20,6 @@ struct Team {
     id: Uuid,
 }
 
-#[derive(Serialize, Deserialize)]
-struct RowsAffected {
-    rows_affected: u64,
-}
-
 #[post("/delete")]
 pub async fn delete(pool: Data<PgPool>, data: Json<Team>, user: LoggedInUser) -> impl Responder {
     match query!("call delete_team($1, $2)", user.id, data.id)

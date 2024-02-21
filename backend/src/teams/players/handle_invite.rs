@@ -71,7 +71,7 @@ pub mod tests {
 
         let data = Invite {
             team_id,
-            accepted: true
+            accepted: true,
         };
         let req = test::TestRequest::post()
             .uri(URI)
@@ -115,7 +115,7 @@ pub mod tests {
 
         let data = Invite {
             team_id,
-            accepted: false
+            accepted: false,
         };
         let req = test::TestRequest::post()
             .uri(URI)
@@ -157,7 +157,7 @@ pub mod tests {
 
         let data = Invite {
             team_id,
-            accepted: true
+            accepted: true,
         };
         let req = test::TestRequest::post()
             .uri(URI)

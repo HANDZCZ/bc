@@ -1,8 +1,8 @@
 use actix_web::web::{self, ServiceConfig};
 
+mod handle_invite;
 mod invite;
 mod remove;
-mod handle_invite;
 
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(

@@ -69,9 +69,7 @@ mod tests {
 
     #[actix_web::test]
     async fn test_forbidden() {
-        let data = User {
-            id: Uuid::new_v4(),
-        };
+        let data = User { id: Uuid::new_v4() };
 
         let (app, rollbacker, _pool) = get_test_app().await;
         let reg_user_header = get_regular_users_auth_header(&app).await;
@@ -93,9 +91,7 @@ mod tests {
         let auth_header = get_tournament_managers_auth_header(&app).await;
         let (_, id) = new_user_insert_random(&app).await;
 
-        let data = User {
-            id
-        };
+        let data = User { id };
 
         let req = test::TestRequest::post()
             .uri(URI)

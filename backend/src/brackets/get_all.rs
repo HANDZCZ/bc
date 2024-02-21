@@ -1,4 +1,8 @@
-use actix_web::{get, web::{Data, self}, Responder};
+use actix_web::{
+    get,
+    web::{self, Data},
+    Responder,
+};
 use sqlx::{query_as, PgPool};
 
 use serde::{Deserialize, Serialize};
@@ -14,7 +18,6 @@ struct Bracket {
     team1_score: i64,
     team2_score: i64,
     layer: i16,
-    // TODO: set min to 0
     position: i32,
 }
 
@@ -42,7 +45,7 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/brackets";
 
     #[actix_web::test]
@@ -51,7 +54,14 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
         let bracket_tree_id = new_bracket_tree_insert(tournament_id, 0, &pool).await;
         ok_or_rollback_bracket_tree!(bracket_tree_id, rollbacker);

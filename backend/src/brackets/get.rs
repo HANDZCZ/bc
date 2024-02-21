@@ -8,7 +8,7 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json};
+use crate::macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json};
 
 #[derive(Serialize, Deserialize)]
 struct Bracket {
@@ -56,7 +56,7 @@ pub async fn get(pool: Data<PgPool>, path: web::Path<Bracket>) -> impl Responder
 mod tests {
     use actix_web::test;
 
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/brackets";
 
     #[actix_web::test]
@@ -65,7 +65,14 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
         let bracket_tree_id = new_bracket_tree_insert(tournament_id, 0, &pool).await;
         ok_or_rollback_bracket_tree!(bracket_tree_id, rollbacker);

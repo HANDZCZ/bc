@@ -8,7 +8,10 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{
+    jwt_stuff::LoggedInUserWithAuthorities,
+    macros::{check_user_authority, resp_200_Ok_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Bracket {
@@ -24,7 +27,11 @@ struct RowsAffected {
 }
 
 #[post("/delete")]
-pub async fn delete(pool: Data<PgPool>, data: Json<Bracket>, user: LoggedInUserWithAuthorities) -> impl Responder {
+pub async fn delete(
+    pool: Data<PgPool>,
+    data: Json<Bracket>,
+    user: LoggedInUserWithAuthorities,
+) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
 
     match query!(
@@ -53,7 +60,7 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/brackets/delete";
 
     #[actix_web::test]
@@ -61,7 +68,7 @@ mod tests {
         let data = Bracket {
             bracket_tree_id: Uuid::new_v4(),
             layer: 0,
-            position: 0
+            position: 0,
         };
 
         let (app, rollbacker, _pool) = get_test_app().await;
@@ -85,7 +92,14 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
         let bracket_tree_id = new_bracket_tree_insert(tournament_id, 0, &pool).await;
         ok_or_rollback_bracket_tree!(bracket_tree_id, rollbacker);
@@ -95,7 +109,7 @@ mod tests {
         let data = Bracket {
             bracket_tree_id: bracket_tree_id,
             layer: 255,
-            position: 0
+            position: 0,
         };
 
         let req = test::TestRequest::post()

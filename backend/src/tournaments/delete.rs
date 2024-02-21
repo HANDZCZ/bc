@@ -8,7 +8,10 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{
+    jwt_stuff::LoggedInUserWithAuthorities,
+    macros::{check_user_authority, resp_200_Ok_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
@@ -21,7 +24,11 @@ struct RowsAffected {
 }
 
 #[post("/delete")]
-pub async fn delete(pool: Data<PgPool>, data: Json<Tournament>, user: LoggedInUserWithAuthorities) -> impl Responder {
+pub async fn delete(
+    pool: Data<PgPool>,
+    data: Json<Tournament>,
+    user: LoggedInUserWithAuthorities,
+) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
 
     match query!("delete from tournaments where id = $1", data.id)
@@ -45,14 +52,12 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/tournaments/delete";
 
     #[actix_web::test]
     async fn test_forbidden() {
-        let data = Tournament {
-            id: Uuid::new_v4(),
-        };
+        let data = Tournament { id: Uuid::new_v4() };
 
         let (app, rollbacker, _pool) = get_test_app().await;
         let reg_user_header = get_regular_users_auth_header(&app).await;
@@ -75,12 +80,11 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let id = new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
+        let id =
+            new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
         ok_or_rollback_tournament!(id, rollbacker);
 
-        let data = Tournament {
-            id,
-        };
+        let data = Tournament { id };
 
         let req = test::TestRequest::post()
             .uri(URI)

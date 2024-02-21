@@ -8,7 +8,12 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, check_user_authority}, jwt_stuff::LoggedInUserWithAuthorities};
+use crate::{
+    jwt_stuff::LoggedInUserWithAuthorities,
+    macros::{
+        check_user_authority, resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json,
+    },
+};
 
 #[derive(Serialize, Deserialize)]
 struct Game {
@@ -23,7 +28,11 @@ struct ReturningRow {
 }
 
 #[post("/new")]
-pub async fn new(pool: Data<PgPool>, data: Json<Game>, user: LoggedInUserWithAuthorities) -> impl Responder {
+pub async fn new(
+    pool: Data<PgPool>,
+    data: Json<Game>,
+    user: LoggedInUserWithAuthorities,
+) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
 
     match query_as!(
@@ -41,7 +50,8 @@ pub async fn new(pool: Data<PgPool>, data: Json<Game>, user: LoggedInUserWithAut
         }
         Err(sqlx::Error::Database(error)) => {
             if error.is_unique_violation() {
-                let err = crate::common::Error::new("request for new game violates unique constraints");
+                let err =
+                    crate::common::Error::new("request for new game violates unique constraints");
                 resp_400_BadReq_json!(err)
             } else {
                 let err = crate::common::Error::new(format!("unhandled error - {}", error));
@@ -53,7 +63,6 @@ pub async fn new(pool: Data<PgPool>, data: Json<Game>, user: LoggedInUserWithAut
         }
     }
 }
-
 
 #[cfg(test)]
 pub mod tests {

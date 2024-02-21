@@ -40,9 +40,7 @@ mod tests {
     async fn test_ok() {
         let (app, rollbacker, pool) = get_test_app().await;
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
 
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
@@ -52,9 +50,7 @@ mod tests {
         let (_auth_header, user_id) = new_user_insert_random(&app).await;
         let _team_id = new_team_insert_random(user_id, &pool).await;
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
         let res: Vec<Team> = read_body_json(resp).await;

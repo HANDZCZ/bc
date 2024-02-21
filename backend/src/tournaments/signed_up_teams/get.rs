@@ -8,7 +8,10 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json}, common::JsonString};
+use crate::{
+    common::JsonString,
+    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
@@ -44,7 +47,7 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
 mod tests {
     use actix_web::test::{self, read_body};
 
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/tournaments/signed_up_teams";
 
     #[actix_web::test]
@@ -53,7 +56,14 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, tournament_id, rollbacker);
 
         let req = test::TestRequest::get()

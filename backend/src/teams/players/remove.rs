@@ -12,7 +12,9 @@ use uuid::Uuid;
 
 use crate::{
     jwt_stuff::LoggedInUser,
-    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, resp_403_Forbidden_json},
+    macros::{
+        resp_200_Ok_json, resp_400_BadReq_json, resp_403_Forbidden_json, resp_500_IntSerErr_json,
+    },
 };
 
 #[derive(Serialize, Deserialize)]

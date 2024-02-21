@@ -10,7 +10,7 @@ use uuid::Uuid;
 
 use crate::{
     common::JsonString,
-    macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json},
+    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
 };
 
 #[derive(Serialize, Deserialize)]
@@ -26,7 +26,7 @@ struct ReqData {
 
 #[get("/{team_id}/{tournament_id}")]
 pub async fn get(pool: Data<PgPool>, data: web::Path<ReqData>) -> impl Responder {
-    match query_as!(Info, r#"select players as "players!: String" from teams_players_to_tournaments_playing where id = $1 and tournament_id = $2"#, data.team_id, data.tournament_id)
+    match query_as!(Info, r#"select players as "players!: String" from teams_tournaments_playing_players where team_id = $1 and tournament_id = $2"#, data.team_id, data.tournament_id)
         .fetch_one(pool.get_ref())
         .await
     {
@@ -47,7 +47,7 @@ pub async fn get(pool: Data<PgPool>, data: web::Path<ReqData>) -> impl Responder
 mod tests {
     use actix_web::test;
 
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/teams/players/playing";
 
     #[actix_web::test]
@@ -58,7 +58,8 @@ mod tests {
         let (_auth_header, user_id) = new_user_insert_random(&app).await;
         let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
+        let tournament_id =
+            new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
         let ins_res = new_team_to_tournament_insert(team_id, tournament_id, &pool).await;
         ok_or_rollback_teams_to_tournament!(ins_res, _ins_res, rollbacker);
@@ -79,7 +80,8 @@ mod tests {
         let (_auth_header, user_id) = new_user_insert_random(&app).await;
         let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
+        let tournament_id =
+            new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
 
         let req = test::TestRequest::get()

@@ -8,7 +8,7 @@ use sqlx::{query, PgPool};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    hash_utils::{make_salt, make_hash},
+    hash_utils::{make_hash, make_salt},
     jwt_stuff::LoggedInUser,
     macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
 };
@@ -82,7 +82,7 @@ pub mod tests {
         let data = User {
             email: None,
             nick: None,
-            password: None
+            password: None,
         };
         let req = test::TestRequest::post()
             .uri(URI)
@@ -102,7 +102,7 @@ pub mod tests {
         let data = User {
             email: None,
             nick: None,
-            password: None
+            password: None,
         };
         let req = test::TestRequest::post()
             .uri(URI)

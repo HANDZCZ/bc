@@ -1,6 +1,6 @@
 use actix_web::{
     get,
-    web::{Data, self},
+    web::{self, Data},
     Responder,
 };
 use sqlx::{query_as, PgPool};
@@ -16,12 +16,13 @@ use crate::{
 #[derive(Serialize, Deserialize)]
 struct Info {
     tournament_id: Uuid,
+    tournament_name: String,
     players: JsonString,
 }
 
 #[get("/{id}")]
 pub async fn get_all(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
-    match query_as!(Info, r#"select tournament_id as "tournament_id!", players as "players!: String" from teams_players_to_tournaments_playing where id = $1"#, id.into_inner())
+    match query_as!(Info, r#"select tournament_name as "tournament_name!", tournament_id as "tournament_id!", players as "players!: String" from teams_tournaments_playing_players where team_id = $1"#, id.into_inner())
         .fetch_all(pool.get_ref())
         .await
     {
@@ -39,7 +40,7 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/teams/players/playing";
 
     #[actix_web::test]
@@ -50,7 +51,8 @@ mod tests {
         let (_auth_header, user_id) = new_user_insert_random(&app).await;
         let team_id = new_team_insert_random(user_id, &pool).await;
         ok_or_rollback_team!(team_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
+        let tournament_id =
+            new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
         ok_or_rollback_tournament!(tournament_id, rollbacker);
 
         let req = test::TestRequest::get()

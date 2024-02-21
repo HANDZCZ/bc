@@ -4,14 +4,17 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json}, common::JsonString};
+use crate::{
+    common::JsonString,
+    macros::{resp_200_Ok_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct User {
     id: Uuid,
     nick: String,
     email: String,
-    roles: JsonString
+    roles: JsonString,
 }
 
 #[get("")]
@@ -41,9 +44,7 @@ mod tests {
     async fn test_ok() {
         let (app, rollbacker, _pool) = get_test_app().await;
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
 
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
@@ -52,9 +53,7 @@ mod tests {
 
         let (_auth_header, _id) = new_user_insert_random(&app).await;
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
         let res: Vec<User> = read_body_json(resp).await;

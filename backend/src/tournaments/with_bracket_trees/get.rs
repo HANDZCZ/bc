@@ -8,7 +8,10 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json}, common::{JsonString, TournamentType}};
+use crate::{
+    common::{JsonString, TournamentType},
+    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {

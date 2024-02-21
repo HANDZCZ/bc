@@ -7,6 +7,6 @@ pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(
         web::scope("/playing")
             .service(get_all::get_all)
-            .service(get::get)
+            .service(get::get),
     );
 }

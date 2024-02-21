@@ -4,7 +4,10 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json}, common::TournamentType};
+use crate::{
+    common::TournamentType,
+    macros::{resp_200_Ok_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct Tournament {
@@ -56,7 +59,7 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/tournaments";
 
     #[actix_web::test]
@@ -65,24 +68,34 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, _tournament_id, rollbacker);
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
 
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
         let res: Vec<Tournament> = read_body_json(resp).await;
         let res_num = res.len();
 
-        let tournament_id = new_tournament_insert_random(game_id, false, false, TournamentType::OneBracketOneFinalPositions, &pool).await;
+        let tournament_id = new_tournament_insert_random(
+            game_id,
+            false,
+            false,
+            TournamentType::OneBracketOneFinalPositions,
+            &pool,
+        )
+        .await;
         ok_or_rollback_tournament!(tournament_id, _tournament_id, rollbacker);
 
-        let req = test::TestRequest::get()
-            .uri(URI)
-            .to_request();
+        let req = test::TestRequest::get().uri(URI).to_request();
         let resp = test::call_service(&app, req).await;
         assert_resp_status_eq_or_rollback!(resp, 200, rollbacker);
         let res: Vec<Tournament> = read_body_json(resp).await;
