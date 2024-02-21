@@ -29,6 +29,11 @@ struct User {
     hash: Vec<u8>,
 }
 
+#[derive(Serialize, Deserialize)]
+struct ReturningData {
+    id: Uuid,
+}
+
 #[post("/login")]
 pub async fn login(
     pool: Data<PgPool>,
@@ -58,7 +63,7 @@ pub async fn login(
                 &data.password,
             ) {
                 *auth_data.borrow_mut().get_data_mut() = Some(UserData::new(row.id));
-                resp_200_Ok_json!()
+                resp_200_Ok_json!(ReturningData { id: row.id })
             } else {
                 let err = crate::common::Error::new("wrong credentials");
                 resp_400_BadReq_json!(err)

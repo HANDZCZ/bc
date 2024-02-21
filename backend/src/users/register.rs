@@ -3,6 +3,8 @@ use actix_web::{
     web::{Data, Json},
     Responder,
 };
+use fancy_regex::Regex;
+use once_cell::sync::Lazy;
 use sqlx::{query_as, PgPool};
 
 use serde::{Deserialize, Serialize};
@@ -10,7 +12,10 @@ use uuid::Uuid;
 
 use crate::{
     hash_utils::{make_hash, make_salt},
-    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json, resp_403_Forbidden_json}, jwt_stuff::{AuthData, UserData},
+    jwt_stuff::{AuthData, UserData},
+    macros::{
+        resp_200_Ok_json, resp_400_BadReq_json, resp_403_Forbidden_json, resp_500_IntSerErr_json,
+    },
 };
 
 #[derive(Deserialize, Serialize)]
@@ -25,14 +30,27 @@ struct ReturningRow {
     id: Uuid,
 }
 
+static EMAIL_REGEX: Lazy<Regex> = Lazy::new(|| {
+    Regex::new(r#"(?=^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)(.{5,320}$)"#).unwrap()
+});
+
 #[post("/register")]
-pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: AuthData) -> impl Responder {
+pub async fn register(
+    pool: Data<PgPool>,
+    data: Json<RegisterData>,
+    auth_data: AuthData,
+) -> impl Responder {
     let auth_data = auth_data.into_inner();
     {
         if auth_data.borrow().get_data().is_some() {
             let err = crate::common::Error::new("already logged in");
             return resp_403_Forbidden_json!(err);
         }
+    }
+
+    if !EMAIL_REGEX.is_match(&data.email).unwrap() {
+        let err = crate::common::Error::new("email is not valid");
+        return resp_400_BadReq_json!(err);
     }
 
     let salt = make_salt();
@@ -53,7 +71,7 @@ pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: A
             *auth_data.borrow_mut().get_data_mut() = Some(UserData::new(row.id));
 
             resp_200_Ok_json!(row)
-        },
+        }
         Err(sqlx::Error::Database(error)) => {
             if error.is_unique_violation() {
                 let err = crate::common::Error::new("register request violates unique constraints");
@@ -62,7 +80,7 @@ pub async fn register(pool: Data<PgPool>, data: Json<RegisterData>, auth_data: A
                 let err = crate::common::Error::new(format!("unhandled error - {}", error));
                 resp_400_BadReq_json!(err)
             }
-        },
+        }
         Err(_) => {
             resp_500_IntSerErr_json!()
         }
