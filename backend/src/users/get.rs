@@ -8,13 +8,17 @@ use sqlx::{query_as, PgPool};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use crate::{macros::{resp_200_Ok_json, resp_500_IntSerErr_json, resp_400_BadReq_json}, common::JsonString};
+use crate::{
+    common::JsonString,
+    jwt_stuff::LoggedInUser,
+    macros::{resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json},
+};
 
 #[derive(Serialize, Deserialize)]
 struct User {
     nick: String,
     email: String,
-    roles: JsonString
+    roles: JsonString,
 }
 
 #[get("/{id}")]
@@ -25,6 +29,33 @@ pub async fn get(pool: Data<PgPool>, id: web::Path<Uuid>) -> impl Responder {
     {
         Ok(user) => {
             resp_200_Ok_json!(user)
+        }
+        Err(sqlx::Error::RowNotFound) => {
+            let err = crate::common::Error::new("user not found");
+            resp_400_BadReq_json!(err)
+        }
+        Err(_) => {
+            resp_500_IntSerErr_json!()
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+struct SelfUser {
+    id: Uuid,
+    nick: String,
+    email: String,
+    roles: JsonString,
+}
+
+#[get("/self")]
+pub async fn logged_in_user(pool: Data<PgPool>, user: LoggedInUser) -> impl Responder {
+    match query_as!(User, r#"select nick as "nick!", email as "email!", roles as "roles!: String" from users_and_roles where id = $1"#, user.id)
+        .fetch_one(pool.get_ref())
+        .await
+    {
+        Ok(db_user) => {
+            resp_200_Ok_json!(SelfUser { id: user.id, nick: db_user.nick, email: db_user.email, roles: db_user.roles })
         }
         Err(sqlx::Error::RowNotFound) => {
             let err = crate::common::Error::new("user not found");
