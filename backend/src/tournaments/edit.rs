@@ -13,6 +13,7 @@ use crate::{
     macros::{
         check_user_authority, resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json,
     },
+    tournaments::generate_brackets::generate_brackets,
 };
 
 #[derive(Serialize, Deserialize)]
@@ -24,7 +25,16 @@ struct Tournament {
     min_team_size: Option<i32>,
     max_team_size: Option<i32>,
     requires_application: Option<bool>,
-    applications_closed: Option<bool>,
+    applications_closed: Option<ApplicationsClosed>,
+}
+
+#[derive(Serialize, Deserialize)]
+enum ApplicationsClosed {
+    True {
+        number_of_final_places: u32,
+        regenerate_brackets: bool,
+    },
+    False,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -55,7 +65,9 @@ pub async fn edit(
         data.game_id,
         data.max_team_size,
         data.requires_application,
-        data.applications_closed,
+        data.applications_closed
+            .as_ref()
+            .map(|s| !matches!(s, ApplicationsClosed::False)),
         data.id,
         data.min_team_size
     )
@@ -63,6 +75,44 @@ pub async fn edit(
     .await
     {
         Ok(query_result) => {
+            // generate brackets
+            if let Some(applications_closed) = data.applications_closed.as_ref() {
+                if let ApplicationsClosed::True {
+                    number_of_final_places,
+                    regenerate_brackets,
+                } = applications_closed
+                {
+                    match query!(
+                        r#"select exists(select id from bracket_trees where tournament_id = $1) as "exists!""#,
+                        data.id,
+                    )
+                    .fetch_one(pool.get_ref())
+                    .await
+                    .map(|r| r.exists)
+                    {
+                        // (re)generate brackets
+                        Ok(exists) if !exists || (exists && *regenerate_brackets) => {
+                            if generate_brackets(data.id, pool, *number_of_final_places).await.is_err() {
+                                let err = crate::common::Error::new(
+                                    "Edit was successful, but bracket generation failed!",
+                                );
+                                return resp_500_IntSerErr_json!(err);
+                            }
+                        }
+                        // exists && !regenerate_brackets
+                        Ok(_) => {
+                            let err = crate::common::Error::new("Tournament already has brackets generated. If you wish to regenerate them set 'regenerate_brackets' to true.");
+                            return resp_400_BadReq_json!(err);
+                        }
+                        Err(sqlx::Error::Database(error)) => {
+                            let err = crate::common::Error::new(format!("unhandled error - {}", error));
+                            return resp_400_BadReq_json!(err);
+                        }
+                        Err(_) => return resp_500_IntSerErr_json!(),
+                    }
+                }
+            }
+
             let rows_affected = RowsAffected {
                 rows_affected: query_result.rows_affected(),
             };
@@ -93,7 +143,7 @@ mod tests {
     use actix_web::test::{self, read_body_json};
 
     use super::*;
-    use crate::{tests::*, common::TournamentType};
+    use crate::{common::TournamentType, tests::*};
     const URI: &str = "/tournaments/edit";
 
     #[actix_web::test]
@@ -130,7 +180,8 @@ mod tests {
 
         let game_id = new_game_insert(&pool).await;
         ok_or_rollback_game!(game_id, rollbacker);
-        let id = new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
+        let id =
+            new_tournament_insert_random(game_id, false, false, TournamentType::FFA, &pool).await;
         ok_or_rollback_tournament!(id, rollbacker);
 
         let data = Tournament {

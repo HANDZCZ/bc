@@ -3,13 +3,14 @@ use actix_web::web::{self, ServiceConfig};
 mod apply_for;
 mod delete;
 mod edit;
+mod generate_brackets;
 mod get;
 mod get_all;
 mod new;
-mod with_bracket_trees;
 mod playing;
 mod signed_up_teams;
 mod team_applications;
+mod with_bracket_trees;
 
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(
