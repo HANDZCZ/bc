@@ -7,6 +7,7 @@ mod get;
 mod get_all;
 mod new;
 mod with_bracket_trees;
+mod playing;
 mod signed_up_teams;
 mod team_applications;
 
@@ -16,6 +17,7 @@ pub fn configure(cfg: &mut ServiceConfig) {
             .configure(with_bracket_trees::configure)
             .configure(team_applications::configure)
             .configure(signed_up_teams::configure)
+            .configure(playing::configure)
             .service(get_all::get_all)
             .service(get::get)
             .service(new::new)
