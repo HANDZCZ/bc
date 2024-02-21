@@ -20,13 +20,13 @@ ale také komplexnost a náročnost správy turnajů,
 které často zahrnují mnoho účastníků, různé typy her a specifické požadavky na organizaci.
 Zjednodušení a optimalizace těchto procesů prostřednictvím kvalitního backendového systému může mít značný vliv na kvalitu a jednoduchost pořádání e-sportových událostí.
 
-Tato práce bude podrobně zkoumat problematiku e-sportových turnajů a následně navrhovat a implementovat backendový systém,
-který bude schopen efektivně zpracovávat a spravovat data spojená s těmito událostmi.
-Důležitým hlediskem bude nejen technologická stránka implementace,
+Tato práce podrobně zkoumá problematiku e-sportových turnajů a následně navrhuje a implementuje backendový systém,
+který je schopen efektivně zpracovávat a spravovat data spojená s těmito událostmi.
+Důležitým hlediskem je nejen technologická stránka implementace,
 ale také zajištění bezpečnosti, kompatibility a uživatelské přátelskosti systému.
 
 Vzhledem k rostoucímu významu e-sportu a potřebě profesionální správy turnajů
-se práce zaměří na detailní analýzu požadavků a následně na návrh a implementaci backendového systému,
+se práce zaměřuje na detailní analýzu požadavků a následně na návrh a implementaci backendového systému,
 který odpovídá specifickým potřebám e-sportových turnajů.
 Tímto způsobem tato bakalářská práce přispěje k rozvoji informačních systémů v oblasti e-sportu
 a poskytne konkrétní řešení pro efektivní správu a organizaci e-sportových událostí.

@@ -1,11 +1,11 @@
 
 # Teoretická část
 
-Text v této kategorii se bude zabývat tím co to jsou e-sportové turnaje a rolí informačního systému v jejich správě.
+Text v této kapitole se bude zabývat tím co to jsou e-sportové turnaje a rolí informačního systému v jejich správě.
 
 ## E-sportové turnaje a jejich správa
 
-E-sport v nedávné době nabývá velkého růstu a stává se tak fenoménem s obrovským ekonomickým obratem v řádech miliard dolarů.
+V posledních letech zaznamenává e-sport velký růst a stává se fenoménem s obrovským ekonomickým obratem v řádech miliard dolarů.
 S přibývajícím počtem diváků, přesáhla popularita e-sportů očekávání, a podle odhadů by v roce 2023 mohlo být přibližně 650 milionů diváků.
 Tento vzrůstající zájem o e-sport ukazuje, že sledování těchto turnajů se stává běžným jevem, přičemž více než polovina dospělých ve Spojených státech někdy nějaký e-sport turnaj viděla. [@exploration_of_esports_fan_identity]
 

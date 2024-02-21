@@ -14,8 +14,6 @@ Mezi tyto klíčové aspekty nepatří jen efektivní správa registrací,
 plánování a monitorování průběhu turnajů, ale také i sledování výsledků,
 generování bracketů a hlavně zabezpečení celého systému.
 
-## Diskuse o možných vylepšeních a budoucím vývoji
-
 Vyvinutý systém je pouze základem, na kterém by se mělo stavět.
 Tento základ lze samozřejmě použít i bez jakýchkoliv úprav,
 ale nebude nikdy plně vyhovovat organizátorům turnajů,

@@ -107,5 +107,5 @@ fn encode_jwt(user_data: UserData, encoding_key: &EncodingKey, token_ttl: u64) -
 }
 ```
 
-: JWT vytvožení tokenu {#lst:jwt_encode_jwt}
+: JWT vytvoření tokenu {#lst:jwt_encode_jwt}
 

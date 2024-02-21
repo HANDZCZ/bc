@@ -1,7 +1,7 @@
 
 # Návrh backendu
 
-V této kategorii se budou probírat různá témata patřící do návrhu backendu.
+V této kapitole se budou probírat různá témata patřící do návrhu backendu.
 
 ``` {.include}
 architektura_backendu.md

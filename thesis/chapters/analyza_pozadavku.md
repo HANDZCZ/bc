@@ -1,7 +1,7 @@
 
 # Analýza požadavků
 
-Tato kategorie se zabývá identifikací potřeb uživatelů a specifikací požadavků na implementaci backendu.
+Tato kapitola se zabývá identifikací potřeb uživatelů a specifikací požadavků na implementaci backendu.
 
 ## Identifikace potřeb uživatelů
 
@@ -38,7 +38,7 @@ Implementace systému zabezpečení a autentizace je nezbytná pro ochranu citli
 
 ## Specifikace funkčních požadavků
 
-V následující kategorie se budou zaměřovat na funkcionalitu a operace, které uživatelé mohou očekávat od systému.
+V následující kapitoly se budou zaměřovat na funkcionalitu a operace, které uživatelé mohou očekávat od systému.
 
 ### Registrace turnaje
 
@@ -87,7 +87,7 @@ a vytvářejí napětí a rivalitu v průběhu turnaje.
 
 ## Specifikace nefunkčních požadavků
 
-Tato kategorie se zaměřuje na popis vlastností a charakteristiky systému,
+Tato kapitola se zaměřuje na popis vlastností a charakteristiky systému,
 které nejsou přímo spojeny s funkcionalitou, ale ovlivňují jeho celkový výkon, spolehlivost a bezpečnost.
 
 ### Dostupnost a spolehlivost

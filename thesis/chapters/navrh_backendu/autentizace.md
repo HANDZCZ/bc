@@ -1,7 +1,7 @@
 
 ## Autentizace
 
-Tato kategorie se zabývá různými typy autentizace a jejich principy, výhodami či nevýhodami.
+Tato kapitola se zabývá různými typy autentizace a jejich principy, výhodami či nevýhodami.
 
 ### Základní HTTP autentizace
 
