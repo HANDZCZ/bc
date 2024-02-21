@@ -230,7 +230,15 @@ pub async fn new_tournament_insert_random(
     pool: &PgPool,
 ) -> Result<Uuid, sqlx::Error> {
     let rand_string = rand_string(10);
-    new_tournament_insert(game_id, rand_string, requires_application, applications_closed, tournament_type, pool).await
+    new_tournament_insert(
+        game_id,
+        rand_string,
+        requires_application,
+        applications_closed,
+        tournament_type,
+        pool,
+    )
+    .await
 }
 
 pub async fn new_bracket_tree_insert(
@@ -421,9 +429,15 @@ build_ok_or_rollback!(team, "team insert failed");
 build_ok_or_rollback!(player_to_team, "player to team insert failed");
 build_ok_or_rollback!(player_to_team_invite, "player to team invite insert failed");
 build_ok_or_rollback!(manager_to_team, "manager to team insert failed");
-build_ok_or_rollback!(manager_to_team_invite, "manager to team invite insert failed");
+build_ok_or_rollback!(
+    manager_to_team_invite,
+    "manager to team invite insert failed"
+);
 build_ok_or_rollback!(teams_to_tournament, "team to tournament insert failed");
-build_ok_or_rollback!(teams_to_tournament_application, "team to tournament application insert failed");
+build_ok_or_rollback!(
+    teams_to_tournament_application,
+    "team to tournament application insert failed"
+);
 
 #[macro_export]
 macro_rules! assert_resp_status_eq_or_rollback_macro {
