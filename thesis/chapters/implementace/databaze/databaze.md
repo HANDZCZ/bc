@@ -21,7 +21,7 @@ tables/players_to_tournaments_playing.md
 tournament_type.md
 tables/bracket_trees.md
 tables/brackets.md
-views/teams_players_to_tournaments_playing.md
+views/teams_tournaments_playing_players.md
 views/teams_with_players_and_managers.md
 views/tournaments_and_game_info.md
 views/tournaments_signed_up_teams.md
