@@ -1,5 +1,5 @@
 
-### Procedury remove_players_from_team\newline a remove_managers_from_team
+### Procedury remove_players_from_team<br>a remove_managers_from_team
 
 Tyto procedury obstarávají odebrání uživatelů z týmu.
 Nejdříve zjistí, jestli tým existuje, pokud neexistuje tak vrátí chybu.

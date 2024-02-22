@@ -1,5 +1,5 @@
 
-### Procedury invite_players_to_team\newline a invite_managers_to_team
+### Procedury invite_players_to_team<br>a invite_managers_to_team
 
 Tyto procedury obstarávají pozvání uživatelů do týmu.
 Nejdříve zjistí, jestli tým existuje, pokud neexistuje tak vrátí chybu.
