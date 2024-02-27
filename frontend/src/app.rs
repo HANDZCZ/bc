@@ -1,7 +1,9 @@
 use std::{cell::RefCell, rc::Rc};
 
 use crate::{
-    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom, signed_up_teams, teams, teams_playing_players, tournament_applications, tournaments, tournaments_playing_players, user_edit, user_invites, users
+    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom, signed_up_teams, teams,
+    teams_playing_players, tournament_applications, tournaments, tournaments_playing_players,
+    user_edit, user_invites, users,
 };
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
@@ -116,21 +118,24 @@ impl FrontendApp {
 
         // Load previous app state (if any).
         // Note that you must enable the `persistence` feature for this to work.
-        if let Some(storage) = cc.storage {
-            let mut app: FrontendApp =
-                eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default();
+        let mut app: FrontendApp = if let Some(storage) = cc.storage {
+            eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default()
+        } else {
+            Default::default()
+        };
 
-            if let Some(token) = &app.token {
-                let mut req = ehttp::Request::get(format!("{}/users/self", app.url));
-                req.headers.insert("authorization", token.clone());
-                app.user.start_download(req, cc.egui_ctx.clone());
-            }
-
-            return app;
+        #[cfg(target_arch = "wasm32")]
+        if app.url.is_empty() {
+            app.url = format!("{}/api", cc.integration_info.web_info.location.origin);
         }
-        log::warn!("{}", cc.egui_ctx.style().visuals.window_shadow.extrusion);
 
-        Default::default()
+        if let Some(token) = &app.token {
+            let mut req = ehttp::Request::get(format!("{}/users/self", app.url));
+            req.headers.insert("authorization", token.clone());
+            app.user.start_download(req, cc.egui_ctx.clone());
+        }
+
+        app
     }
 
     pub fn is_tournament_manager(&self) -> bool {
@@ -253,7 +258,6 @@ impl eframe::App for FrontendApp {
                     self.manipulator_window.clear();
                     self.user.clear_data();
                     self.token = None;
-
                 }
             });
         });
