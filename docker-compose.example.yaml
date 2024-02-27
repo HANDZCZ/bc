@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: handz/bc-database:latest
+    restart: unless-stopped
+    environment:
+      # You can change the db name, but you don't have to.
+      # Just don't forget to change DATABASE_URL in service named backend!
+      POSTGRES_DB: etournaments
+      # Change default db user name.
+      POSTGRES_USER: CHANGEME
+      # Change default db user password.
+      POSTGRES_PASSWORD: CHANGEME2
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  frontend:
+    image: handz/bc-frontend:latest
+    restart: unless-stopped
+    ports:
+      # Choose a port at which frontend will be listening.
+      - "8080:80"
+    networks:
+      - frontend
+    depends_on:
+      - backend
+
+  backend:
+    image: handz/bc-backend:latest
+    restart: unless-stopped
+    environment:
+      # Change this url based on what you set in service named postgres.
+      DATABASE_URL: postgres://CHANGEME:CHANGEME2@postgres/etournaments
+      # Just smash your keyboard here (make it somewhat long!).
+      JWT_SECRET: CHANGEME-CHANGEME-CHANGEME-CHANGEME-CHANGEME-CHANGEME
+      # You can leave this commented out and the token will be valid for 3 days by default.
+      #TOKEN_TTL: 8640000
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - postgres
+
+
+networks:
+  backend:
+  frontend:
+
+volumes:
+  postgres-data:
