@@ -185,6 +185,7 @@ chapters/teoreticka_cast.md
 chapters/analyza_pozadavku.md
 chapters/navrh_backendu/navrh_backendu.md
 chapters/implementace/implementace.md
+chapters/navod/navod.md
 chapters/zaver.md
 ```
 
