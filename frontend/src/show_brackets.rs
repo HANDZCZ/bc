@@ -29,11 +29,19 @@ pub fn show_bracket_tree(
     };
 
     let objects = match tournament_type {
-        TournamentType::FFA => get_ffa_objects(brackets, manipulator_data, tournament_name.clone()),
+        TournamentType::FFA => get_ffa_objects(
+            brackets,
+            manipulator_data,
+            tournament_name.clone(),
+            position,
+        ),
         TournamentType::OneBracketTwoFinalPositions
-        | TournamentType::OneBracketOneFinalPositions => {
-            get_tree_objects(brackets, manipulator_data, tournament_name.clone())
-        }
+        | TournamentType::OneBracketOneFinalPositions => get_tree_objects(
+            brackets,
+            manipulator_data,
+            tournament_name.clone(),
+            position,
+        ),
     };
 
     let pan_zoom = PanZoom::new(
@@ -50,7 +58,7 @@ fn get_color(winner: Option<bool>) -> (egui::Color32, egui::Color32) {
     let default_color = Color32::PLACEHOLDER;
     match winner {
         Some(true) => (winner_color, looser_color),
-        Some(false) => (winner_color, looser_color),
+        Some(false) => (looser_color, winner_color),
         None => (default_color, default_color),
     }
 }
@@ -98,13 +106,14 @@ fn get_ffa_objects(
     brackets: Vec<tournaments::Bracket>,
     manipulator_data: ManipulatorData,
     tournament_name: String,
+    bracket_tree_position: i32,
 ) -> Vec<Box<dyn PanZoomObject>> {
-    struct FFABracket(tournaments::Bracket, Rc<ManipulatorData>, String);
+    struct FFABracket(tournaments::Bracket, Rc<ManipulatorData>, String, i32);
     impl PanZoomObject for FFABracket {
         fn id(&self) -> String {
             format!(
-                "{} - bracket - {}:{}",
-                self.2, self.0.layer, self.0.position
+                "{} ({}) - bracket - {}:{}",
+                self.3, self.2, self.0.layer, self.0.position
             )
         }
 
@@ -114,8 +123,8 @@ fn get_ffa_objects(
 
         fn ui(&mut self, ui: &mut egui::Ui) {
             egui::Grid::new(format!(
-                "{} - grid - {}:{}",
-                self.2, self.0.layer, self.0.position
+                "{} ({}) - grid - {}:{}",
+                self.3, self.2, self.0.layer, self.0.position
             ))
             .show(ui, |ui| {
                 let team1 = self
@@ -165,6 +174,7 @@ fn get_ffa_objects(
                 b,
                 manipulator_data.clone(),
                 tournament_name.clone(),
+                bracket_tree_position,
             )) as Box<dyn PanZoomObject>
         })
         .collect()
@@ -174,6 +184,7 @@ fn get_tree_objects(
     brackets: Vec<tournaments::Bracket>,
     manipulator_data: ManipulatorData,
     tournament_name: String,
+    bracket_tree_position: i32,
 ) -> Vec<Box<dyn PanZoomObject>> {
     const BRACKET_WIDTH: f32 = 250.0;
     const BRACKET_HEIGHT: f32 = 60.0;
@@ -201,12 +212,16 @@ fn get_tree_objects(
         max_layer: u8,
         manipulator_data: Rc<ManipulatorData>,
         tournament_name: String,
+        bracket_tree_position: i32,
     }
     impl PanZoomObject for TreeBracket {
         fn id(&self) -> String {
             format!(
-                "{} - bracket - {}:{}",
-                self.tournament_name, self.bracket.layer, self.bracket.position
+                "{} ({}) - bracket - {}:{}",
+                self.bracket_tree_position,
+                self.tournament_name,
+                self.bracket.layer,
+                self.bracket.position
             )
         }
 
@@ -219,8 +234,11 @@ fn get_tree_objects(
             ui.set_max_size(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT));
             ui.set_min_size(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT));
             egui::Grid::new(format!(
-                "{} - grid - {}:{}",
-                self.tournament_name, self.bracket.layer, self.bracket.position
+                "{} ({}) - grid - {}:{}",
+                self.bracket_tree_position,
+                self.tournament_name,
+                self.bracket.layer,
+                self.bracket.position
             ))
             .show(ui, |ui| {
                 let team1 = self
@@ -304,6 +322,7 @@ fn get_tree_objects(
                 max_layer,
                 manipulator_data: manipulator_data.clone(),
                 tournament_name: tournament_name.clone(),
+                bracket_tree_position,
             }) as Box<dyn PanZoomObject>
         })
         .collect()
