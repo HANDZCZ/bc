@@ -67,23 +67,89 @@ pub async fn generate_brackets(
 
     if rows_affected as usize != invalid_teams.len() {
         tracing::error!("Number of deleted teams from tournaments is not equal to number of teams that were supposed to be deleted!");
-        // TODO: return error
         if tx.rollback().await.is_err() {
             tracing::error!("Could not rollback successfully");
         }
         return Err(());
     }
 
-    match tournament_type {
-        TournamentType::FFA => generate_ffa_brackets(valid_teams, tournament_id, &mut tx),
-        TournamentType::OneBracketTwoFinalPositions => todo!(),
-        TournamentType::OneBracketOneFinalPositions => todo!(),
+    let res = match tournament_type {
+        TournamentType::FFA => generate_ffa_brackets(valid_teams, tournament_id, &mut tx).await,
+        TournamentType::OneBracketTwoFinalPositions => {
+            generate_one_bracket_two_final_positions_brackets(
+                valid_teams,
+                tournament_id,
+                number_of_final_places,
+                &mut tx,
+            )
+            .await
+        }
+        TournamentType::OneBracketOneFinalPositions => {
+            generate_one_bracket_one_final_positions_brackets(
+                valid_teams,
+                tournament_id,
+                number_of_final_places,
+                &mut tx,
+            )
+            .await
+        }
+    };
+    if res.is_err() {
+        tracing::error!("Failed to generate brackets");
+        if tx.rollback().await.is_err() {
+            tracing::error!("Could not rollback successfully");
+        }
+        return Err(());
     }
-    .await?;
 
     if tx.commit().await.is_err() {
         tracing::error!("Could not commit successfully");
         return Err(());
+    }
+    Ok(())
+}
+
+async fn generate_one_bracket_one_final_positions_brackets(
+    teams: Vec<Uuid>,
+    tournament_id: Uuid,
+    number_of_final_places: u32,
+    transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+) -> Result<(), ()> {
+    let teams_len = teams.len();
+    generate_tree_brackets(Some(teams), teams_len, tournament_id, 0, transaction).await?;
+    let max_num_final_places = teams_len - 1;
+    for position in 1..(number_of_final_places as usize).min(max_num_final_places) {
+        generate_tree_brackets(
+            None,
+            teams_len - position,
+            tournament_id,
+            position as i32,
+            transaction,
+        )
+        .await?;
+    }
+    Ok(())
+}
+
+async fn generate_one_bracket_two_final_positions_brackets(
+    teams: Vec<Uuid>,
+    tournament_id: Uuid,
+    number_of_final_places: u32,
+    transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+) -> Result<(), ()> {
+    let teams_len = teams.len();
+    generate_tree_brackets(Some(teams), teams_len, tournament_id, 0, transaction).await?;
+    let max_num_trees = (teams_len as f32 / 2.0).ceil() as usize;
+    let num_trees = (number_of_final_places as f32 / 2.0).ceil() as usize;
+    for position in 1..(num_trees).min(max_num_trees) {
+        generate_tree_brackets(
+            None,
+            teams_len - position * 2,
+            tournament_id,
+            position as i32,
+            transaction,
+        )
+        .await?;
     }
     Ok(())
 }
@@ -112,7 +178,7 @@ async fn generate_ffa_brackets(
     }
 
     let rows_affected = query!(
-        "insert into brackets (bracket_tree_id, team1, team2, position, layer) select $1, *, -1 from unnest($2::uuid[], $3::uuid[], $4::integer[])",
+        "insert into brackets (bracket_tree_id, team1, team2, position, layer) select $1, *, 0 from unnest($2::uuid[], $3::uuid[], $4::integer[])",
         bracket_tree_id,
         &team1,
         &team2,
@@ -126,5 +192,78 @@ async fn generate_ffa_brackets(
         tracing::error!("Number of inserted brackets is not equal to number of brackets that were supposed to be inserted!");
         return Err(());
     }
+    Ok(())
+}
+
+async fn generate_tree_brackets(
+    teams: Option<Vec<Uuid>>,
+    no_teams: usize,
+    tournament_id: Uuid,
+    position: i32,
+    transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
+) -> Result<(), ()> {
+    if no_teams == 0 {
+        return Ok(());
+    }
+
+    let bracket_tree_id = query!(
+        "insert into bracket_trees (tournament_id, position) values ($1, $2) returning id",
+        tournament_id,
+        position
+    )
+    .fetch_one(&mut **transaction)
+    .await
+    .unwrap()
+    .id;
+
+    let no_layers = (no_teams as f32).log2();
+    let base_no_layers = if no_teams != 1 {
+        no_layers.floor() as u32
+    } else {
+        1
+    };
+    let no_stickout = no_teams.saturating_sub(2usize.pow(base_no_layers));
+    let teams = teams.unwrap_or_default();
+    let mut teams_iter = teams.iter();
+
+    let meet_point_pos = (no_stickout as f32 / 2.0).round() - 1.0;
+
+    macro_rules! insert_bracket {
+        ($layer:ident, $position:ident) => {
+            let bracket_team2 = teams_iter.next();
+            let bracket_team1 = teams_iter.next();
+            let bracket_winner = match (bracket_team1, bracket_team2) {
+                (Some(_), Some(_)) => None,
+                (Some(_), None) | (None, Some(_)) if (meet_point_pos - $position as f32).abs() <= f32::EPSILON => None,
+                (Some(_), None) => Some(true),
+                (None, Some(_)) => Some(false),
+                (None, None) => None,
+            };
+            query!(
+                "insert into brackets (bracket_tree_id, team1, team2, layer, position, winner) values ($1, $2, $3, $4, $5, $6)",
+                bracket_tree_id,
+                bracket_team1,
+                bracket_team2,
+                $layer as i16,
+                $position as i32,
+                bracket_winner
+            )
+            .execute(&mut **transaction)
+            .await
+            .unwrap();
+        };
+    }
+
+    for position in 0..no_stickout {
+        insert_bracket!(base_no_layers, position);
+    }
+
+    for layer in (0..base_no_layers).rev() {
+        let no_positions = 2usize.pow(layer);
+        for position in (0..no_positions).rev() {
+            insert_bracket!(layer, position);
+        }
+    }
+
     Ok(())
 }
