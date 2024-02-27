@@ -237,29 +237,39 @@ fn get_tree_objects(
                     .unwrap_or("None");
                 let (team1_color, team2_color) = get_color(self.bracket.winner);
 
-                ui.label(egui::RichText::new(team1).color(team1_color));
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(self.bracket.team1_score.to_string());
+                ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
+                    ui.label(egui::RichText::new(team1).color(team1_color));
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        ui.label(self.bracket.team1_score.to_string());
+                    });
                 });
                 ui.end_row();
 
-                ui.label(egui::RichText::new(team2).color(team2_color));
-                ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(self.bracket.team2_score.to_string());
+                ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
+                    ui.label(egui::RichText::new(team2).color(team2_color));
+                    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+                        ui.label(self.bracket.team2_score.to_string());
+                    });
                 });
                 ui.end_row();
-                if self.manipulator_data.is_tournament_manager && ui.button("Edit").clicked() {
-                    set_manipulator(
-                        &self.manipulator_data,
-                        self.bracket.team1.clone(),
-                        self.bracket.team2.clone(),
-                        self.bracket.team1_score,
-                        self.bracket.team2_score,
-                        self.bracket.winner,
-                        self.bracket.layer,
-                        self.bracket.position,
-                    )
-                }
+                ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
+                    ui.vertical_centered(|ui| {
+                        if self.manipulator_data.is_tournament_manager
+                            && ui.button("Edit").clicked()
+                        {
+                            set_manipulator(
+                                &self.manipulator_data,
+                                self.bracket.team1.clone(),
+                                self.bracket.team2.clone(),
+                                self.bracket.team1_score,
+                                self.bracket.team2_score,
+                                self.bracket.winner,
+                                self.bracket.layer,
+                                self.bracket.position,
+                            )
+                        }
+                    });
+                });
             });
 
             if self.bracket.layer != 0 {
