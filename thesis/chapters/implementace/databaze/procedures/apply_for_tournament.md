@@ -1,5 +1,5 @@
 
-### Procedury apply_for_tournament {#sec:procedure_apply_for_tournament}
+### Procedura apply_for_tournament {#sec:procedure_apply_for_tournament}
 
 Tato procedura obstarává podání přihlášky na turnaj.
 Nejprve zjistí, jestli tým již podal přihlášku na tento turnaj, pokud ano tak vrátí chybu.

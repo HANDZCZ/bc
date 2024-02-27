@@ -7,13 +7,9 @@ Tento pohled umožňuje jednoduché načtení a vyhledání dat backendem.
 
 ![Pohled teams_tournaments_playing_players](../../../../pictures/databaze/views/teams_tournaments_playing_players.png){ height=14% }
 
-Team_id vyjadřuje id týmu ([@sec:table_teams]).
+Sloupce team_id a team_name náleží příslušným sloupcům v tabulce teams ([@sec:table_teams]), bez prefixu team_.
 
-Team_name vyjadřuje jméno týmu ([@sec:table_teams]).
-
-Tournament_id vyjadřuje id turnaje ([@sec:table_tournaments]).
-
-Tournament_name vyjadřuje jméno turnaje ([@sec:table_tournaments]).
+Sloupce tournament_id a tournament_name náleží příslušným sloupcům v tabulce tournaments ([@sec:table_tournaments]), bez prefixu tournament_.
 
 Sloupec players obsahuje pole s hráči ve formátu json.
 Hráči dále obsahují informace jak o sobě, tak i o tom jestli hrají v turnaji za daný tým.
