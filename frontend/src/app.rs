@@ -296,6 +296,14 @@ impl eframe::App for FrontendApp {
             });
         });
     }
+
+    fn auto_save_interval(&self) -> std::time::Duration {
+        std::time::Duration::from_secs(5)
+    }
+
+    fn persist_egui_memory(&self) -> bool {
+        false
+    }
 }
 
 fn powered_by_egui_and_eframe(ui: &mut egui::Ui) {
