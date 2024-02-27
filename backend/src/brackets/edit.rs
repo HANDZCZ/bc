@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
 use crate::{
+    brackets::propagate_brackets::propagate_brackets,
     jwt_stuff::LoggedInUserWithAuthorities,
     macros::{
         check_user_authority, resp_200_Ok_json, resp_400_BadReq_json, resp_500_IntSerErr_json,
@@ -28,6 +29,8 @@ struct Bracket {
     layer: u8,
     // TODO: set min to 0
     position: i32,
+    #[serde(default)]
+    suppress_propagation: bool,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -47,7 +50,6 @@ pub async fn edit(
     user: LoggedInUserWithAuthorities,
 ) -> impl Responder {
     check_user_authority!(user, "role::Tournament Manager");
-    // TODO: recalculate tree (on demand)
 
     match query!(
         "update brackets set team1 = $1, team2 = $2, winner = $3, team1_score = coalesce($7, team1_score), team2_score = coalesce($8, team2_score) where bracket_tree_id = $4 and layer = $5 and position = $6",
@@ -67,6 +69,14 @@ pub async fn edit(
             let rows_affected = RowsAffected {
                 rows_affected: query_result.rows_affected(),
             };
+
+            if !data.suppress_propagation && propagate_brackets(data.bracket_tree_id, data.layer, data.position, pool).await.is_err() {
+                let err = crate::common::Error::new(
+                    "Edit was successful, but bracket propagation failed!",
+                );
+                return resp_500_IntSerErr_json!(err);
+            }
+
             resp_200_Ok_json!(rows_affected)
         }
         Err(sqlx::Error::Database(error)) => {
@@ -75,6 +85,9 @@ pub async fn edit(
                 resp_400_BadReq_json!(err)
             } else if error.is_foreign_key_violation() {
                 let err = crate::common::Error::new("request for bracket edit violates foreign key constraints (bracket_tree_id, team1, team2)");
+                resp_400_BadReq_json!(err)
+            } else if let Some(true) = error.code().map(|c| c == "44444") {
+                let err = crate::common::Error::new(error.message());
                 resp_400_BadReq_json!(err)
             } else {
                 let err = crate::common::Error::new(format!("unhandled error - {}", error));
@@ -105,6 +118,7 @@ pub mod tests {
             bracket_tree_id: Uuid::new_v4(),
             layer: 255,
             position: 0,
+            suppress_propagation: true,
         }
     }
 

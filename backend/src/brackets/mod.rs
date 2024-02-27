@@ -5,6 +5,7 @@ mod edit;
 mod get;
 mod get_all;
 mod new;
+mod propagate_brackets;
 
 pub fn configure(cfg: &mut ServiceConfig) {
     cfg.service(
