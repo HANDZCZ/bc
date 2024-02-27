@@ -28,11 +28,13 @@ views/tournaments_signed_up_teams.md
 views/tournaments_team_applications.md
 views/users_and_roles.md
 views/tournaments_with_bracket_trees_and_game_info.md
+views/user_invites.md
 triggers/players_to_teams_insert_trigger.md
 triggers/managers_to_teams_insert_trigger.md
 triggers/tournaments_update_trigger.md
 triggers/teams_to_tournaments_insert_trigger.md
 triggers/brackets_update_trigger.md
+triggers/managers_to_teams_delete_trigger.md
 procedures/handle_invite.md
 procedures/invite_to_team.md
 procedures/remove_from_team.md
@@ -40,4 +42,6 @@ procedures/team_ops.md
 procedures/new_team.md
 procedures/apply_for_tournament.md
 procedures/set_playing.md
+procedures/handle_application.md
+procedures/handle_leave_tournament.md
 ```
