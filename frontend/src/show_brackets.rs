@@ -147,12 +147,12 @@ fn get_ffa_objects(
                     .team1
                     .as_ref()
                     .map(|t| t.name.as_str())
-                    .unwrap_or("None");
+                    .unwrap_or_default();
                 let team2 = bracket
                     .team2
                     .as_ref()
                     .map(|t| t.name.as_str())
-                    .unwrap_or("None");
+                    .unwrap_or_default();
                 let (team1_color, team2_color) = get_color(bracket.winner);
 
                 ui.label(egui::RichText::new(team1).color(team1_color));
@@ -259,12 +259,12 @@ fn get_tree_objects(
                     .team1
                     .as_ref()
                     .map(|t| t.name.as_str())
-                    .unwrap_or("None");
+                    .unwrap_or_default();
                 let team2 = bracket
                     .team2
                     .as_ref()
                     .map(|t| t.name.as_str())
-                    .unwrap_or("None");
+                    .unwrap_or_default();
                 let (team1_color, team2_color) = get_color(bracket.winner);
 
                 ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
