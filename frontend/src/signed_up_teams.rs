@@ -83,10 +83,7 @@ pub fn signed_up_teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp
                                                     let team = teams
                                                         .as_ref()
                                                         .map(|teams| {
-                                                            teams
-                                                                .iter()
-                                                                .filter(|t| t.id == team.id)
-                                                                .next()
+                                                            teams.iter().find(|t| t.id == team.id)
                                                         })
                                                         .unwrap_or(None);
                                                     user.is_some()

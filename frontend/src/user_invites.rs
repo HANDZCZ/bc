@@ -219,10 +219,9 @@ impl ManipulatorTrait for NewInvite {
             .selected_text(
                 self.teams
                     .iter()
-                    .filter(|t| t.id == self.selected_team)
-                    .next()
+                    .find(|t| t.id == self.selected_team)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
@@ -235,10 +234,9 @@ impl ManipulatorTrait for NewInvite {
             .selected_text(
                 self.users
                     .iter()
-                    .filter(|u| u.id == self.selected_user)
-                    .next()
+                    .find(|u| u.id == self.selected_user)
                     .map(|u| u.nick.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {

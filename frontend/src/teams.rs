@@ -243,7 +243,7 @@ impl ManipulatorTrait for TeamManipulator {
         self.edit_req.show_ui(
             ui,
             |ui, _| {
-                ui.label(format!("Edited team"));
+                ui.label("Edited team".to_string());
             },
             default_err_fn,
         );

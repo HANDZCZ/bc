@@ -172,7 +172,7 @@ impl ManipulatorTrait for GameManipulator {
         self.edit_req.show_ui(
             ui,
             |ui, _| {
-                ui.label(format!("Edited game"));
+                ui.label("Edited game".to_string());
             },
             default_err_fn,
         );

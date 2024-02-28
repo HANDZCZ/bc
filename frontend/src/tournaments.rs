@@ -365,10 +365,9 @@ impl ManipulatorTrait for TournamentManipulator {
             .selected_text(
                 games
                     .iter()
-                    .filter(|g| g.id == self.data.game_id)
-                    .next()
+                    .find(|g| g.id == self.data.game_id)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
@@ -459,7 +458,7 @@ impl ManipulatorTrait for TournamentManipulator {
         self.edit_req.show_ui(
             ui,
             |ui, _| {
-                ui.label(format!("Edited tournament"));
+                ui.label("Edited tournament".to_string());
             },
             default_err_fn,
         );
@@ -531,10 +530,9 @@ impl ManipulatorTrait for BracketManipulator {
             .selected_text(
                 teams
                     .iter()
-                    .filter(|t| Some(t.id) == self.data.team1)
-                    .next()
+                    .find(|t| Some(t.id) == self.data.team1)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
@@ -548,10 +546,9 @@ impl ManipulatorTrait for BracketManipulator {
             .selected_text(
                 teams
                     .iter()
-                    .filter(|t| Some(t.id) == self.data.team2)
-                    .next()
+                    .find(|t| Some(t.id) == self.data.team2)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
@@ -590,7 +587,7 @@ impl ManipulatorTrait for BracketManipulator {
         self.edit_req.show_ui(
             ui,
             |ui, _| {
-                ui.label(format!("Edited bracket"));
+                ui.label("Edited bracket".to_string());
             },
             default_err_fn,
         );

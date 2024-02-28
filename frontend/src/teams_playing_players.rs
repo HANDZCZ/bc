@@ -49,8 +49,7 @@ pub fn teams_playing_players_ui(ctx: &egui::Context, app: &mut crate::app::Front
                         .map(|teams| {
                             teams
                                 .iter()
-                                .filter(|t| t.id.to_string() == app.teams_playing_players_team_id)
-                                .next()
+                                .find(|t| t.id.to_string() == app.teams_playing_players_team_id)
                         })
                         .unwrap_or(None);
                     user.is_some()

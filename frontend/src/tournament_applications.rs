@@ -131,10 +131,7 @@ pub fn tournament_applications_ui(ctx: &egui::Context, app: &mut crate::app::Fro
                                                     let team = teams
                                                         .as_ref()
                                                         .map(|teams| {
-                                                            teams
-                                                                .iter()
-                                                                .filter(|t| t.id == team.id)
-                                                                .next()
+                                                            teams.iter().find(|t| t.id == team.id)
                                                         })
                                                         .unwrap_or(None);
                                                     user.is_some()
@@ -223,10 +220,9 @@ impl ManipulatorTrait for NewApplication {
             .selected_text(
                 self.teams
                     .iter()
-                    .filter(|t| t.id == self.data.team_id)
-                    .next()
+                    .find(|t| t.id == self.data.team_id)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
@@ -239,10 +235,9 @@ impl ManipulatorTrait for NewApplication {
             .selected_text(
                 self.tournaments
                     .iter()
-                    .filter(|t| t.id == self.data.tournament_id)
-                    .next()
+                    .find(|t| t.id == self.data.tournament_id)
                     .map(|t| t.name.as_ref())
-                    .unwrap_or("Not selected".into()),
+                    .unwrap_or("Not selected"),
             )
             .wrap(false)
             .show_ui(ui, |ui| {
