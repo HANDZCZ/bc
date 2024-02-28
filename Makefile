@@ -24,6 +24,8 @@ stop-and-delete-db-data:
 stop:
 	docker compose down
 
+recreate: stop run
+
 nuke: stop-and-delete-db-data
 
 push-backend:
