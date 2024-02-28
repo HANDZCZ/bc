@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::{cell::RefCell, rc::Rc};
 
 use uuid::Uuid;
 
@@ -19,6 +19,15 @@ pub fn show_bracket_tree(
     tournament_type: TournamentType,
     brackets: Vec<tournaments::Bracket>,
 ) {
+    let brackets = brackets
+        .into_iter()
+        .map(|b| {
+            app.show_brackets_linked_brackets
+                .get(&(bracket_tree_id, b.layer, b.position))
+                .unwrap()
+                .clone()
+        })
+        .collect::<Vec<_>>();
     let manipulator_data = ManipulatorData {
         is_tournament_manager: app.is_tournament_manager(),
         teams: app.teams.clone(),
@@ -84,12 +93,11 @@ fn set_manipulator(
     position: i32,
 ) {
     if data.is_tournament_manager {
-        let teams = (data.teams.get_data()).clone().unwrap_or_default();
         data.manipulator_window
             .set_editor(BracketManipulator::new_with_data(
                 data.token.clone().unwrap(),
                 data.url.clone(),
-                teams,
+                data.teams.clone(),
                 team1.as_ref().map(|t| t.id),
                 team2.as_ref().map(|t| t.id),
                 team1_score,
@@ -103,63 +111,69 @@ fn set_manipulator(
 }
 
 fn get_ffa_objects(
-    brackets: Vec<tournaments::Bracket>,
+    brackets: Vec<Rc<RefCell<tournaments::Bracket>>>,
     manipulator_data: ManipulatorData,
     tournament_name: String,
     bracket_tree_position: i32,
 ) -> Vec<Box<dyn PanZoomObject>> {
-    struct FFABracket(tournaments::Bracket, Rc<ManipulatorData>, String, i32);
+    struct FFABracket {
+        bracket: Rc<RefCell<tournaments::Bracket>>,
+        manipulator_data: Rc<ManipulatorData>,
+        tournament_name: String,
+        bracket_tree_position: i32,
+    }
     impl PanZoomObject for FFABracket {
         fn id(&self) -> String {
+            let bracket = self.bracket.borrow();
             format!(
                 "{} ({}) - bracket - {}:{}",
-                self.3, self.2, self.0.layer, self.0.position
+                self.bracket_tree_position, self.tournament_name, bracket.layer, bracket.position
             )
         }
 
         fn pos(&self) -> egui::Pos2 {
-            egui::Pos2::new(0.0, self.0.position as f32 * 50.0)
+            let bracket = self.bracket.borrow();
+            egui::Pos2::new(0.0, bracket.position as f32 * 50.0)
         }
 
         fn ui(&mut self, ui: &mut egui::Ui) {
+            let bracket = self.bracket.borrow();
             egui::Grid::new(format!(
                 "{} ({}) - grid - {}:{}",
-                self.3, self.2, self.0.layer, self.0.position
+                self.bracket_tree_position, self.tournament_name, bracket.layer, bracket.position
             ))
             .show(ui, |ui| {
-                let team1 = self
-                    .0
+                let team1 = bracket
                     .team1
                     .as_ref()
                     .map(|t| t.name.as_str())
                     .unwrap_or("None");
-                let team2 = self
-                    .0
+                let team2 = bracket
                     .team2
                     .as_ref()
                     .map(|t| t.name.as_str())
                     .unwrap_or("None");
-                let (team1_color, team2_color) = get_color(self.0.winner);
+                let (team1_color, team2_color) = get_color(bracket.winner);
 
                 ui.label(egui::RichText::new(team1).color(team1_color));
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(self.0.team1_score.to_string());
+                    ui.label(bracket.team1_score.to_string());
                 });
                 ui.label(" ");
-                ui.label(self.0.team2_score.to_string());
+                ui.label(bracket.team2_score.to_string());
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     ui.label(egui::RichText::new(team2).color(team2_color));
                 });
-                if self.1.is_tournament_manager && ui.button("Edit").clicked() {
+                if self.manipulator_data.is_tournament_manager && ui.button("Edit").clicked() {
                     set_manipulator(
-                        &self.1,
-                        self.0.team1.clone(),
-                        self.0.team2.clone(),
-                        self.0.team1_score,
-                        self.0.team2_score,
-                        self.0.winner,
-                        self.0.layer,
-                        self.0.position,
+                        &self.manipulator_data,
+                        bracket.team1.clone(),
+                        bracket.team2.clone(),
+                        bracket.team1_score,
+                        bracket.team2_score,
+                        bracket.winner,
+                        bracket.layer,
+                        bracket.position,
                     )
                 }
                 ui.end_row();
@@ -169,19 +183,19 @@ fn get_ffa_objects(
     let manipulator_data = Rc::new(manipulator_data);
     brackets
         .into_iter()
-        .map(|b| {
-            Box::new(FFABracket(
-                b,
-                manipulator_data.clone(),
-                tournament_name.clone(),
+        .map(|bracket| {
+            Box::new(FFABracket {
+                bracket,
+                manipulator_data: manipulator_data.clone(),
+                tournament_name: tournament_name.clone(),
                 bracket_tree_position,
-            )) as Box<dyn PanZoomObject>
+            }) as Box<dyn PanZoomObject>
         })
         .collect()
 }
 
 fn get_tree_objects(
-    brackets: Vec<tournaments::Bracket>,
+    brackets: Vec<Rc<RefCell<tournaments::Bracket>>>,
     manipulator_data: ManipulatorData,
     tournament_name: String,
     bracket_tree_position: i32,
@@ -208,7 +222,7 @@ fn get_tree_objects(
     }
 
     struct TreeBracket {
-        bracket: tournaments::Bracket,
+        bracket: Rc<RefCell<tournaments::Bracket>>,
         max_layer: u8,
         manipulator_data: Rc<ManipulatorData>,
         tournament_name: String,
@@ -216,49 +230,47 @@ fn get_tree_objects(
     }
     impl PanZoomObject for TreeBracket {
         fn id(&self) -> String {
+            let bracket = self.bracket.borrow();
             format!(
                 "{} ({}) - bracket - {}:{}",
-                self.bracket_tree_position,
-                self.tournament_name,
-                self.bracket.layer,
-                self.bracket.position
+                self.bracket_tree_position, self.tournament_name, bracket.layer, bracket.position
             )
         }
 
         fn pos(&self) -> egui::Pos2 {
-            let (x, y) = get_xy(self.bracket.layer, self.bracket.position, self.max_layer);
+            let bracket = self.bracket.borrow();
+            let (x, y) = get_xy(bracket.layer, bracket.position, self.max_layer);
             egui::pos2(x, y)
         }
 
         fn ui(&mut self, ui: &mut egui::Ui) {
+            let bracket = self.bracket.borrow();
             ui.set_max_size(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT));
             ui.set_min_size(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT));
             egui::Grid::new(format!(
                 "{} ({}) - grid - {}:{}",
                 self.bracket_tree_position,
                 self.tournament_name,
-                self.bracket.layer,
-                self.bracket.position
+                bracket.layer,
+                bracket.position
             ))
             .show(ui, |ui| {
-                let team1 = self
-                    .bracket
+                let team1 = bracket
                     .team1
                     .as_ref()
                     .map(|t| t.name.as_str())
                     .unwrap_or("None");
-                let team2 = self
-                    .bracket
+                let team2 = bracket
                     .team2
                     .as_ref()
                     .map(|t| t.name.as_str())
                     .unwrap_or("None");
-                let (team1_color, team2_color) = get_color(self.bracket.winner);
+                let (team1_color, team2_color) = get_color(bracket.winner);
 
                 ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
                     ui.label(egui::RichText::new(team1).color(team1_color));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        ui.label(self.bracket.team1_score.to_string());
+                        ui.label(bracket.team1_score.to_string());
                     });
                 });
                 ui.end_row();
@@ -266,7 +278,7 @@ fn get_tree_objects(
                 ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
                     ui.label(egui::RichText::new(team2).color(team2_color));
                     ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                        ui.label(self.bracket.team2_score.to_string());
+                        ui.label(bracket.team2_score.to_string());
                     });
                 });
                 ui.end_row();
@@ -277,27 +289,27 @@ fn get_tree_objects(
                         {
                             set_manipulator(
                                 &self.manipulator_data,
-                                self.bracket.team1.clone(),
-                                self.bracket.team2.clone(),
-                                self.bracket.team1_score,
-                                self.bracket.team2_score,
-                                self.bracket.winner,
-                                self.bracket.layer,
-                                self.bracket.position,
+                                bracket.team1.clone(),
+                                bracket.team2.clone(),
+                                bracket.team1_score,
+                                bracket.team2_score,
+                                bracket.winner,
+                                bracket.layer,
+                                bracket.position,
                             )
                         }
                     });
                 });
             });
 
-            if self.bracket.layer != 0 {
+            if bracket.layer != 0 {
                 use egui::epaint::*;
                 let painter = ui.painter();
                 let mut points: [Pos2; 4] = [Pos2::ZERO; 4];
                 points[0] = self.pos() + vec2(BRACKET_WIDTH + 16.0, (BRACKET_HEIGHT) / 2.0 + 8.0);
                 let (ex, ey) = get_xy(
-                    self.bracket.layer - 1,
-                    (self.bracket.position as f32 / 2.0).floor() as i32,
+                    bracket.layer - 1,
+                    (bracket.position as f32 / 2.0).floor() as i32,
                     self.max_layer,
                 );
                 points[3] = pos2(ex, ey + BRACKET_HEIGHT / 2.0 + 8.0);
@@ -312,13 +324,13 @@ fn get_tree_objects(
             }
         }
     }
-    let max_layer = brackets.iter().map(|b| b.layer).max().unwrap_or(0);
+    let max_layer = brackets.iter().map(|b| b.borrow().layer).max().unwrap_or(0);
     let manipulator_data = Rc::new(manipulator_data);
     brackets
         .into_iter()
-        .map(|b| {
+        .map(|bracket| {
             Box::new(TreeBracket {
-                bracket: b,
+                bracket,
                 max_layer,
                 manipulator_data: manipulator_data.clone(),
                 tournament_name: tournament_name.clone(),

@@ -208,7 +208,7 @@ impl NewApplication {
                 team_id: teams.first().map(|t| t.id).unwrap_or(Uuid::nil()),
                 tournament_id: tournaments.first().map(|t| t.id).unwrap_or(Uuid::nil()),
             },
-            tournaments: tournaments,
+            tournaments,
             teams,
             token,
             public_url,

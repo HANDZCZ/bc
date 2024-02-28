@@ -1,9 +1,11 @@
-use std::{cell::RefCell, rc::Rc};
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
+
+use uuid::Uuid;
 
 use crate::{
-    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom, signed_up_teams, teams,
-    teams_playing_players, tournament_applications, tournaments, tournaments_playing_players,
-    user_edit, user_invites, users,
+    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom,
+    signed_up_teams, teams, teams_playing_players, tournament_applications, tournaments,
+    tournaments_playing_players, user_edit, user_invites, users,
 };
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
@@ -51,6 +53,8 @@ pub struct FrontendApp {
 
     #[serde(skip)]
     pub pan_zooms: Vec<PanZoom>,
+    #[serde(skip)]
+    pub show_brackets_linked_brackets: HashMap<(Uuid, u8, i32), Rc<RefCell<tournaments::Bracket>>>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -106,6 +110,7 @@ impl Default for FrontendApp {
             manipulator_window: manipulator::ManipulatorWindow::init(),
             url: String::new(),
             pan_zooms: Vec::new(),
+            show_brackets_linked_brackets: HashMap::new(),
         }
     }
 }
@@ -278,6 +283,26 @@ impl eframe::App for FrontendApp {
             crate::user_invites::user_invites_ui(ctx, self);
 
             self.manipulator_window.show_ui(ctx);
+
+            if let Some(tournaments) = (*self.tournaments.get_data()).as_ref() {
+                tournaments
+                    .iter()
+                    .flat_map(|t| {
+                        t.bracket_trees.iter().flat_map(|bt| {
+                            bt.brackets
+                                .iter()
+                                .map(|b| ((bt.id, b.layer, b.position), b.clone()))
+                        })
+                    })
+                    .for_each(|(key, bracket)| {
+                        self.show_brackets_linked_brackets
+                            .entry(key)
+                            .and_modify(|b| {
+                                *b.borrow_mut() = bracket.clone();
+                            })
+                            .or_insert(Rc::new(RefCell::new(bracket)));
+                    });
+            }
 
             let mut to_delete = Vec::new();
             for (i, pan_zoom) in self.pan_zooms.iter_mut().enumerate() {

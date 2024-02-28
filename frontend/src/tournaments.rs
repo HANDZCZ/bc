@@ -1,7 +1,12 @@
 use uuid::Uuid;
 
 use crate::{
-    app::{default_err_fn, json_post, Nothing, OnlyId}, downloadable::Downloadable, games, manipulator::ManipulatorTrait, show_brackets::show_bracket_tree, teams
+    app::{default_err_fn, json_post, Nothing, OnlyId},
+    downloadable::Downloadable,
+    games,
+    manipulator::ManipulatorTrait,
+    show_brackets::show_bracket_tree,
+    teams,
 };
 
 #[derive(serde::Deserialize, Clone)]
@@ -68,8 +73,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
             }
             let is_tournament_manager = app.is_tournament_manager();
             if is_tournament_manager && ui.button("New").clicked() {
-                let games = (*app.games.get_data()).clone().unwrap_or_default();
-                app.manipulator_window.set_editor(TournamentManipulator::new(app.token.clone().unwrap(), app.url.clone(), games));
+                app.manipulator_window.set_editor(TournamentManipulator::new(app.token.clone().unwrap(), app.url.clone(), app.games.clone()));
             }
             let mut tree_to_show = None;
             app.tournaments.show_ui(
@@ -112,11 +116,10 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                             });
                             if is_tournament_manager {
                                 if ui.button("Edit").clicked() {
-                                    let games = (*app.games.get_data()).clone().unwrap_or_default();
                                     app.manipulator_window.set_editor(TournamentManipulator::new_with_data(
                                         app.token.clone().unwrap(),
                                         app.url.clone(),
-                                        games,
+                                        app.games.clone(),
                                         tournament.id,
                                         tournament.name.clone(),
                                         tournament.description.clone(),
@@ -207,11 +210,10 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                                         struct_fields!(team1_score, team2_score, layer, position);
 
                                                         if is_tournament_manager && ui.button("Edit").clicked() {
-                                                            let teams = (*app.teams.get_data()).clone().unwrap_or_default();
                                                             app.manipulator_window.set_editor(BracketManipulator::new_with_data(
                                                           app.token.clone().unwrap(),
                                                      app.url.clone(),
-                                                                teams,
+                                                                app.teams.clone(),
                                                                 bracket.team1.as_ref().map(|t| t.id),
                                                                 bracket.team2.as_ref().map(|t| t.id),
                                                                 bracket.team1_score,
@@ -244,7 +246,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
 struct TournamentManipulator {
     data: Data,
     token: String,
-    games: Vec<games::Game>,
+    games: Downloadable<Vec<games::Game>>,
     public_url: String,
     new_req: Downloadable<OnlyId>,
     edit_req: Downloadable<Nothing>,
@@ -278,13 +280,19 @@ enum ApplicationsClosed {
 }
 
 impl TournamentManipulator {
-    fn new(token: String, public_url: String, games: Vec<games::Game>) -> Self {
+    fn new(token: String, public_url: String, games: Downloadable<Vec<games::Game>>) -> Self {
+        let game_id = {
+            (*games.get_data())
+                .as_ref()
+                .map(|games| games.first().map(|g| g.id).unwrap_or(Uuid::nil()))
+                .unwrap_or(Uuid::nil())
+        };
         Self {
             data: Data {
                 id: Uuid::nil(),
                 name: String::new(),
                 description: String::new(),
-                game_id: games.first().map(|g| g.id).unwrap_or(Uuid::nil()),
+                game_id,
                 min_team_size: 0,
                 max_team_size: 0,
                 requires_application: true,
@@ -308,7 +316,7 @@ impl TournamentManipulator {
     fn new_with_data(
         token: String,
         public_url: String,
-        games: Vec<games::Game>,
+        games: Downloadable<Vec<games::Game>>,
         id: Uuid,
         name: String,
         description: String,
@@ -348,11 +356,14 @@ impl TournamentManipulator {
 
 impl ManipulatorTrait for TournamentManipulator {
     fn show_ui(&mut self, ui: &mut egui::Ui, ctx: egui::Context) {
+        let games = self.games.get_data();
+        let empty_vec = Vec::new();
+        let games = (*games).as_ref().unwrap_or(&empty_vec);
         ui.add(egui::TextEdit::singleline(&mut self.data.name).hint_text("Name"));
         ui.add(egui::TextEdit::multiline(&mut self.data.description).hint_text("Description"));
         egui::ComboBox::new("Game", "Game")
             .selected_text(
-                self.games
+                games
                     .iter()
                     .filter(|g| g.id == self.data.game_id)
                     .next()
@@ -362,7 +373,7 @@ impl ManipulatorTrait for TournamentManipulator {
             .wrap(false)
             .show_ui(ui, |ui| {
                 //ui.set_min_width(60.0);
-                for game in &self.games {
+                for game in games {
                     ui.selectable_value(&mut self.data.game_id, game.id, &game.name);
                 }
             });
@@ -458,7 +469,7 @@ impl ManipulatorTrait for TournamentManipulator {
 pub struct BracketManipulator {
     data: BracketData,
     token: String,
-    teams: Vec<teams::Team>,
+    teams: Downloadable<Vec<teams::Team>>,
     public_url: String,
     edit_req: Downloadable<Nothing>,
 }
@@ -480,7 +491,7 @@ impl BracketManipulator {
     pub fn new_with_data(
         token: String,
         public_url: String,
-        teams: Vec<teams::Team>,
+        teams: Downloadable<Vec<teams::Team>>,
         team1: Option<Uuid>,
         team2: Option<Uuid>,
         team1_score: i64,
@@ -513,9 +524,12 @@ impl BracketManipulator {
 
 impl ManipulatorTrait for BracketManipulator {
     fn show_ui(&mut self, ui: &mut egui::Ui, ctx: egui::Context) {
+        let teams = self.teams.get_data();
+        let empty_vec = Vec::new();
+        let teams = (*teams).as_ref().unwrap_or(&empty_vec);
         egui::ComboBox::new("Team1", "Team1")
             .selected_text(
-                self.teams
+                teams
                     .iter()
                     .filter(|t| Some(t.id) == self.data.team1)
                     .next()
@@ -526,13 +540,13 @@ impl ManipulatorTrait for BracketManipulator {
             .show_ui(ui, |ui| {
                 //ui.set_min_width(60.0);
                 ui.selectable_value(&mut self.data.team1, None, "Not selected");
-                for team in &self.teams {
+                for team in teams {
                     ui.selectable_value(&mut self.data.team1, Some(team.id), &team.name);
                 }
             });
         egui::ComboBox::new("Team2", "Team2")
             .selected_text(
-                self.teams
+                teams
                     .iter()
                     .filter(|t| Some(t.id) == self.data.team2)
                     .next()
@@ -543,7 +557,7 @@ impl ManipulatorTrait for BracketManipulator {
             .show_ui(ui, |ui| {
                 //ui.set_min_width(60.0);
                 ui.selectable_value(&mut self.data.team2, None, "Not selected");
-                for team in &self.teams {
+                for team in teams {
                     ui.selectable_value(&mut self.data.team2, Some(team.id), &team.name);
                 }
             });
