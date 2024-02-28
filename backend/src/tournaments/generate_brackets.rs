@@ -1,3 +1,5 @@
+use std::num::NonZeroU32;
+
 use crate::common::TournamentType;
 use actix_web::web::Data;
 use serde::{Deserialize, Serialize};
@@ -7,7 +9,7 @@ use uuid::Uuid;
 pub async fn generate_brackets(
     tournament_id: Uuid,
     pool: Data<PgPool>,
-    number_of_final_places: u32,
+    number_of_final_places: NonZeroU32,
 ) -> Result<(), ()> {
     let tournament_type = query!(
         r#"select tournament_type as "tournament_type!: TournamentType" from tournaments where id = $1"#,
@@ -112,13 +114,13 @@ pub async fn generate_brackets(
 async fn generate_one_bracket_one_final_positions_brackets(
     teams: Vec<Uuid>,
     tournament_id: Uuid,
-    number_of_final_places: u32,
+    number_of_final_places: NonZeroU32,
     transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
 ) -> Result<(), ()> {
     let teams_len = teams.len();
     generate_tree_brackets(Some(teams), teams_len, tournament_id, 0, transaction).await?;
     let max_num_final_places = teams_len - 1;
-    for position in 1..(number_of_final_places as usize).min(max_num_final_places) {
+    for position in 1..(number_of_final_places.get() as usize).min(max_num_final_places) {
         generate_tree_brackets(
             None,
             teams_len - position,
@@ -134,13 +136,13 @@ async fn generate_one_bracket_one_final_positions_brackets(
 async fn generate_one_bracket_two_final_positions_brackets(
     teams: Vec<Uuid>,
     tournament_id: Uuid,
-    number_of_final_places: u32,
+    number_of_final_places: NonZeroU32,
     transaction: &mut sqlx::Transaction<'_, sqlx::Postgres>,
 ) -> Result<(), ()> {
     let teams_len = teams.len();
     generate_tree_brackets(Some(teams), teams_len, tournament_id, 0, transaction).await?;
     let max_num_trees = (teams_len as f32 / 2.0).ceil() as usize;
-    let num_trees = (number_of_final_places as f32 / 2.0).ceil() as usize;
+    let num_trees = (number_of_final_places.get() as f32 / 2.0).ceil() as usize;
     for position in 1..(num_trees).min(max_num_trees) {
         generate_tree_brackets(
             None,

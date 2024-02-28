@@ -6,6 +6,7 @@ use actix_web::{
 use sqlx::{query, PgPool};
 
 use serde::{Deserialize, Serialize};
+use std::num::NonZeroU32;
 use uuid::Uuid;
 
 use crate::{
@@ -33,11 +34,16 @@ struct Tournament {
 #[derive(Serialize, Deserialize)]
 enum ApplicationsClosed {
     True {
-        number_of_final_places: u32,
+        #[serde(default = "default_number_of_final_places")]
+        number_of_final_places: NonZeroU32,
         #[serde(default)]
         regenerate_brackets: bool,
     },
     False,
+}
+
+fn default_number_of_final_places() -> NonZeroU32 {
+    NonZeroU32::new(3).unwrap()
 }
 
 #[derive(Serialize, Deserialize)]
