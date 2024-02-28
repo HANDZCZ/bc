@@ -389,7 +389,7 @@ impl ManipulatorTrait for TournamentManipulator {
             ui.checkbox(&mut self.applications_closed, "Applications_closed");
             ui.label("Number_of_final_places");
             ui.add(
-                egui::DragValue::new(&mut self.number_of_final_places).clamp_range(0..=u32::MAX),
+                egui::DragValue::new(&mut self.number_of_final_places).clamp_range(1..=u32::MAX),
             );
             ui.checkbox(&mut self.regenerate_brackets, "Regenerate_brackets");
         }
