@@ -212,13 +212,14 @@ async fn propagate_bracket(
                         inverted_dropout_idx % 2 == 0,
                     )
                 } else {
-                    let inverted_dropout_idx = inverted_dropout_idx - no_stickout * 2;
-                    let position_to_set = (inverted_dropout_idx as f32 / 2.0).floor() as usize;
+                    let max_layer_idx = 2usize.pow(base_no_layers as u32) - 1;
+                    let idx = max_layer_idx - dropout_idx;
+                    let position_to_set = (idx as f32 / 2.0).floor() as usize;
 
                     (
                         base_no_layers - 1,
                         position_to_set,
-                        inverted_dropout_idx as usize % 2 != 0,
+                        inverted_dropout_idx % 2 != 0,
                     )
                 }
             }
