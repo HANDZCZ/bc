@@ -129,7 +129,7 @@ csquotes: true
 
 figure-source: "[Vlastní tvorba]"
 table-source: "[Vlastní tvorba]"
-listings-source: "[Vlastní tvorba]"
+#listings-source: "[Vlastní tvorba]"
 
 numbersections: true
 autoEqnLabels: true
