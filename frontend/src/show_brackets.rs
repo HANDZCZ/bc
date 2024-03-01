@@ -8,7 +8,7 @@ use crate::{
     pan_zoom::{PanZoom, PanZoomObject},
     teams,
     tournaments::{self, BracketManipulator, TournamentType},
-    FrontendApp,
+    users, FrontendApp,
 };
 
 pub fn show_bracket_tree(
@@ -29,7 +29,7 @@ pub fn show_bracket_tree(
         })
         .collect::<Vec<_>>();
     let manipulator_data = ManipulatorData {
-        is_tournament_manager: app.is_tournament_manager(),
+        user_data: app.user.clone(),
         teams: app.teams.clone(),
         manipulator_window: app.manipulator_window.clone(),
         token: app.token.clone(),
@@ -74,7 +74,7 @@ fn get_color(winner: Option<bool>) -> (egui::Color32, egui::Color32) {
 
 #[derive(Clone)]
 struct ManipulatorData {
-    is_tournament_manager: bool,
+    user_data: Downloadable<users::User>,
     teams: Downloadable<Vec<teams::Team>>,
     manipulator_window: ManipulatorWindow,
     token: Option<String>,
@@ -92,22 +92,20 @@ fn set_manipulator(
     layer: u8,
     position: i32,
 ) {
-    if data.is_tournament_manager {
-        data.manipulator_window
-            .set_editor(BracketManipulator::new_with_data(
-                data.token.clone().unwrap(),
-                data.url.clone(),
-                data.teams.clone(),
-                team1.as_ref().map(|t| t.id),
-                team2.as_ref().map(|t| t.id),
-                team1_score,
-                team2_score,
-                winner,
-                data.bracket_tree_id,
-                layer,
-                position,
-            ));
-    }
+    data.manipulator_window
+        .set_editor(BracketManipulator::new_with_data(
+            data.token.clone().unwrap(),
+            data.url.clone(),
+            data.teams.clone(),
+            team1.as_ref().map(|t| t.id),
+            team2.as_ref().map(|t| t.id),
+            team1_score,
+            team2_score,
+            winner,
+            data.bracket_tree_id,
+            layer,
+            position,
+        ));
 }
 
 fn get_ffa_objects(
@@ -164,7 +162,9 @@ fn get_ffa_objects(
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
                     ui.label(egui::RichText::new(team2).color(team2_color));
                 });
-                if self.manipulator_data.is_tournament_manager && ui.button("Edit").clicked() {
+                if self.manipulator_data.user_data.is_tournament_manager()
+                    && ui.button("Edit").clicked()
+                {
                     set_manipulator(
                         &self.manipulator_data,
                         bracket.team1.clone(),
@@ -249,10 +249,7 @@ fn get_tree_objects(
             ui.set_min_size(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT));
             egui::Grid::new(format!(
                 "{} ({}) - grid - {}:{}",
-                self.bracket_tree_position,
-                self.tournament_name,
-                bracket.layer,
-                bracket.position
+                self.bracket_tree_position, self.tournament_name, bracket.layer, bracket.position
             ))
             .show(ui, |ui| {
                 let team1 = bracket
@@ -284,7 +281,7 @@ fn get_tree_objects(
                 ui.end_row();
                 ui.allocate_ui(egui::vec2(BRACKET_WIDTH, BRACKET_HEIGHT / 3.0), |ui| {
                     ui.vertical_centered(|ui| {
-                        if self.manipulator_data.is_tournament_manager
+                        if self.manipulator_data.user_data.is_tournament_manager()
                             && ui.button("Edit").clicked()
                         {
                             set_manipulator(

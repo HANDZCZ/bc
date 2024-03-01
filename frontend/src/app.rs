@@ -3,9 +3,9 @@ use std::{cell::RefCell, collections::HashMap, rc::Rc};
 use uuid::Uuid;
 
 use crate::{
-    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom,
-    signed_up_teams, teams, teams_playing_players, tournament_applications, tournaments,
-    tournaments_playing_players, user_edit, user_invites, users,
+    downloadable::Downloadable, games, manipulator, pan_zoom::PanZoom, signed_up_teams, teams,
+    teams_playing_players, tournament_applications, tournaments, tournaments_playing_players,
+    user_edit, user_invites, users,
 };
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
@@ -144,15 +144,16 @@ impl FrontendApp {
     }
 
     pub fn is_tournament_manager(&self) -> bool {
-        let user = &*self.user.get_data();
-        if self.token.is_some() && user.is_some() {
-            return user
-                .as_ref()
-                .unwrap()
-                .roles
-                .contains(&"Tournament Manager".to_string());
-        }
-        false
+        self.token.is_some() && self.user.is_tournament_manager()
+    }
+}
+
+impl Downloadable<users::User> {
+    pub fn is_tournament_manager(&self) -> bool {
+        let user = &*self.get_data();
+        user.as_ref()
+            .map(|user| user.roles.contains(&"Tournament Manager".to_string()))
+            .unwrap_or_default()
     }
 }
 
