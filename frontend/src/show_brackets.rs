@@ -77,7 +77,7 @@ struct ManipulatorData {
     user_data: Downloadable<users::User>,
     teams: Downloadable<Vec<teams::Team>>,
     manipulator_window: ManipulatorWindow,
-    token: Option<String>,
+    token: Rc<RefCell<Option<String>>>,
     url: String,
     bracket_tree_id: Uuid,
 }
@@ -94,7 +94,7 @@ fn set_manipulator(
 ) {
     data.manipulator_window
         .set_editor(BracketManipulator::new_with_data(
-            data.token.clone().unwrap(),
+            data.token.borrow().clone().unwrap(),
             data.url.clone(),
             data.teams.clone(),
             team1.as_ref().map(|t| t.id),

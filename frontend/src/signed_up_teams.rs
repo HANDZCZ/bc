@@ -102,7 +102,7 @@ pub fn signed_up_teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp
                                                 () => {
                                                     ehttp::fetch(
                                                         json_post(
-                                                            app.token.as_ref().unwrap(),
+                                                            &app.get_token().unwrap(),
                                                             &app.url,
                                                             "/teams/leave_tournament",
                                                             &ReqLeaveData {

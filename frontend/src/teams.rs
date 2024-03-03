@@ -32,9 +32,9 @@ pub fn teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                     ctx.clone(),
                 );
             }
-            if app.token.is_some() && ui.button("New").clicked() {
+            if app.get_token().is_some() && ui.button("New").clicked() {
                 app.manipulator_window.set_editor(TeamManipulator::new(
-                    app.token.clone().unwrap(),
+                    app.get_token().unwrap(),
                     app.url.clone(),
                 ));
             }
@@ -67,7 +67,7 @@ pub fn teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                 if is_manager && ui.button("Edit").clicked() {
                                     app.manipulator_window.set_editor(
                                         TeamManipulator::new_with_data(
-                                            app.token.clone().unwrap(),
+                                            app.get_token().unwrap(),
                                             app.url.clone(),
                                             team.id.to_string(),
                                             team.name.clone(),
@@ -80,7 +80,7 @@ pub fn teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                 {
                                     ehttp::fetch(
                                         json_post(
-                                            app.token.as_ref().unwrap(),
+                                            &app.get_token().unwrap(),
                                             &app.url,
                                             "/teams/delete",
                                             &OnlyId { id: team.id },
@@ -107,7 +107,7 @@ pub fn teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                             if is_manager && ui.button("Remove").clicked() {
                                                 ehttp::fetch(
                                                     json_post(
-                                                        app.token.as_ref().unwrap(),
+                                                        &app.get_token().unwrap(),
                                                         &app.url,
                                                         "/teams/players/remove",
                                                         &ReqData {
@@ -141,7 +141,7 @@ pub fn teams_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                             if is_manager && ui.button("Remove").clicked() {
                                                 ehttp::fetch(
                                                     json_post(
-                                                        app.token.as_ref().unwrap(),
+                                                        &app.get_token().unwrap(),
                                                         &app.url,
                                                         "/teams/managers/remove",
                                                         &ReqData {

@@ -33,7 +33,7 @@ pub fn user_invites_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
             }
             {
                 let user = &*app.user.get_data();
-                if app.token.is_some() && user.is_some() && ui.button("New").clicked() {
+                if app.get_token().is_some() && user.is_some() && ui.button("New").clicked() {
                     let user_id = user.as_ref().unwrap().id;
                     let users = (*app.users.get_data()).clone().unwrap_or_default();
                     let teams = (*app.teams.get_data())
@@ -43,7 +43,7 @@ pub fn user_invites_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                         .filter(|t| t.managers.iter().any(|m| m.id == user_id))
                         .collect();
                     app.manipulator_window.set_editor(NewInvite::new(
-                        app.token.clone().unwrap(),
+                        app.get_token().unwrap(),
                         app.url.clone(),
                         users,
                         teams,
@@ -86,7 +86,7 @@ pub fn user_invites_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                     ($url:expr, $team_id:expr, $accepted:expr) => {
                                         ehttp::fetch(
                                             json_post(
-                                                app.token.as_ref().unwrap(),
+                                                &app.get_token().unwrap(),
                                                 &app.url,
                                                 $url,
                                                 &ReqData {

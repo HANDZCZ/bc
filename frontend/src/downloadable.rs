@@ -91,7 +91,7 @@ where
         }
     }
 
-    pub fn start_download(&mut self, req: ehttp::Request, egui_context: egui::Context) {
+    pub fn start_download(&self, req: ehttp::Request, egui_context: egui::Context) {
         {
             let state: &DownloadState = &self.state.lock().unwrap();
             if matches!(state, DownloadState::InProgress) {

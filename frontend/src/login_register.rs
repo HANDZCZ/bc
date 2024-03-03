@@ -19,7 +19,7 @@ pub fn login_register_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp)
             );
 
             fn fire_req(url: String, app: &mut crate::app::FrontendApp, ctx: &egui::Context) {
-                app.token = None;
+                *app.token.borrow_mut() = None;
                 app.login_register.start_download(
                     ehttp::Request::json(
                         url,
@@ -45,7 +45,7 @@ pub fn login_register_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp)
                 |_ui, _| {
                     if let Some(response) = app.login_register.get_response() {
                         if let Some(token) = response.headers.get("authorization") {
-                            match &app.token {
+                            match app.get_token() {
                                 Some(old_token) if old_token == token => {}
                                 _ => {
                                     let mut req =
@@ -54,7 +54,7 @@ pub fn login_register_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp)
                                     app.user.start_download(req, ctx.clone());
                                 }
                             }
-                            app.token = Some(token.into());
+                            *app.token.borrow_mut() = Some(token.into());
                         }
                     }
                 },

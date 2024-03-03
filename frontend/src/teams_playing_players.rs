@@ -89,7 +89,7 @@ pub fn teams_playing_players_ui(ctx: &egui::Context, app: &mut crate::app::Front
 
                                     ehttp::fetch(
                                         json_post(
-                                            app.token.as_ref().unwrap(),
+                                            &app.get_token().unwrap(),
                                             &app.url,
                                             "/teams/leave_tournament",
                                             &ReqData {
@@ -133,7 +133,7 @@ pub fn teams_playing_players_ui(ctx: &egui::Context, app: &mut crate::app::Front
                                                 {
                                                     ehttp::fetch(
                                                         json_post(
-                                                            app.token.as_ref().unwrap(),
+                                                            &app.get_token().unwrap(),
                                                             &app.url,
                                                             "/teams/players/set_playing",
                                                             &ReqData {

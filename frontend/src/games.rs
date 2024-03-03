@@ -28,7 +28,7 @@ pub fn games_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
             let is_tournament_manager = app.is_tournament_manager();
             if is_tournament_manager && ui.button("New").clicked() {
                 app.manipulator_window.set_editor(GameManipulator::new(
-                    app.token.clone().unwrap(),
+                    app.get_token().unwrap(),
                     app.url.clone(),
                 ));
             }
@@ -59,7 +59,7 @@ pub fn games_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                     if ui.button("Edit").clicked() {
                                         app.manipulator_window.set_editor(
                                             GameManipulator::new_with_data(
-                                                app.token.clone().unwrap(),
+                                                app.get_token().unwrap(),
                                                 app.url.clone(),
                                                 game.id.to_string(),
                                                 game.name.clone(),
@@ -71,7 +71,7 @@ pub fn games_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                     if ui.button("Delete").clicked() {
                                         ehttp::fetch(
                                             json_post(
-                                                app.token.as_ref().unwrap(),
+                                                &app.get_token().unwrap(),
                                                 &app.url,
                                                 "/games/delete",
                                                 &OnlyId { id: game.id },

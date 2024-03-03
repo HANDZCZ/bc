@@ -12,7 +12,7 @@ use crate::{
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct FrontendApp {
-    pub token: Option<String>,
+    pub token: Rc<RefCell<Option<String>>>,
     pub url: String,
     #[serde(skip)]
     pub manipulator_window: manipulator::ManipulatorWindow,
@@ -86,7 +86,7 @@ pub fn json_post<T: serde::Serialize>(
 impl Default for FrontendApp {
     fn default() -> Self {
         Self {
-            token: None,
+            token: Rc::new(RefCell::new(None)),
             games: Downloadable::new(),
             teams: Downloadable::new(),
             tournaments: Downloadable::new(),
@@ -134,7 +134,7 @@ impl FrontendApp {
             app.url = format!("{}/api", cc.integration_info.web_info.location.origin);
         }
 
-        if let Some(token) = &app.token {
+        if let Some(token) = app.get_token() {
             let mut req = ehttp::Request::get(format!("{}/users/self", app.url));
             req.headers.insert("authorization", token.clone());
             app.user.start_download(req, cc.egui_ctx.clone());
@@ -144,7 +144,11 @@ impl FrontendApp {
     }
 
     pub fn is_tournament_manager(&self) -> bool {
-        self.token.is_some() && self.user.is_tournament_manager()
+        self.token.borrow().is_some() && self.user.is_tournament_manager()
+    }
+
+    pub fn get_token(&self) -> Option<String> {
+        self.token.borrow().clone()
     }
 }
 
@@ -196,7 +200,7 @@ impl eframe::App for FrontendApp {
                 let mut logout_clicked = false;
                 ui.with_layout(
                     egui::Layout::right_to_left(egui::Align::RIGHT),
-                    |ui| match self.token {
+                    |ui| match *self.token.borrow() {
                         Some(_) => {
                             logout_clicked = ui.button("Logout").clicked();
                             let mut refetch_user = false;
@@ -227,7 +231,7 @@ impl eframe::App for FrontendApp {
                                     if clicked {
                                         let user_editor =
                                             Rc::new(RefCell::new(user_edit::EditUser::new(
-                                                self.token.clone().unwrap(),
+                                                self.get_token().unwrap(),
                                                 self.url.clone(),
                                                 user.nick.clone(),
                                                 user.email.clone(),
@@ -250,7 +254,7 @@ impl eframe::App for FrontendApp {
                                 let mut req =
                                     ehttp::Request::get(format!("{}/users/self", self.url));
                                 req.headers
-                                    .insert("authorization", self.token.clone().unwrap());
+                                    .insert("authorization", self.get_token().unwrap());
                                 self.user.start_download(req, ctx.clone());
                             }
                         }
@@ -263,14 +267,14 @@ impl eframe::App for FrontendApp {
                     self.user_editor = None;
                     self.manipulator_window.clear();
                     self.user.clear_data();
-                    self.token = None;
+                    *self.token.borrow_mut() = None;
                 }
             });
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            if self.token.is_none() {
+            if self.token.borrow().is_none() {
                 crate::login_register::login_register_ui(ctx, self);
             }
             crate::games::games_ui(ctx, self);

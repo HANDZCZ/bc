@@ -47,7 +47,7 @@ pub fn users_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                 if app.is_tournament_manager() && ui.button("Delete").clicked() {
                                     ehttp::fetch(
                                         json_post(
-                                            app.token.as_ref().unwrap(),
+                                            &app.get_token().unwrap(),
                                             &app.url,
                                             "/users/delete",
                                             &OnlyId { id: user.id },

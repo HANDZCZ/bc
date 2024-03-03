@@ -73,7 +73,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
             }
             let is_tournament_manager = app.is_tournament_manager();
             if is_tournament_manager && ui.button("New").clicked() {
-                app.manipulator_window.set_editor(TournamentManipulator::new(app.token.clone().unwrap(), app.url.clone(), app.games.clone()));
+                app.manipulator_window.set_editor(TournamentManipulator::new(app.get_token().unwrap(), app.url.clone(), app.games.clone()));
             }
             let mut tree_to_show = None;
             app.tournaments.show_ui(
@@ -117,7 +117,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                             if is_tournament_manager {
                                 if ui.button("Edit").clicked() {
                                     app.manipulator_window.set_editor(TournamentManipulator::new_with_data(
-                                        app.token.clone().unwrap(),
+                                        app.get_token().unwrap(),
                                         app.url.clone(),
                                         app.games.clone(),
                                         tournament.id,
@@ -134,7 +134,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
                                 if ui.button("Delete").clicked() {
                                     ehttp::fetch(
                                         json_post(
-                                            app.token.as_ref().unwrap(),
+                                            &app.get_token().unwrap(),
                                             &app.url,
                                             "/tournaments/delete",
                                             &OnlyId { id: tournament.id },
@@ -211,7 +211,7 @@ pub fn tournaments_ui(ctx: &egui::Context, app: &mut crate::app::FrontendApp) {
 
                                                         if is_tournament_manager && ui.button("Edit").clicked() {
                                                             app.manipulator_window.set_editor(BracketManipulator::new_with_data(
-                                                          app.token.clone().unwrap(),
+                                                          app.get_token().unwrap(),
                                                      app.url.clone(),
                                                                 app.teams.clone(),
                                                                 bracket.team1.as_ref().map(|t| t.id),
