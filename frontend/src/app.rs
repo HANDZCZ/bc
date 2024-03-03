@@ -197,12 +197,12 @@ impl eframe::App for FrontendApp {
                     ctx.memory_mut(|mem| mem.reset_areas());
                 }
 
-                let mut logout_clicked = false;
+                let mut logout_user = false;
                 ui.with_layout(
                     egui::Layout::right_to_left(egui::Align::RIGHT),
                     |ui| match *self.token.borrow() {
                         Some(_) => {
-                            logout_clicked = ui.button("Logout").clicked();
+                            logout_user = ui.button("Logout").clicked();
                             let mut refetch_user = false;
                             match &*self.user.get_data() {
                                 Some(user) => {
@@ -248,6 +248,11 @@ impl eframe::App for FrontendApp {
                                 }
                                 None => {
                                     ui.label("Fetching data");
+                                    if let Some(response) = self.user.get_response() {
+                                        if response.status == 401 || response.status == 400 {
+                                            logout_user = true;
+                                        }
+                                    }
                                 }
                             };
                             if refetch_user {
@@ -263,7 +268,7 @@ impl eframe::App for FrontendApp {
                         }
                     },
                 );
-                if logout_clicked {
+                if logout_user {
                     self.user_editor = None;
                     self.manipulator_window.clear();
                     self.user.clear_data();
