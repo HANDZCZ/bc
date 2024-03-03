@@ -180,18 +180,16 @@ where
             let mut res = svc.call(req).await?;
 
             let inner_data = ext.borrow();
-            if inner_data.changed {
-                if let Some(user_data) = inner_data.data.as_ref() {
+            if let Some(user_data) = inner_data.data.as_ref() {
+                if inner_data.changed {
                     let token = encode_jwt(user_data.to_owned(), &encoding_key, token_ttl);
                     res.headers_mut().insert(
                         header::AUTHORIZATION,
                         HeaderValue::from_str(&format!("Bearer {token}")).unwrap(),
                     );
                 } else {
-                    res.headers_mut().remove(header::AUTHORIZATION);
+                    res.headers_mut().insert(header::AUTHORIZATION, auth_header_value.unwrap());
                 }
-            } else if let Some(val) = auth_header_value {
-                res.headers_mut().insert(header::AUTHORIZATION, val);
             }
 
             Ok(res)
