@@ -13,7 +13,7 @@ backend/backend.md
 Testování backendu je výhradně děláno přes unit testy.
 Pro vytváření unit testu je ve frameworku actix-web vytvořeno plno pomocných funkcí.
 Spolu s vlastními implementacemi různých testovacích a pomocných funkcí probíhá testování.
-Vlastní implementace těchto funkcí mohou být nalezeny v souboru [tests.rs](https://raw.githubusercontent.com/HANDZCZ/bc/main/backend/src/tests.rs) v hlavním zdrojovém adresáři.
+Vlastní implementace těchto funkcí mohou být nalezeny v souboru [tests.rs](https://github.com/HANDZCZ/bc/blob/main/backend/src/tests.rs) v hlavním zdrojovém adresáři.
 
 ```{.text .linenos}
 ┌─« bc/backend on  main

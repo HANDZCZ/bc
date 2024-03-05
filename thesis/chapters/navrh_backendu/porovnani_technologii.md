@@ -17,4 +17,4 @@ a jako poslední byly porovnány latence P75, které jsou uvedeny v tabulce [-@t
 Tyto tabulky a grafy byly vytvořeny pomocí autorem napsaných skriptů,
 které lze najít [zde](https://github.com/HANDZCZ/bc/tree/main/thesis/utils).
 Tyto skripty je poté nutné vložit do konzole prohlížeče na stránce [Web Frameworks Benchmark](https://web-frameworks-benchmark.netlify.app/result).
-Pro aplikaci stejných filtrů je nutno použít stejný odkaz jako je uveden ve zdrojích (zdroj [-@web_frameworks_benchmark_tables]).
+Pro aplikaci stejných filtrů je nutno použít stejný odkaz jako je uveden ve zdroji [-@web_frameworks_benchmark_tables].

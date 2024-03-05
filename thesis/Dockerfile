@@ -3,7 +3,7 @@ FROM archlinux:base-devel-20240101.0.204074
 # sync package databases
 RUN pacman -Sy
 
-# setupt user account
+# setup user account
 RUN useradd -Um -s /bin/bash user
 RUN sed -i 's/# %wheel ALL=(ALL:ALL) NOPASSWD: ALL/%wheel ALL=(ALL:ALL) NOPASSWD: ALL/g' /etc/sudoers
 RUN usermod -aG wheel user
@@ -41,5 +41,5 @@ COPY --chown=user:user utils/fonts .local/share/fonts
 RUN mkdir thesis
 WORKDIR /home/user/thesis
 
-# frop user in bash
+# drop user in bash
 CMD [ "bash" ]
