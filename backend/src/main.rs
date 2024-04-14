@@ -32,8 +32,15 @@ struct Opts {
     token_ttl: u64,
 }
 
-async fn def(req: actix_web::HttpRequest) -> impl actix_web::Responder {
+#[cfg(debug_assertions)]
+async fn default_handler(req: actix_web::HttpRequest) -> impl actix_web::Responder {
     actix_web::HttpResponse::NotFound().body(format!("{:#?}", req))
+}
+#[cfg(not(debug_assertions))]
+async fn default_handler(_: actix_web::HttpRequest) -> impl actix_web::Responder {
+    actix_web::HttpResponse::NotFound()
+        .insert_header(actix_web::http::header::ContentType::json())
+        .body("{}")
 }
 
 #[actix_web::main]
@@ -74,7 +81,7 @@ async fn main() -> std::io::Result<()> {
             .configure(teams::configure)
             .configure(users::configure)
             .service(web::resource("/test").to(test))
-            .default_service(web::to(def))
+            .default_service(web::to(default_handler));
     })
     .bind(server_address)
     .expect("Failed to bind server to address")
