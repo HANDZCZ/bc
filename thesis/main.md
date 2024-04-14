@@ -75,6 +75,10 @@ header-includes: |
     \usepackage{pdflscape}
     \newcommand{\blandscape}{\begin{landscape}}
     \newcommand{\elandscape}{\end{landscape}}
+
+    % put footnotes at the bottom of the page
+    % and number the from one on each page
+    \usepackage[bottom,perpage]{footmisc}
     ```
 
 includes-before-document: |
