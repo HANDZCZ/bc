@@ -5,7 +5,7 @@ Pro spuštění aplikace pomocí kontejnerů je potřeba mít nainstalovaný ně
 který umožní spouštění a manipulaci kontejnerů, jako je například Docker.
 
 Nejprve je potřeba naklonovat kódový repozitář.
-K naklonování kódového repozitáře je potřeba mít nainstalovaní git.
+K naklonování kódového repozitáře je potřeba mít nainstalovaný git.
 Poté jen stačí naklonovat git repozitář pomocí příkazu níže.
 
 ```{.bash}
