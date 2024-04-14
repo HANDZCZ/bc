@@ -653,11 +653,6 @@ $endif$
 $if(has-frontmatter)$
 \mainmatter
 $endif$
-
-% full size horizontal rule
-\let\OldRule\rule
-\renewcommand{\rule}[2]{\OldRule{\linewidth}{#2}}
-
 $body$
 
 $if(has-frontmatter)$
