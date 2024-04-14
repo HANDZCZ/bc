@@ -60,7 +60,7 @@ async fn main() -> std::io::Result<()> {
         .unwrap();
 
     HttpServer::new(move || {
-        App::new()
+        let app = App::new()
             .wrap(GrantsMiddleware::with_extractor(jwt_stuff::extract))
             .wrap(JwtMiddleware::new(jwt_secret.clone(), token_ttl))
             .wrap(NormalizePath::new(TrailingSlash::Trim))
@@ -80,8 +80,17 @@ async fn main() -> std::io::Result<()> {
             .configure(brackets::configure)
             .configure(teams::configure)
             .configure(users::configure)
-            .service(web::resource("/test").to(test))
             .default_service(web::to(default_handler));
+
+        #[cfg(debug_assertions)]
+        {
+            app.service(web::resource("/jwt_info").to(jwt_info))
+        }
+
+        #[cfg(not(debug_assertions))]
+        {
+            app
+        }
     })
     .bind(server_address)
     .expect("Failed to bind server to address")
@@ -89,6 +98,7 @@ async fn main() -> std::io::Result<()> {
     .await
 }
 
-async fn test(jwt: jwt_stuff::AuthData) -> impl actix_web::Responder {
+#[cfg(debug_assertions)]
+async fn jwt_info(jwt: jwt_stuff::AuthData) -> impl actix_web::Responder {
     macros::resp_200_Ok_json!(jwt.into_inner().borrow().get_data())
 }
