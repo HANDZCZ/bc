@@ -2,7 +2,7 @@
 ### Pohled teams_with_players_and_managers {#sec:view_teams_with_players_and_managers}
 
 Pohled teams_with_players_and_managers slouží ke přehlednějšímu zobrazení a jednoduššímu načtení dat.
-Jeho hlavním úkolem je zobrazit jací hráči a manažeři patří do týmu.
+Jeho hlavním úkolem je zobrazit, jací hráči a manažeři patří do týmu.
 Tento pohled umožňuje jednoduché načtení a vyhledání dat backendem.
 
 ![Pohled teams_with_players_and_managers](../../../../pictures/databaze/views/teams_with_players_and_managers.png){ height=14% }

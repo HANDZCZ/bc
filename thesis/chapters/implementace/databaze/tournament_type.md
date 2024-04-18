@@ -108,7 +108,7 @@ l1p0 -> l0p0: teamX wins
 l1p1 -> l0p0: teamX wins
 ```
 
-V turnaj typu OneBracketTwoFinalPositions se na konci stromu vždy rozhodují dvě finální pozice.
+V turnaji typu OneBracketTwoFinalPositions se na konci stromu vždy rozhodují dvě finální pozice.
 Obrázek níže znázorňuje tento typ turnaje pro 4 týmy.
 
 ```{.d2 #fig:db_type_tournament_type_OneBracketTwoFinalPositions caption="Znázornění typu turnaje OneBracketTwoFinalPositions"}
@@ -171,7 +171,7 @@ l0p0 -> winner: team1 wins
 l0p0 -> 2nd_place: team3 loses
 ```
 
-V turnaj typu OneBracketOneFinalPositions se na konci stromu vždy rozhoduje pouze jedna finální pozice.
+V turnaji typu OneBracketOneFinalPositions se na konci stromu vždy rozhoduje pouze jedna finální pozice.
 Obrázek níže znázorňuje tento typ turnaje pro 4 týmy.
 
 ```{.d2 #fig:db_type_tournament_type_OneBracketOneFinalPositions caption="Znázornění typu turnaje OneBracketOneFinalPositions"}

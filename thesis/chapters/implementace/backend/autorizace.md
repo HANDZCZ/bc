@@ -65,7 +65,7 @@ fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
         // pokud ano získáme jeho id
         Ok(LoggedInUser { id: user_data.id })
     } else {
-        // pokud ne tak vrátíme chybu
+        // pokud ne, tak vrátíme chybu
         let err = common::Error::new("not logged in");
         Err(JsonError::new(err, StatusCode::UNAUTHORIZED))
     };
@@ -117,8 +117,8 @@ fn from_request(req: &HttpRequest, _: &mut Payload) -> Self::Future {
 : Implementace LoggedInUserWithAuthorities s popiskama {#lst:struct_loggedinuserwithauthorities_with_comments}
 
 
-Makro check_user_authority slouží ke kontrole jestli uživatel vlastní danou autoritu.
-Pokud uživatel vlastní danou autoritu tak se nic nestane, ale pokud danou autoritu nevlastní tak se vrátí chyba.
+Makro check_user_authority slouží ke kontrole, jestli uživatel vlastní danou autoritu.
+Pokud uživatel vlastní danou autoritu, tak se nic nestane, ale pokud danou autoritu nevlastní, tak se vrátí chyba.
 
 ```{.rust .linenos}
 #[macro_export]

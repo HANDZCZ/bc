@@ -2,17 +2,17 @@
 ## Abstrakt {.unlisted .unnumbered}
 
 Cílem bakalářské práce je návrh a implementace backendu informačního systému pro správu e-sportových turnajů.
-Práce zabývá tím co je to e-sport,
+Práce se zabývá tím, co je to e-sport,
 jak lze využít informační systém při správě e-sportových turnajů
 a jakou roli hraje backend v informačním systému.
 Probírána jsou i různá témata,
-které je nutné brát v potaz při návrhu a implementaci backendu.
+která je nutné brát v potaz při návrhu a implementaci backendu.
 Mezi hlavní témata, která jsou probírána patří analýza požadavků,
 výběr frameworku a architektury backendu, zabezpečení a různé typy autentizace.
 Tato témata jsou následně využita v implementační části backendu a databáze.
 Práce je primárně určena pro studenty či vývojáře,
 kteří se zabývají softwarovým inženýrstvím nebo informačními technologiemi
-a mají zájmem o management e-sportových turnajů.
+a mají zájem o management e-sportových turnajů.
 
 **Klíčová slova:** Rust, API, REST API, Actix, Actix Web, Backend, Server, framework, esport, e-sport, turnaje
 

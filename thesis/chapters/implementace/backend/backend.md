@@ -1,7 +1,7 @@
 
 ## Backendová část
 
-Tato část se zabývá implementací serverový funkcí.
+Tato část se zabývá implementací serverových funkcí.
 
 ``` {.include}
 jwt.md

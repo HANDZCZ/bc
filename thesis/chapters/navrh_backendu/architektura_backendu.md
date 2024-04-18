@@ -2,8 +2,8 @@
 ## Architektura backendu
 
 Následující text se bude zabývat jednotlivými architekturami, které se dají použít při vytváření backendu.
-Hlavně se zaměří na dvě architektury monolit a mikroslužby,
-[@fig:monoliths_and_microservices] znázorňuje jejich škálování a strukturu.
+Hlavně se zaměří na dvě architektury, a to na monolit a mikroslužby.
+Obrázek [-@fig:monoliths_and_microservices] znázorňuje jejich škálování a strukturu.
 
 ![Monolity a Mikroslužby [@microservices_fowler]](../../pictures/Monoliths and Microservices.png){#fig:monoliths_and_microservices}
 
@@ -61,7 +61,7 @@ jako jsou stránky HTML nebo rozhraní REST API.
 Monolitická aplikace se obvykle skládá z databáze, klientského uživatelského rozhraní a serverové aplikace. [@review_of_microservices_and_monolithic_architecture; @migration_of_monolithic_systems_to_microservice_architecture]
 
 Největší výhodou monolitické architektury je její jednoduchost oproti distribuovaným aplikacím. [@monolithic_vs_microservice_architecture_ieee]
-Monolitické aplikace mnohem snadněji testují, nasazují, ladí a monitorují. [@monolithic_vs_microservice_architecture_ieee; @migration_of_monolithic_systems_to_microservice_architecture]
+Monolitické aplikace se mnohem snadněji testují, nasazují, ladí a monitorují. [@monolithic_vs_microservice_architecture_ieee; @migration_of_monolithic_systems_to_microservice_architecture]
 Všechna data jsou uchovávána v jedné databázi bez nutnosti jejich synchronizace
 a veškerá interní komunikace probíhá prostřednictvím vnitroprocesových mechanismů. [@monolithic_vs_microservice_architecture_ieee]
 Díky tomu je tento proces rychlý a nedochází u něj k problémům typickým pro komunikaci mezi procesy. [@monolithic_vs_microservice_architecture_ieee]

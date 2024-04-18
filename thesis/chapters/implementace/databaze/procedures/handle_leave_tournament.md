@@ -2,10 +2,10 @@
 ### Funkce handle_leave_tournament
 
 Tato funkce obstarává odstranění týmu z turnaje a vrací typ boolean.
-Když tato funkce vrátí hodnotu true, tak vše proběhlo v pořádku a není potřeba, žádné manuální úpravy.
+Když tato funkce vrátí hodnotu true, tak vše proběhlo v pořádku a není potřeba žádné manuální úpravy.
 Pokud ale tato funkce vrátí hodnotu false, tak to znamená, že turnaj již začal a byly vygenerovány brackety, které je potřeba upravit manuálně.
 
-Nejdříve je zjištěno, jestli tým existuje, pokud neexistuje tak se vrátí chyba.
+Nejdříve je zjištěno, jestli tým existuje, pokud neexistuje, tak se vrátí chyba.
 Dále se zjistí, jestli uživatel, který zavolal tuto funkci, je manažerem týmu nebo manažerem turnaje,
 pokud není, tak vrátí chybu.
 Poslední kontrola je, zda jsou přihlášky uzavřeny,

@@ -10,7 +10,7 @@ Jejím hlavním úkolem je umožnit backendu identifikovat uživatele a uživate
 
 Nick slouží jako přezdívka pro uživatele, tento termín je hlavně používán v herní komunitě.
 
-Salt a hash jsou použity při ověřování uživatele při přihlášen.
+Salt a hash jsou použity k ověření uživatele při přihlášení.
 
 Email je nejen použit při přihlašování, ale také při registraci.
 Slouží jako unikátní identifikátor uživatele.

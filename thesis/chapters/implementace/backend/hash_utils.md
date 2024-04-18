@@ -4,7 +4,7 @@
 Pro registraci a přihlášení uživatele je použit hašovací algoritmus argon2.
 Pro jednodušší použití byly vytvořeny pomocné hašovací funkce.
 
-Jednou z těchto funkcí je funkce make_salt, která vytvoří unikátní sůl pro hashování.
+Jednou z těchto funkcí je funkce make_salt, která vytvoří unikátní sůl pro hašování.
 Tato sůl je 128 znaků dlouhá a každý znak v této sekvenci může nabýt jedné ze 71 hodnot.
 Jinak řečeno tento řetězec může nabýt $9.1426\cdot10^{236}$ unikátních hodnot.
 
@@ -31,7 +31,7 @@ pub fn make_salt() -> String {
 
 Další funkce jsou na ověřování a hašování.
 Hašovací funkce z hesla a soli vytvoří hash o 32 bytech.
-Ověřovací funkce ověřuje hash oproti zadanému heslu a soli a vrací jestli jsou stejné.
+Ověřovací funkce ověřuje hash oproti zadanému heslu a soli a vrací, jestli jsou stejné.
 
 ```{.rust .linenos}
 pub fn make_hash(password: &str, salt: &str) -> [u8; 32] {

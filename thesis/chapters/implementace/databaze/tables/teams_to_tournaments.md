@@ -2,7 +2,7 @@
 ### Tabulka teams_to_tournaments {#sec:table_teams_to_tournaments}
 
 Tabulka teams_to_tournaments slouží ke spojení týmů a turnajů.
-Jejím hlavním úkolem je umožnit backendu zjistit jaké týmy jsou přihlášeny na jaké turnaje.
+Jejím hlavním úkolem je umožnit backendu zjistit, jaké týmy jsou přihlášeny na jaké turnaje.
 Tato tabulka neobsahuje týmy, které teprve podaly přihlášku, ale ty které už mají potvrzenou účast.
 
 ![Tabulka teams_to_tournaments](../../../../pictures/databaze/tables/teams_to_tournaments.png){ height=8.5% }

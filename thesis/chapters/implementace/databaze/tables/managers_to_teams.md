@@ -2,7 +2,7 @@
 ### Tabulka managers_to_teams {#sec:table_managers_to_teams}
 
 Tabulka managers_to_teams slouží ke spojení uživatelů a týmů.
-Jejím hlavním úkolem je umožnit backendu zjistit jací uživatelé jsou manažeři daného týmu.
+Jejím hlavním úkolem je umožnit backendu zjistit, jací uživatelé jsou manažeři daného týmu.
 Tato tabulka obsahuje jen manažery, kteří již potvrdily pozvánku do týmu.
 
 ![Tabulka managers_to_teams](../../../../pictures/databaze/tables/managers_to_teams.png){ height=8.5% }

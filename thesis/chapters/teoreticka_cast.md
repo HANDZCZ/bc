@@ -1,7 +1,7 @@
 
 # Teoretická část
 
-Text v této kapitole se bude zabývat tím co to jsou e-sportové turnaje a rolí informačního systému v jejich správě.
+Text v této kapitole se bude zabývat tím, co to jsou e-sportové turnaje a rolí informačního systému v jejich správě.
 
 ## E-sportové turnaje a jejich správa
 
@@ -22,7 +22,7 @@ od registrace týmů a hráčů po sledování průběhu zápasů a poskytován�
 ## Informační systémy a jejich role ve správě turnajů
 
 Informační systémy jsou softwarové a hardwarové systémy, které podporují datově náročné aplikace.
-Obsahují komplexní a integrované sady prvků, procesů a technologií, která slouží k sběru, ukládání, zpracování, analýze a distribuci informací v organizaci nebo jiném kontextu. [@basic_concepts_of_information_systems; @information_system_britannica; @definition_of_information_systems]
+Obsahují komplexní a integrované sady prvků, procesů a technologií, které slouží ke sběru, ukládání, zpracování, analýze a distribuci informací v organizaci nebo jiném kontextu. [@basic_concepts_of_information_systems; @information_system_britannica; @definition_of_information_systems]
 
 V éře informačního věku se neustále objevují různé informační systémy.
 Informace v reálném světě se prostřednictvím digitalizace mění v informace obsažené v informačních systémech,

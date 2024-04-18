@@ -10,7 +10,7 @@ které umístí odesílatel do hlavičky požadavku uživatelské jméno a heslo
 Uživatelské jméno a heslo jsou zakódovány pomocí Base64,
 toto kódování převádí uživatelské jméno a heslo na sadu 64 znaků,
 aby byl zajištěn bezpečný přenos.
-Tato metoda nevyžaduje soubory cookie, identifikaci relace,
+Tato metoda nevyžaduje soubory cookies, identifikaci relace,
 přihlašovací stránky a další podobné možnosti identifikace uživatele,
 protože využívá samotnou hlavičku HTTP. [@authentication_ultimate_guide; @authentication_methods_hubspot; @authentication_methods_restcase; @authentication_methods_techtarget]
 
@@ -27,16 +27,16 @@ Tento typ útoku se označuje jako replay útok. [@authentication_ultimate_guide
 
 ### Autentizace pomocí souborů cookies
 
-Autentizace pomocí souborů cookies je model ověřování komunikace mezi relací na straně serveru a souborem cookie prohlížeče (na straně klienta). [@authentication_ultimate_guide]
+Autentizace pomocí souborů cookies je model ověřování komunikace mezi relací na straně serveru a souborem cookies prohlížeče (na straně klienta). [@authentication_ultimate_guide]
 
 Webové stránky a webové aplikace používající soubory cookies k ověřování uživatelů,
 nejprve požádají uživatele, aby se přihlásil na webové stránky.
 Po přihlášení je vytvořen unikátní malý textový soubor.
 Tento soubor je zvláštním identifikátorem spojeným s účtem uživatele.
-Zařízení uživatele pak tento soubor cookie obdrží a uloží do svého prohlížeče. [@cookie_based_auth_dev]
+Zařízení uživatele pak tento soubor cookies obdrží a uloží do svého prohlížeče. [@cookie_based_auth_dev]
 
 Webové stránky mohou uživatele ověřit, aniž by se musel znovu přihlašovat,
-díky tomu, že při dalších návštěvách odešle tento soubor cookie. [@cookie_based_auth_dev]
+díky tomu, že při dalších návštěvách odešle tento soubor cookies. [@cookie_based_auth_dev]
 
 ![Autentizace pomocí souborů cookies [@authentication_ultimate_guide]](../../pictures/cookie_based_auth.png){#fig:cookie_based_auth}
 
@@ -50,7 +50,7 @@ aby nedošlo k ohrožení bezpečnosti uživatelského účtu. [@cookie_based_au
 
 ### Ověření pomocí tokenu
 
-Ověření pomocí souborů cookie má několik nevýhod,
+Ověření pomocí souborů cookies má několik nevýhod,
 včetně obtížné údržby na straně serveru,
 zejména v distribuovaných systémech.
 To vedlo k hledání efektivnější alternativy,

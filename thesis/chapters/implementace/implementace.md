@@ -1,7 +1,7 @@
 
 # Implementace
 
-Následující text se bude zabývat tím jak byly implementovány jednotlivé části backendu.
+Následující text se bude zabývat tím, jak byly implementovány jednotlivé části backendu.
 
 ``` {.include}
 databaze/databaze.md

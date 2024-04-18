@@ -7,10 +7,11 @@ Jejím hlavním úkolem je umožnit backendu získat data o průběhu turnaje ne
 ![Tabulka brackets](../../../../pictures/databaze/tables/brackets.png){ height=23% }
 
 Team1 a team2 vyjadřují id navázaných týmu ([@sec:table_teams]).
-Když je hodnota null tak ještě tým nepostoupil do tohoto bracketu.
+Když je hodnota null, tak ještě tým nepostoupil do tohoto bracketu.
 
-Winner říká jaký tým vyhrál pokud je hodnota true tak vyhrál první tým,
-pokud je hodnota false tak vyhrál druhý tým a pokud je hodnota null tak ještě nevyhrál žádný tým.
+Winner říká jaký tým vyhrál.
+Pokud je hodnota true, tak vyhrál první tým,
+pokud je hodnota false, tak vyhrál druhý tým, a pokud je hodnota null, tak ještě nevyhrál žádný tým.
 
 Team1_score a team2_score udává score kterého dosáhly týmy v zápasu.
 

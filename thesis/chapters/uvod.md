@@ -5,8 +5,8 @@ E-sport, moderní fenomén, který rozproudil vášně a soutěživost našich �
 přináší s sebou nejen radost ze hraní, ale i nespočet výzev v oblasti správy a organizace turnajů.
 Je nezbytné vytvářet efektivní informační systémy pro správu těchto událostí.
 Tato práce se zaměřuje na návrh a implementaci backendového systému pro podporu správy e-sportových turnajů,
-přičemž se snaží uspokojit rostoucí poptávkou po profesionálních,
-bezproblémově organizovaných turnajích a dostatečnou technologickou infrastrukturou.
+přičemž se snaží uspokojit rostoucí poptávku po profesionálních,
+bezproblémově organizovaných turnajích s dostatečnou technologickou infrastrukturou.
 
 Rozvoj e-sportu přináší s sebou unikátní výzvy,
 od správy velkého množství údajů o hráčích a týmech po zajištění plynulého průběhu turnajů.

@@ -2,7 +2,7 @@
 ### Tabulka managers_to_teams_invites {#sec:table_managers_to_teams_invites}
 
 Tabulka managers_to_teams_invites slouží ke spojení uživatelů a týmů pro pozvánky.
-Jejím hlavním úkolem je umožnit backendu zjistit jací uživatelé jsou pozvání do týmu jako manažeři.
+Jejím hlavním úkolem je umožnit backendu zjistit, jací uživatelé jsou pozvání do týmu jako manažeři.
 Tato tabulka obsahuje jen pozvánky, které ještě nebyly přijaty.
 
 ![Tabulka managers_to_teams_invites](../../../../pictures/databaze/tables/managers_to_teams_invites.png){ height=8.5% }

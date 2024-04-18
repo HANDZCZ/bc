@@ -1,7 +1,7 @@
 
 ## Zabezpečení
 
-Následující texty probírají nejčastějšími bezpečnostními problémy a jaký mohou mít vliv na zabezpečení.
+Následující texty probírají nejčastější bezpečnostní problémy a jejich vliv na zabezpečení.
 
 ### SQL injection
 
@@ -17,7 +17,7 @@ OWASP Top 10 řadí injekce jako třetí nejzávažnější bezpečnostní rizik
 Podobně i společnost MITRE zveřejňuje žebříček CWE Top 25 Most Dangerous Software Weaknesses.
 V tomto žebříčku zaujímají SQL injekce rovněž třetí místo. [@sql_injection_attack_detection]
 
-SQL injection umožňuje útočníkovy manipulovat s dotazy aplikace na databázi.
+SQL injection umožňuje útočníkovi manipulovat s dotazy aplikace na databázi.
 Obvykle umožňuje útočníkovi zobrazit data, ke kterým by neměl mít přístup.
 Může jít například o data patřící jiným uživatelům, přihlašovací údaje,
 struktury tabulek nebo jakákoli jiná data, ke kterým má aplikace přístup.

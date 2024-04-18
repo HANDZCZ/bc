@@ -6,10 +6,10 @@ Tato kapitola se zabývá identifikací potřeb uživatelů a specifikací poža
 ## Identifikace potřeb uživatelů
 
 Současný výzkum e-sportu je velice rozmanitý a týká se celého ekosystému e-sportu, [@fig:overview_of_the_esport_ecosystem_and_stakeholders] shrnuje ekosystém.
-Následující text se bude zabývat potřeb jednotlivých aktéru v tomto ekosystému,
+Následující text se bude zabývat potřebami jednotlivých aktéru v tomto ekosystému,
 bude zaměřen na tři hlavní subjekty, které provozují a využívají platformu e-sportových turnajů: organizátory turnajů, diváky a profesionální týmy a hráče. [@esport_business_and_information_systems_engineering]
 
-![Přehled ekosystému esportu a zúčastněných stran [@esport_business_and_information_systems_engineering]](../pictures/Overview of the esport ecosystem and stakeholders.png){#fig:overview_of_the_esport_ecosystem_and_stakeholders}
+![Přehled ekosystému e-sportu a zúčastněných stran [@esport_business_and_information_systems_engineering]](../pictures/Overview of the esport ecosystem and stakeholders.png){#fig:overview_of_the_esport_ecosystem_and_stakeholders}
 
 ### Hráči
 
@@ -26,19 +26,19 @@ a samozřejmě sledovat průběh turnaje v reálném čase s možností okamžit
 ### Diváci
 
 Diváci vyžadují přístup k živým vysíláním a komentářům během turnajů.
-Dále chtějí možnost interakce s ostatními diváky a vyjádření svých názorů na průběh turnaje.
-Rovněž je důležitý snadný přístup k statistikám a informacím o hráčích a týmech.
+Dále chtějí mít možnost interakce s ostatními diváky a vyjádření svých názorů na průběh turnaje.
+Rovněž je důležitý snadný přístup ke statistikám a informacím o hráčích a týmech.
 
 ### Ostatní aktéři
 
 Pro ostatní aktéry, jako jsou techničtí operátoři, administrátoři
-a jiní členi administrátorského týmu, je nezbytné zajistit bezpečné
+a jiní členové administrátorského týmu, je nezbytné zajistit bezpečné
 a spolehlivé prostředí pro všechny účastníky.
 Implementace systému zabezpečení a autentizace je nezbytná pro ochranu citlivých informací.
 
 ## Specifikace funkčních požadavků
 
-V následující kapitoly se budou zaměřovat na funkcionalitu a operace, které uživatelé mohou očekávat od systému.
+V následující kapitole se budou zaměřovat na funkcionalitu a operace, které uživatelé mohou očekávat od systému.
 
 ### Registrace turnaje
 
@@ -66,9 +66,9 @@ aby si uživatelé mohli jednoduše naplánovat sledování turnajů a aktivně 
 
 ### Přímé přenosy a VOD
 
-Mělo by být zajištěny možnosti živých přenosů,
+Měly by být zajištěny možnosti živých přenosů,
 umožňující divákům sledovat dění v reálném čase. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
-Pro ty, kteří nestihli živé přenosy,
+Diváci, kteří nestihli živé přenosy,
 by jistě ocenili funkci pro přístup k nahraným videím/turnajům (Video on Demand). [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Tímto se zajistí maximální flexibilita pro fanoušky a účastníky turnaje.
 
@@ -110,8 +110,8 @@ aby bylo možné bezproblémově přizpůsobit systém růstu uživatelské zák
 
 ### Zabezpečení a ochrana osobních údajů
 
-Bezpečné přihlašovací systémy, šifrování dat a opatření na ochranu soukromí,
-je nezbytné, aby byla zajištěna bezpečnost osobních údajů uživatelů. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
+Bezpečné přihlašovací systémy, šifrování dat a opatření na ochranu soukromí jsou nezbytné,
+aby byla zajištěna bezpečnost osobních údajů uživatelů. [@how_to_make_an_esports_tournament_website_mobilecoderz; @how_to_design_an_esports_tournament_website_perfectiongeeks]
 Důkladné zabezpečení informací včetně osobních údajů hráčů
 a týmů je prioritou pro vytvoření důvěryhodné
 a bezpečné platformy pro správu e-sportových turnajů.

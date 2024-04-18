@@ -10,7 +10,7 @@ Tento pohled zjednodušuje načtení a vyhledání dat backendem.
 Id vyjadřuje id turnaje ([@sec:table_tournaments]).
 
 Sloupec teams obsahuje pole s týmy ve formátu json.
-Týmy dále obsahují informace jak o sobě, tak i o tom kolik hráčů v turnaji hraje
+Týmy dále obsahují informace jak o sobě, tak i o tom, kolik hráčů v turnaji hraje,
 a jestli je toto číslo v rozsahu pro validní velikost týmu.
 
 ```{.json .linenos}

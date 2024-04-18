@@ -2,9 +2,9 @@
 ### Tabulka teams_to_tournaments_applications {#sec:table_teams_to_tournaments_applications}
 
 Tabulka teams_to_tournaments_applications slouží ke spojení týmů a turnajů pro přihlášky.
-Jejím hlavním úkolem je umožnit backendu zjistit jaké týmy podaly přihlášku na jaké turnaje.
+Jejím hlavním úkolem je umožnit backendu zjistit, jaké týmy podaly přihlášku na jaké turnaje.
 Tato tabulka obsahuje týmy, které podaly přihlášku na turnaj, jež vyžaduje přihlášky,
-a zároveň tato přihláška nesmí být potvrzena.
+a zároveň tyto přihlášky nesmí být potvrzeny.
 
 ![Tabulka teams_to_tournaments_applications](../../../../pictures/databaze/tables/teams_to_tournaments_applications.png){ height=8.5% }
 

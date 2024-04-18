@@ -1,8 +1,8 @@
 
 ### Pohled user_invites {#sec:view_user_invites}
 
-Pohled user_invites slouží ke přehlednějšímu zobrazení a jednoduššímu načtení dat.
-Jeho hlavním úkolem je zobrazit do jakých týmů byl uživatele pozván, buď jako hráč nebo manažer.
+Pohled user_invites slouží k přehlednějšímu zobrazení a jednoduššímu načtení dat.
+Jeho hlavním úkolem je zobrazit, do jakých týmů byl uživatele pozván, buď jako hráč nebo manažer.
 Tento pohled umožňuje jednoduché načtení a vyhledání dat backendem.
 
 ![Pohled user_invites](../../../../pictures/databaze/views/user_invites.png){ height=10% }

@@ -4,9 +4,9 @@
 Pro autentizaci uživatele je použit json web token, ve kterém je uloženo id uživatele.
 
 K realizaci autentizace pomocí json web tokenu je vytvořen JwtMiddleware.
-Toto softwarové lepidlo slouží k extrakci dat z tokenu co uživatel pošle na server v hlavičce požadavku.
+Toto softwarové lepidlo slouží k extrakci dat z tokenu, co uživatel pošle na server v hlavičce požadavku.
 Token extrahovaný z hlavičky je dále dekódován a ověřen.
-U tokenu je ověřováno několik věcí, jako je datum expirace, podpis a datum od kdy je platný.
+U tokenu je ověřováno několik věcí, jako je datum expirace, podpis a datum, od kdy je platný.
 Dále jsou také načteny role uživatele a vloženy do úložiště, kde je později zpracovatel požadavku může nalézt.
 
 Při extrakci je nutné používat hlavičku "authorization," protože je výhradně používaná na autentizaci nebo autorizaci pomocí tokenů.
@@ -45,7 +45,7 @@ fn decode_jwt(
 
 : JWT dekódování tokenu {#lst:jwt_decode_jwt_func}
 
-Poté co je token dekódován a jsou načteny role uživatele (pokud je přihlášen),
+Poté, co je token dekódován a jsou načteny role uživatele (pokud je přihlášen),
 tak jsou uživatelská data, která jsou oddělena od dat specifických ke správě tokenu vložena do požadavkového úložiště.
 Tato data mají také speciální funkce a strukturu pro detekci změny uživatelských dat.
 Po vložení dat do požadavkového úložiště je zavolána další funkce v řetězci,
@@ -67,8 +67,8 @@ let mut res = svc.call(req).await?;
 Po zavolání další funkce v řetězci, je získána odpověď.
 Tato odpověď je dále upravena, aby vracela token v hlavičce odpovědi.
 Uživatelská data jsou zkontrolována, jestli byla změněna,
-pokud ano tak je vytvořen nový token,
-pokud ne tak se použije starý token nebo žádný token.
+pokud ano, tak je vytvořen nový token,
+pokud ne, tak se použije starý token nebo žádný token.
 Nevracení tokenu v hlavičce je použito, jen když uživatel není přihlášen, nebo byl právě odhlášen,
 při této možnosti není do odpovědi vkládána hlavička "authorization."
 
