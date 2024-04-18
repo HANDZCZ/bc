@@ -607,3 +607,5 @@ fig.update_layout(
 
 \elandscape
 
+\includepdf[pages=-]{STAG100503.pdf}
+
