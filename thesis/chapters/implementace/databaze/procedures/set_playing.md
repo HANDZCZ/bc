@@ -9,7 +9,7 @@ pokud není manažerem, tak vrátí chybu.
 Další kontrola zjistí, jestli je tým přijat na tento turnaj, pokud ne, tak vrátí chybu.
 Poslední kontrola je, zda jsou přihlášky uzavřeny,
 pokud jsou uzavřeny, tak se také vrátí chyba, že již nelze měnit kdo hraje v turnaji.
-Poté co proběhnou všechny tyto kontroly a ani jedna nevrátí chybu,
+Poté, co proběhnou všechny tyto kontroly a ani jedna nevrátí chybu,
 tak jsou do tabulky players_to_tournaments_playing ([@sec:table_players_to_tournaments_playing]) hráči přidáni,
 nebo jsou z ní hráči odebráni.
 

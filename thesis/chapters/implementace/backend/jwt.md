@@ -46,7 +46,8 @@ fn decode_jwt(
 : JWT dekódování tokenu {#lst:jwt_decode_jwt_func}
 
 Poté, co je token dekódován a jsou načteny role uživatele (pokud je přihlášen),
-tak jsou uživatelská data, která jsou oddělena od dat specifických ke správě tokenu vložena do požadavkového úložiště.
+tak jsou uživatelská data, která jsou oddělena od dat specifických ke správě tokenu,
+vložena do požadavkového úložiště.
 Tato data mají také speciální funkce a strukturu pro detekci změny uživatelských dat.
 Po vložení dat do požadavkového úložiště je zavolána další funkce v řetězci,
 tato funkce může být další middleware nebo zpracovatel požadavku.
